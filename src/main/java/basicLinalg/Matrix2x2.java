@@ -1,4 +1,4 @@
-package basic_linalg;
+package basicLinalg;
 
 public class Matrix2x2 {
 
@@ -20,8 +20,8 @@ public class Matrix2x2 {
     }
 
     public Vector2D multiply(Vector2D vector) {
-        double x = a00 * vector.getX() + a01 * vector.getY();
-        double y = a10 * vector.getX() + a11 * vector.getY();
+        double x = a00 * vector.getX0()+ a01 * vector.getX1();
+        double y = a10 * vector.getX0() + a11 * vector.getX1();
         return new Vector2D(x, y);
     }
 
