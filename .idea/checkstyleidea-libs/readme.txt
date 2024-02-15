@@ -1,4 +1,4 @@
-This folder contains libraries copied from the "IDATT2003-grp1-ChaosGame" project.
+This folder contains libraries copied from the "idatt2003-grp1-chaosgame" project.
 It is managed by the CheckStyle-IDEA IDE plugin.
 Do not modify this folder while the IDE is running.
 When the IDE is stopped, you may delete this folder at any time. It will be recreated as needed.
