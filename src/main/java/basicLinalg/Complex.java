@@ -5,7 +5,7 @@ package basicLinalg;
  * Apart from the constructor, it has a method to find the square root of the complex number.
  * The addition and subtraction methods are inherited from the Vector2D class.
  * @since 0.1.0
- * @version 0.1.0
+ * @version 0.2.0
  * @author 10041
  */
 
@@ -30,6 +30,16 @@ public class Complex extends Vector2D {
     this.realPart = inputRealPart;
     this.imaginaryPart = inputImaginaryPart;
   }
+  /**
+   * The method finds the product of two complex numbers.
+   * @param other instance of the Complex class.
+   * @return the product of the two complex numbers as an instance of the Complex class.
+   */
+  public Complex multiply(Complex other){
+    double real = this.realPart * other.realPart - this.imaginaryPart * other.imaginaryPart;
+    double imaginary = this.realPart * other.imaginaryPart + this.imaginaryPart * other.realPart;
+    return new Complex(real, imaginary);
+  }
 
   /**
    * Method to find the square root of the complex number.
@@ -51,4 +61,16 @@ public class Complex extends Vector2D {
 
     return new Complex(newRealPart, newImaginaryPart);
   }
+
+  /**
+   * The method finds the difference between two complex numbers.
+   * @param other instance of the Complex class.
+   * @return the difference between the two complex numbers as an instance of the Complex class.
+   */
+
+  public Complex subtract(Complex other){
+    return new Complex(this.realPart - other.realPart, this.imaginaryPart - other.imaginaryPart);
+  }
+
+
 }
