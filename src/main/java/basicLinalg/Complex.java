@@ -51,4 +51,14 @@ public class Complex extends Vector2D {
 
     return new Complex(newRealPart, newImaginaryPart);
   }
+
+  public Complex subtract(Complex other){
+    return new Complex(this.realPart - other.realPart, this.imaginaryPart - other.imaginaryPart);
+  }
+
+  public Complex multiply(Complex other){
+    double real = this.realPart * other.realPart - this.imaginaryPart * other.imaginaryPart;
+    double imaginary = this.realPart * other.imaginaryPart + this.imaginaryPart * other.realPart;
+    return new Complex(real, imaginary);
+  }
 }
