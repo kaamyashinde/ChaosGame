@@ -42,7 +42,7 @@ public class Complex extends Vector2D {
    */
   public Complex sqrt() {
     double r = Math.sqrt(this.realPart * this.realPart + this.imaginaryPart * this.imaginaryPart);
-    double theta = Math.atan2(this.realPart, this.imaginaryPart);
+    double theta = Math.atan2(this.imaginaryPart, this.realPart);
     double newR = Math.sqrt(r);
     double newTheta = theta / 2;
 
