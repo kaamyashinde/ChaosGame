@@ -44,7 +44,7 @@ public class AffineTransform2D extends Transform2D {
      * @param inputPoint the point to transform
      * @return the transformed point as an instance of Vector2D
      */
-    public Vector2D Transform2D(Vector2D inputPoint) {
+    public Vector2D transform(Vector2D inputPoint) {
         return matrix.multiply(inputPoint).add(vector);
     }
 
