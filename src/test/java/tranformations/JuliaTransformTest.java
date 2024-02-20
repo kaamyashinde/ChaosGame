@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class JuliaTransformTest {
 
     @Test
-    void transform2D() {
+    void transform() {
 
         // Create a JuliaTransform object
         JuliaTransform juliaTransform = new JuliaTransform(new Complex(0, 0), 1);
