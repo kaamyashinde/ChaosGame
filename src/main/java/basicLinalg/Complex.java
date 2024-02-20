@@ -62,15 +62,18 @@ public class Complex extends Vector2D {
     return new Complex(newRealPart, newImaginaryPart);
   }
 
-  /**
-   * The method finds the difference between two complex numbers.
-   * @param other instance of the Complex class.
-   * @return the difference between the two complex numbers as an instance of the Complex class.
-   */
-
-  public Complex subtract(Complex other){
-    return new Complex(this.realPart - other.realPart, this.imaginaryPart - other.imaginaryPart);
+  @Override
+  public Complex subtract(Vector2D other) {
+    // Anta at other er en instans av Complex; utfør typekontroll og konvertering om nødvendig
+    if (other instanceof Complex) {
+      Complex otherComplex = (Complex) other;
+      double real = this.realPart - otherComplex.realPart;
+      double imaginary = this.imaginaryPart - otherComplex.imaginaryPart;
+      return new Complex(real, imaginary);
+    } else {
+      // Håndter feil eller kast en exception
+      throw new IllegalArgumentException("Other must be an instance of Complex");
+    }
   }
-
 
 }

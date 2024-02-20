@@ -1,5 +1,6 @@
 package tranformations;
 
+
 import basicLinalg.Complex;
 import basicLinalg.Vector2D;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ class JuliaTransformTest {
         Vector2D vector2D = new Vector2D(1, 1);
 
         // Perform the transformation
-        Vector2D result = juliaTransform.Transform2D(vector2D);
+        Vector2D result = juliaTransform.transform(vector2D);
 
         // Check the result
         assertEquals(1.0986841134678098, result.getX0());

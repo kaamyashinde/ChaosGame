@@ -14,7 +14,7 @@ public class JuliaTransform extends Transform2D {
     }
 
     @Override
-    public Vector2D Transform2D(Vector2D z) {
+    public Vector2D transform(Vector2D z) {
         // Convert the Vector2D z to a Complex number
         Complex zComplex = new Complex(z.getX0(), z.getX1());
 
