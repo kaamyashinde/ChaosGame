@@ -64,16 +64,12 @@ public class Complex extends Vector2D {
 
   @Override
   public Complex subtract(Vector2D other) {
-    // Anta at other er en instans av Complex; utfør typekontroll og konvertering om nødvendig
-    if (other instanceof Complex) {
+
       Complex otherComplex = (Complex) other;
       double real = this.realPart - otherComplex.realPart;
       double imaginary = this.imaginaryPart - otherComplex.imaginaryPart;
       return new Complex(real, imaginary);
-    } else {
-      // Håndter feil eller kast en exception
-      throw new IllegalArgumentException("Other must be an instance of Complex");
-    }
+
   }
 
 }
