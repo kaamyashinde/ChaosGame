@@ -1,4 +1,4 @@
-package basicLinalg;
+package edu.ntnu.idatt2003.model.basicLinalg;
 
 public class Matrix2x2 {
 

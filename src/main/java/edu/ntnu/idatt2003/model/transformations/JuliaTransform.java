@@ -1,7 +1,7 @@
-package tranformations;
+package edu.ntnu.idatt2003.model.transformations;
 
-import basicLinalg.Complex;
-import basicLinalg.Vector2D;
+import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
+import edu.ntnu.idatt2003.model.basicLinalg.Complex;
 
 public class JuliaTransform extends Transform2D {
 

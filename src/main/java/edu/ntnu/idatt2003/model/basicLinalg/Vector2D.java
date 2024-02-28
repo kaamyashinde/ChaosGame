@@ -1,4 +1,4 @@
-package basicLinalg;
+package edu.ntnu.idatt2003.model.basicLinalg;
 
  /**
  * A class to represent a 2D vector.
