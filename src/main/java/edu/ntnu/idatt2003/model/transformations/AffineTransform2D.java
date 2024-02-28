@@ -1,7 +1,7 @@
-package tranformations;
+package edu.ntnu.idatt2003.model.transformations;
 
-import basicLinalg.Matrix2x2;
-import basicLinalg.Vector2D;
+import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
+import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 
 /**
  * A class to represent a 2D affine transformation as a transformation on the form T(x) = Ax + b.

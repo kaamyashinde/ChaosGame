@@ -1,6 +1,6 @@
 package basicLinalg;
 
-import org.junit.jupiter.api.BeforeEach;
+import edu.ntnu.idatt2003.model.basicLinalg.Complex;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

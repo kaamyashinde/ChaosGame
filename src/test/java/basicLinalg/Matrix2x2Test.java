@@ -1,5 +1,7 @@
 package basicLinalg;
 
+import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
+import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

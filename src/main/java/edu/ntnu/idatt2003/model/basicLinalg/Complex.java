@@ -1,4 +1,4 @@
-package basicLinalg;
+package edu.ntnu.idatt2003.model.basicLinalg;
 
 /**
  * A class to represent a complex number that inherits the Vector2D class.
