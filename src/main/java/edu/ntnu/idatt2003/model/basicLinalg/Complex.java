@@ -10,14 +10,7 @@ package edu.ntnu.idatt2003.model.basicLinalg;
  */
 
 public class Complex extends Vector2D {
-  /**
-   * The real part of the complex number.
-   */
-  private final double realPart;
-  /**
-   * The imaginary part of the complex number.
-   */
-  private final double imaginaryPart;
+
 
   /**
    * Constructor for the Complex class.
@@ -27,18 +20,6 @@ public class Complex extends Vector2D {
    */
   public Complex(double inputRealPart, double inputImaginaryPart) {
     super(inputRealPart, inputImaginaryPart);
-    this.realPart = inputRealPart;
-    this.imaginaryPart = inputImaginaryPart;
-  }
-  /**
-   * The method finds the product of two complex numbers.
-   * @param other instance of the Complex class.
-   * @return the product of the two complex numbers as an instance of the Complex class.
-   */
-  public Complex multiply(Complex other){
-    double real = this.realPart * other.realPart - this.imaginaryPart * other.imaginaryPart;
-    double imaginary = this.realPart * other.imaginaryPart + this.imaginaryPart * other.realPart;
-    return new Complex(real, imaginary);
   }
 
   /**
@@ -46,13 +27,13 @@ public class Complex extends Vector2D {
    *
    * <p>The length of the complex number is found using the Pythagorean theorem,
    * and the angle is found using the arctan function.
-   * The square root of the length is found and the angle is halved to find the new angle.
+   * The square root of the length is found, and the angle is halved to find the new angle.
    *
    * @return the square root of the complex number as an instance of Complex class.
    */
   public Complex sqrt() {
-    double r = Math.sqrt(this.realPart * this.realPart + this.imaginaryPart * this.imaginaryPart);
-    double theta = Math.atan2(this.imaginaryPart, this.realPart);
+    double r = Math.sqrt(this.getX0() * this.getX0() + this.getX1() * this.getX1());
+    double theta = Math.atan2(this.getX1(), this.getX0());
     double newR = Math.sqrt(r);
     double newTheta = theta / 2;
 
@@ -62,14 +43,5 @@ public class Complex extends Vector2D {
     return new Complex(newRealPart, newImaginaryPart);
   }
 
-  @Override
-  public Complex subtract(Vector2D other) {
-
-      Complex otherComplex = (Complex) other;
-      double real = this.realPart - otherComplex.realPart;
-      double imaginary = this.imaginaryPart - otherComplex.imaginaryPart;
-      return new Complex(real, imaginary);
-
-  }
 
 }

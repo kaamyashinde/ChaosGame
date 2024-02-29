@@ -14,17 +14,17 @@ public class JuliaTransform extends Transform2D {
     }
 
     @Override
-    public Vector2D transform(Vector2D z) {
-        // Convert the Vector2D z to a Complex number
-        Complex zComplex = new Complex(z.getX0(), z.getX1());
+    public Vector2D transform(Vector2D point) {
+        Complex z = new Complex(point.getX0(), point.getX1());
+        Vector2D subtracted = z.subtract(this.point);
+        Complex subtractedComplex = new Complex(subtracted.getX0(), subtracted.getX1());
+        Complex sqrt = subtractedComplex.sqrt();
 
-        // Perform the transformation: sqrt(p * (z - c))
-        Complex temp = zComplex.subtract(point);
-        Complex multiplied = temp.multiply(new Complex(sign, 0));
-        Complex result = multiplied.sqrt();
-
-        // Convert the result back to a Vector2D and return it
-        return new Vector2D(result.getX0(), result.getX1());
+        if (this.sign == 1) {
+            return new Vector2D(sqrt.getX0(), sqrt.getX1());
+        } else {
+            return new Vector2D(-sqrt.getX0(), -sqrt.getX1());
+        }
     }
 
 
