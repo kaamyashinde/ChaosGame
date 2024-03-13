@@ -13,7 +13,7 @@ public class ChaosGameFileHandler {
 
     public ChaosGameFileHandler() {
     }
-
+    /*
     public ChaosGameDescription readFromFile(String inputPath) {
         try {
             List<String> lines = Files.readAllLines(Paths.get(inputPath));
@@ -30,7 +30,7 @@ public class ChaosGameFileHandler {
             return null;
         }
     }
-
+*/
     public void writeToFile(String outputPath, ChaosGameDescription description) {
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputPath))) {
 
