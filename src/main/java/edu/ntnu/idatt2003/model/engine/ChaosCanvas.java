@@ -65,7 +65,7 @@ public class ChaosCanvas {
         this.minCoords = inputMinCoords;
         this.maxCoords = inputMaxCoords;
         this.canvas = new int[height][width];
-        this.transformCoordsToIndices = claculateAffineTransformation();
+        this.transformCoordsToIndices = calculateAffineTransformation();
     }
 
     /**
@@ -74,7 +74,7 @@ public class ChaosCanvas {
      *
      * @return the object of AffineTransform2D class
      */
-    private AffineTransform2D claculateAffineTransformation() {
+    private AffineTransform2D calculateAffineTransformation() {
         double a01 = (height - 1) / (minCoords.getX1() - maxCoords.getX1());
         double a10 = (width - 1) / (maxCoords.getX0() - minCoords.getX0());
         double b1 = ((height - 1) * maxCoords.getX1()) / (maxCoords.getX1() - minCoords.getX1());
