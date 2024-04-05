@@ -48,5 +48,25 @@ public class AffineTransform2D extends Transform2D {
         return matrix.multiply(inputPoint).add(vector);
     }
 
+    /**
+     * Method to get the matrix of the affine transformation.
+     *
+     * @return the matrix of the affine transformation
+     */
 
+    public Matrix2x2 getMatrix() {
+        return matrix;
+
+    }
+
+    /**
+     * Method to get the vector of the affine transformation.
+     *
+     * @return the vector of the affine transformation
+     */
+
+    public Vector2D getVector() {
+        return vector;
+
+    }
 }

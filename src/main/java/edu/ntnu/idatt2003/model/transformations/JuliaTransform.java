@@ -31,6 +31,26 @@ public class JuliaTransform extends Transform2D {
     }
 
     /**
+     * Method to get the complex number c of the transformation.
+     *
+     * @return the complex number c
+     */
+
+    public Complex getPoint() {
+        return point;
+    }
+
+    /**
+     * Method to get the sign of the transformation.
+     *
+     * @return the sign of the transformation
+     */
+
+    public int getSign() {
+        return sign;
+    }
+
+    /**
      * Transform a 2D point using the Julia transformation.
      *
      * @param point the point to transform
