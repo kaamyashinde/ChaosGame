@@ -78,13 +78,16 @@ public class ChaosCanvas {
         double a01 = (height - 1) / (minCoords.getX1() - maxCoords.getX1());
         double a10 = (width - 1) / (maxCoords.getX0() - minCoords.getX0());
         double b1 = ((height - 1) * maxCoords.getX1()) / (maxCoords.getX1() - minCoords.getX1());
-        double b2 = ((width - 1) * minCoords.getX0()) / (minCoords.getX0()) - maxCoords.getX0();
+        double b2 = ((width - 1) * minCoords.getX0()) / (minCoords.getX0() - maxCoords.getX0());
 
         Matrix2x2 a = new Matrix2x2(0, a01, a10, 0);
         Vector2D b = new Vector2D(b1, b2);
 
         return new AffineTransform2D(a, b);
 
+    }
+    public Vector2D coordsToIndices(Vector2D coords) {
+        return transformCoordsToIndices.transform(coords);
     }
 
     /**
@@ -95,7 +98,7 @@ public class ChaosCanvas {
      */
 
     public int getPixel(Vector2D point) {
-        Vector2D index = transformCoordsToIndices.transform(point);
+        Vector2D index = coordsToIndices(point);
         int i = (int) index.getX0();
         int j = (int) index.getX1();
         return canvas[i][j];
@@ -107,7 +110,7 @@ public class ChaosCanvas {
      * @param point the point to put the pixel at
      */
     public void putPixel(Vector2D point) {
-        Vector2D index = transformCoordsToIndices.transform(point);
+        Vector2D index = coordsToIndices(point);
         int i = (int) index.getX0();
         int j = (int) index.getX1();
         canvas[i][j] = 1;
