@@ -1,6 +1,7 @@
-package edu.ntnu.idatt2003.model.engine;
+package engine;
 
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
+import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,10 @@
-package edu.ntnu.idatt2003.model.engine;
+package engine;
 
 import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
+import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
+import edu.ntnu.idatt2003.model.engine.ChaosGame;
+import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
 import org.junit.jupiter.api.BeforeEach;
