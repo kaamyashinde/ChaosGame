@@ -3,6 +3,8 @@ package edu.ntnu.idatt2003.model.transformations;
 import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 
+import java.util.Objects;
+
 /**
  * A class to represent a 2D affine transformation as a transformation on the form T(x) = Ax + b.
  * A is the matrix and b is the vector.
@@ -69,4 +71,24 @@ public class AffineTransform2D extends Transform2D {
         return vector;
 
     }
+/*
+        @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        AffineTransform2D that = (AffineTransform2D) obj;
+        return Objects.equals(getMatrix(), that.getMatrix()) &&
+               Objects.equals(getVector(), that.getVector());
+    }
+
+    @Override
+public int hashCode() {
+    return Objects.hash(getMatrix(), getVector());
+}
+*/
+
 }
