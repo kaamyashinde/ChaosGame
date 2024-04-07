@@ -17,18 +17,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
-// src/main/java/edu/ntnu/idatt2003/model/engine/testAffine.txt
-
-
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * A class to handle reading and writing of chaos game descriptions to and from files.
+ */
 
 public class ChaosGameFileHandler {
 
+    /**
+     * Constructor for the ChaosGameFileHandler class.
+     */
     public ChaosGameFileHandler() {
     }
 
+    /**
+     * Method to write a chaos game description to a file.
+     *
+     * @param chaosGameDescription the chaos game description to write
+     * @param path the path to the file to write to
+     */
     public void writeToFile(ChaosGameDescription chaosGameDescription, String path) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             // Check if we have transformations and write the type of the first one
@@ -69,6 +75,12 @@ public class ChaosGameFileHandler {
         }
     }
 
+    /**
+     * Method to initiate a chaos game description with affine transformations and write it to a file.
+     *
+     * @param path the path to the file to write to
+     * @param numberOfTransformations the number of transformations to create
+     */
     public static void initiateTransformationsAffine(String path, int numberOfTransformations){
         ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
         Vector2D minCoords = new Vector2D(0, 0);
@@ -87,8 +99,14 @@ public class ChaosGameFileHandler {
 
     }
 
-    //101 på hvordan JuliaTranformations fungerer
+    //Må lese nærmere på hvordan JuliaTranformations fungerer konkret
 
+    /**
+     * Method to initiate a chaos game description with Julia transformations and write it to a file.
+     *
+     * @param path the path to the file to write to
+     * @param numberOfTransformations the number of transformations to create
+     */
     public static void iniateTransformationsJulia(String path, int numberOfTransformations){
         ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
         Vector2D minCoords = new Vector2D(-1.6, -1);
@@ -107,7 +125,12 @@ public class ChaosGameFileHandler {
         chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
     }
 
-
+    /**
+     * Method to read a chaos game description from a file.
+     *
+     * @param path the path to the file to read from
+     * @return the chaos game description read from the file
+     */
     public static ChaosGameDescription readFromFile(String path) {
         File file = new File(path);
         try (Scanner scanner = new Scanner(file)) {
@@ -142,8 +165,6 @@ public class ChaosGameFileHandler {
             return null;
         }
     }
-
-
 
 
     public static void main(String[] args) {
