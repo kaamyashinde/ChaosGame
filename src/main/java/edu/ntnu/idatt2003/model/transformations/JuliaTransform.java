@@ -3,6 +3,8 @@ package edu.ntnu.idatt2003.model.transformations;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.basicLinalg.Complex;
 
+import java.util.Objects;
+
 /**
  * Class representing a 2D transformation of the form T(z) = sqrt(p * (z - c)).
  * P is a complex number and c is a complex number.
@@ -31,6 +33,26 @@ public class JuliaTransform extends Transform2D {
     }
 
     /**
+     * Method to get the complex number c of the transformation.
+     *
+     * @return the complex number c
+     */
+
+    public Complex getPoint() {
+        return point;
+    }
+
+    /**
+     * Method to get the sign of the transformation.
+     *
+     * @return the sign of the transformation
+     */
+
+    public int getSign() {
+        return sign;
+    }
+
+    /**
      * Transform a 2D point using the Julia transformation.
      *
      * @param point the point to transform
@@ -49,6 +71,22 @@ public class JuliaTransform extends Transform2D {
             return new Vector2D(-sqrt.getX0(), -sqrt.getX1());
         }
     }
+/*
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        JuliaTransform that = (JuliaTransform) obj;
+        return Objects.equals(getPoint(), that.getPoint());
+    }
 
-
+    @Override
+public int hashCode() {
+    return Objects.hash(getPoint());
+}
+*/
 }

@@ -41,5 +41,21 @@ public class Matrix2x2 {
         return new Vector2D(x, y);
     }
 
+public double getA00() {
+        return a00;
+    }
+
+    public double getA01() {
+        return a01;
+    }
+
+    public double getA10() {
+        return a10;
+    }
+
+    public double getA11() {
+        return a11;
+    }
+
 
 }
