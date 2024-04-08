@@ -155,7 +155,16 @@ public class UserInterface {
      * Method to run a specific number of iterations
      */
     private static void runIterations() {
+        System.out.println("Enter the width of the canvas: ");
+        int inputWidth = input.nextInt();
+        System.out.println("Enter the height of the canvas: ");
+        int inputHeight = input.nextInt();
+        chaosGame = new ChaosGame(chaosGameDescription, inputWidth, inputHeight);
 
+        System.out.println("Enter the number of iterations you want to run: ");
+        int iterations = input.nextInt();
+        chaosGame.runSteps(iterations);
+        System.out.println("Successfully ran " + iterations + " iterations.");
     }
 
     /**
