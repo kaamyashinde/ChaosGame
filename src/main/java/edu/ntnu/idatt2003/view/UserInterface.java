@@ -172,6 +172,17 @@ public class UserInterface {
      */
     private static void printFractal() {
 
-
+        if (chaosGame == null) {
+            System.out.println("You need to run the chaos game first.");
+        } else {
+            chaosCanvas = chaosGame.getCanvas();
+            int[][] theArray = chaosCanvas.getCanvasArray();
+            for (int i = 0; i < theArray.length; i++) {
+                for (int j = 0; j < theArray[i].length; j++) {
+                    System.out.println(theArray[i][j] == 1 ? "X" : "-");
+                }
+                System.out.println();
+            }
+        }
     }
 }
