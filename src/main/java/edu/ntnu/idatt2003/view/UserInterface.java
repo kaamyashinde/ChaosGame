@@ -1,5 +1,10 @@
 package edu.ntnu.idatt2003.view;
 
+import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
+import edu.ntnu.idatt2003.model.engine.ChaosGame;
+import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
+import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
+
 import java.util.Scanner;
 
 public class UserInterface {
@@ -27,6 +32,18 @@ public class UserInterface {
      * A boolean to keep track of whether the application is running or not.
      */
     private static boolean running = true;
+    /**
+     * An object of the ChaosGameDescription class that will be used to store the data read from the file.
+     */
+    private static ChaosGameDescription chaosGameDescription;
+    /**
+     * An object of the ChaosGame class that will run the chaos game.
+     */
+    private static ChaosGame chaosGame;
+    /**
+     * An object of the ChaosCanvas class that would be used to print the fractal.
+     */
+    private static ChaosCanvas chaosCanvas;
 
     /**
      * Constructor for the UserInterface class.
@@ -41,8 +58,11 @@ public class UserInterface {
 
     /**
      * Method to initialize the UserInterface.
+     * <p>
+     * It initates an instance of the chaosGameDescription class usign dummmy data from a file.
      */
     private static void init() {
+        chaosGameDescription = ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/model/engine/testAffine.txt");
     }
 
     /**
@@ -87,7 +107,7 @@ public class UserInterface {
     private static void triggerChoice() {
         int choice = showMenu();
         switch (choice) {
-            case 0 -> System.exit(0);
+            case 0 -> quit();
             case READ_FROM_FILE -> readFromFile();
             case WRITE_TO_FILE -> writeToFile();
             case RUN_ITERATIONS -> runIterations();
@@ -97,26 +117,52 @@ public class UserInterface {
     }
 
     /**
+     * Method to quit the application.
+     */
+    private static void quit() {
+        running = false;
+
+        System.out.println("Thank you for using the Chaos Game!");
+        System.out.println("Successfully exited the application.");
+
+        System.exit(0);
+    }
+
+    /**
      * Method to read a chaos game description from a file.
      */
     private static void readFromFile() {
+        input.nextLine();
+
+        System.out.println("Enter the name of the file you want to read from: ");
+        String fileName = input.nextLine();
+
+        String filePath = "src/main/java/edu/ntnu/idatt2003/model/engine/" + fileName;
+        chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
+
+        System.out.println("Here is the description of the chaos game read from the file:");
+        System.out.println(chaosGameDescription);
     }
 
     /**
      * Method to write to a file.
      */
     private static void writeToFile() {
+
     }
 
     /**
      * Method to run a specific number of iterations
      */
     private static void runIterations() {
+
     }
 
     /**
      * Method to print the ASCII-fractal to the console.
      */
     private static void printFractal() {
+
+
     }
 }
