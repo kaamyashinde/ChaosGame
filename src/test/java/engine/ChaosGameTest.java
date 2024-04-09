@@ -31,7 +31,7 @@ class ChaosGameTest {
                 new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(0.25, 0.5)),
                 new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(0.5, 0)));
         chaosGameDescription = new ChaosGameDescription(minCoords, maxCoords, transforms);
-        chaosGame = new ChaosGame(chaosGameDescription, 5, 5);
+        chaosGame = new ChaosGame(chaosGameDescription, 60, 20);
     }
 
     @Test
@@ -43,21 +43,24 @@ class ChaosGameTest {
 
     @Test
     void runSteps() {
-        chaosGame.runSteps(5);
+        int numOfSteps = 10;
+        chaosGame.runSteps(numOfSteps);
 
         ChaosCanvas canvas = chaosGame.getCanvas();
         int[][] canvasArray = canvas.getCanvasArray();
         int numberOfPixels = 0;
         for (int i = 0; i < canvasArray.length; i++) {
             for (int j = 0; j < canvasArray[i].length; j++) {
-                System.out.println(canvasArray[i][j]);
+                System.out.print(canvasArray[i][j] == 0 ? " " : "*");
                 if (canvasArray[i][j] == 1){
                 numberOfPixels++;
 
                 }
+
             }
+            System.out.println(" ");
         }
-        assertEquals(5, numberOfPixels);
+        assertEquals(numOfSteps, numberOfPixels);
 
     }
 }

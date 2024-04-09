@@ -61,7 +61,8 @@ public class ChaosGame {
      * Runs a given number of steps of the chaos game.
      * In each step, a random transformation is chosen from the list of transformations in the description.
      * The current point is then transformed using the chosen transformation, and the new point is drawn on the canvas.
-     *
+     * If the chosen point is already colored, the step is run again.
+     * This ensures that the number of iterations and the number of points drawn are the same.
      * @param steps the number of steps to run
      */
 
@@ -69,8 +70,13 @@ public class ChaosGame {
         for (int i = 0; i < steps; i++) {
             int randomIndex = random.nextInt(description.getTransforms().size());
             Vector2D newPoint = description.getTransforms().get(randomIndex).transform(currentPoint);
-            canvas.putPixel(newPoint);
-            currentPoint = newPoint;
+            if (canvas.getPixel(newPoint) == 1) {
+                i--;
+            } else {
+                canvas.putPixel(newPoint);
+                currentPoint = newPoint;
+            }
+
         }
     }
 
