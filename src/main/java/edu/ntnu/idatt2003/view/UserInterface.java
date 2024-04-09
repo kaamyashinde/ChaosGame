@@ -200,7 +200,7 @@ public class UserInterface {
 
     }
     private static void runDefaultConfig(){
-        String filePath = "src/main/java/edu/ntnu/idatt2003/model/engine/DefaultConfigTriangle.txt";
+        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/DefaultConfigTriangle.txt";
         chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
         if (chaosGameDescription == null){
             System.out.println("Could not read the default configuration file.");
