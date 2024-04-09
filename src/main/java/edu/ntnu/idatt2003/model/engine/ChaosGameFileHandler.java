@@ -173,11 +173,11 @@ public class ChaosGameFileHandler {
         //det som skjer her er at jeg skriver en tekstfil med en affinetransformasjon, og så leser jeg den samme filen og skriver den til en annen fil
 
         //samtidig som jeg skriver en fil med en juliatransformasjon
-        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/model/engine/testAffine.txt", 3);
-        ChaosGameFileHandler.iniateTransformationsJulia("src/main/java/edu/ntnu/idatt2003/model/engine/testJulia.txt", 3);
-        ChaosGameDescription testObject =  ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/model/engine/testAffine.txt");
+        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt", 3);
+        ChaosGameFileHandler.iniateTransformationsJulia("src/main/java/edu/ntnu/idatt2003/resources/testJulia.txt", 3);
+        ChaosGameDescription testObject =  ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt");
         System.out.println(testObject);
-        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/model/engine/ReadToWrite.txt", 3);
+        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/resources/ReadToWrite.txt", 3);
 
     }
 

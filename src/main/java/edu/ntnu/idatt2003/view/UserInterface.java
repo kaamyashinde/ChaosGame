@@ -73,7 +73,7 @@ public class UserInterface {
      * It initates an instance of the chaosGameDescription class usign dummmy data from a file.
      */
     private static void init() {
-        chaosGameDescription = ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/model/engine/testAffine.txt");
+        chaosGameDescription = ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt");
     }
 
     /**
