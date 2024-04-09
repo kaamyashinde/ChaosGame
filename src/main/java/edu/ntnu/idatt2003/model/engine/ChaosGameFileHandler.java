@@ -86,17 +86,17 @@ public class ChaosGameFileHandler {
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
         List<Transform2D> transforms = new ArrayList<>();
-        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5); // er nå en rotasjonsmatrise, før med 1,0,0,1 var det en identitetsmatrise
+        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5);
 
-        // Create 3 transformations with slightly different vectors - //vet at opp til tre er riktig, med eksempelet vi har fått fra mappe tingz
+        // Create 3 transformations with slightly different vectors
         for (int i = 0; i < numberOfTransformations; i++) {
-            Vector2D vector = new Vector2D(i * 0.25, 0); // Change the vector for each transformation
+            double yComponent = (i == 1) ? 0.5 : 0; // Change the y-component for the second transformation
+            Vector2D vector = new Vector2D(i * 0.25, yComponent);
             AffineTransform2D affine = new AffineTransform2D(matrix, vector);
             transforms.add(affine);
         }
 
         chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
-
     }
 
     //Må lese nærmere på hvordan JuliaTranformations fungerer konkret
