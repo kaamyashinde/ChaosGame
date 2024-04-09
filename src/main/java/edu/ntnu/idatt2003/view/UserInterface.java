@@ -188,13 +188,13 @@ public class UserInterface {
         if (chaosGame == null) {
             System.out.println("You need to run the chaos game first.");
         } else {
-            chaosCanvas = chaosGame.getCanvas();
-            int[][] theArray = chaosCanvas.getCanvasArray();
-            for (int i = 0; i < theArray.length; i++) {
-                for (int j = 0; j < theArray[i].length; j++) {
-                    System.out.println(theArray[i][j] == 1 ? "X" : "-");
+            ChaosCanvas canvas = chaosGame.getCanvas();
+            int[][] canvasArray = canvas.getCanvasArray();
+            for (int i = 0; i < canvasArray.length; i++) {
+                for (int j = 0; j < canvasArray[i].length; j++) {
+                    System.out.print(canvasArray[i][j] == 0 ? " " : "*");
                 }
-                System.out.println();
+                System.out.println(" ");
             }
         }
 
@@ -213,55 +213,7 @@ public class UserInterface {
         chaosGame.runSteps(iterations);
         System.out.println("Successfully ran " + iterations + " iterations.");
         System.out.println("Here is the ASCII-fractal: \n");
-
-        ChaosCanvas canvas = chaosGame.getCanvas();
-        int[][] canvasArray = canvas.getCanvasArray();
-        int numberOfPixels = 0;
-        for (int i = 0; i < canvasArray.length; i++) {
-            for (int j = 0; j < canvasArray[i].length; j++) {
-                System.out.print(canvasArray[i][j] == 0 ? " " : "*");
-                if (canvasArray[i][j] == 1){
-                    numberOfPixels++;
-
-                }
-
-            }
-            System.out.println(" ");
-        }
-    }
-    public static void main(String[] args) {
-        ChaosGame chaosGame;
-        ChaosGameDescription chaosGameDescription;
-        Vector2D minCoords;
-        Vector2D maxCoords;
-        List<Transform2D> transforms;
-
-        minCoords = new Vector2D(0, 0);
-        maxCoords = new Vector2D(1, 1);
-        transforms = List.of(
-                new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(0, 0)),
-                new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(0.25, 0.5)),
-                new AffineTransform2D(new Matrix2x2(0.5, 0, 0, 0.5), new Vector2D(0.5, 0)));
-        chaosGameDescription = new ChaosGameDescription(minCoords, maxCoords, transforms);
-        chaosGame = new ChaosGame(chaosGameDescription, 60, 20);
-
-        chaosGame.runSteps(100);
-
-        ChaosCanvas canvas = chaosGame.getCanvas();
-        int[][] canvasArray = canvas.getCanvasArray();
-        int numberOfPixels = 0;
-        for (int i = 0; i < canvasArray.length; i++) {
-            for (int j = 0; j < canvasArray[i].length; j++) {
-                System.out.print(canvasArray[i][j] == 0 ? " " : "*");
-                if (canvasArray[i][j] == 1){
-                    numberOfPixels++;
-
-                }
-
-            }
-            System.out.println(" ");
-        }
-
+        printFractal();
 
     }
 }
