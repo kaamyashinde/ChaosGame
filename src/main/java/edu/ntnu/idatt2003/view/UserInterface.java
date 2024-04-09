@@ -1,18 +1,11 @@
 package edu.ntnu.idatt2003.view;
 
-import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
-import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
-import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
-import edu.ntnu.idatt2003.model.transformations.Transform2D;
 
-import java.util.List;
 import java.util.Scanner;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserInterface {
     /**
@@ -74,7 +67,8 @@ public class UserInterface {
     /**
      * Method to initialize the UserInterface.
      * <p>
-     * It initates an instance of the chaosGameDescription class usign dummmy data from a file.
+     * It initiates an instance of the chaosGameDescription class using dummy data from a file.
+     * This is to ensure that the iterations can be run without the user being forced to manually run the readFromFile method.
      */
     private static void init() {
         chaosGameDescription = ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt");
@@ -82,6 +76,8 @@ public class UserInterface {
 
     /**
      * Method to start the UserInterface.
+     * <p>
+     * It prints a welcome message and runs the triggerChoice method in a loop until the user decides to quit.
      */
     private static void start() {
         System.out.println(
@@ -145,6 +141,9 @@ public class UserInterface {
 
     /**
      * Method to read a chaos game description from a file.
+     * <p>
+     * It reads the name of the file from the user and uses the ChaosGameFileHandler class to read the description from the file. This is then printed to the console for the user to view.
+     * </p>
      */
     private static void readFromFile() {
         input.nextLine();
@@ -161,6 +160,13 @@ public class UserInterface {
 
     /**
      * Method to write to a file.
+     * <p>
+     * It reads the name of the file from the user and uses the ChaosGameFileHandler class to write the description to the file.
+     * The user can choose between generating an affine or a julia transformation.
+     * The user can also choose the number of transformations to generate.
+     * The generated chaos game description is then written to the file.
+     * Since the data generated is saved in the chosGameDescription object, it can be used to run iterations and print the fractal without having to run the readFromFile method after writing toFile.
+     * </p>
      */
     private static void writeToFile() {
         System.out.println("Enter the name of the file you want to write to: ");
@@ -183,16 +189,29 @@ public class UserInterface {
 
     /**
      * Method to run a specific number of iterations
+     * <p>
+     *    The user can decide between entering values for the width and height of the canvas or use the default configuration.
+     *    Then the user is prompted to enter the number of iterations to run. A message is printed after the iterations are run.
+     * </p>
      */
     private static void runIterations() {
         if (chaosGameDescription == null) {
             System.out.println("You need to read a chaos game description from a file first.");
             return;
         }
-        System.out.println("Enter the width of the canvas: ");
-        int inputWidth = input.nextInt();
-        System.out.println("Enter the height of the canvas: ");
-        int inputHeight = input.nextInt();
+        System.out.println("Would u like to enter the size of the canvas or use the default configuration? 1: Enter size, 2: Default configuration");
+        int choice = input.nextInt();
+        int inputWidth;
+        int inputHeight;
+        if (choice == 1) {
+            System.out.println("Enter the width of the canvas: ");
+            inputWidth = input.nextInt();
+            System.out.println("Enter the height of the canvas: ");
+            inputHeight = input.nextInt();
+        } else {
+            inputWidth = 60;
+            inputHeight = 20;
+        }
         chaosGame = new ChaosGame(chaosGameDescription, inputWidth, inputHeight);
 
         System.out.println("Enter the number of iterations you want to run: ");
@@ -203,6 +222,10 @@ public class UserInterface {
 
     /**
      * Method to print the ASCII-fractal to the console.
+     * <p>
+     *     If the chaosGame object is empty, the user is prompted to run the chaos game first.
+     *     The chaosGame object might be empty if the user has not run the runIterations method.
+     * </p>
      */
     private static void printFractal() {
 
