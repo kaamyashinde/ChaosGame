@@ -35,7 +35,7 @@ public class ChaosGameFileHandler {
      * @param chaosGameDescription the chaos game description to write
      * @param path the path to the file to write to
      */
-    public void writeToFile(ChaosGameDescription chaosGameDescription, String path) {
+    public static void writeToFile(ChaosGameDescription chaosGameDescription, String path) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             // Check if we have transformations and write the type of the first one
             if (!chaosGameDescription.getTransforms().isEmpty()) {
@@ -81,7 +81,7 @@ public class ChaosGameFileHandler {
      * @param path the path to the file to write to
      * @param numberOfTransformations the number of transformations to create
      */
-    public static void initiateTransformationsAffine(String path, int numberOfTransformations){
+    public static ChaosGameDescription initiateTransformationsAffine(String path, int numberOfTransformations){
         ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
@@ -95,8 +95,8 @@ public class ChaosGameFileHandler {
             AffineTransform2D affine = new AffineTransform2D(matrix, vector);
             transforms.add(affine);
         }
-
-        chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
+        return new ChaosGameDescription(minCoords, maxCoords, transforms);
+        //chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
     }
 
     //Må lese nærmere på hvordan JuliaTranformations fungerer konkret
@@ -107,7 +107,7 @@ public class ChaosGameFileHandler {
      * @param path the path to the file to write to
      * @param numberOfTransformations the number of transformations to create
      */
-    public static void iniateTransformationsJulia(String path, int numberOfTransformations){
+    public static ChaosGameDescription iniateTransformationsJulia(String path, int numberOfTransformations){
         ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
         Vector2D minCoords = new Vector2D(-1.6, -1);
         Vector2D maxCoords = new Vector2D(1.6, 1);
@@ -121,8 +121,9 @@ public class ChaosGameFileHandler {
             JuliaTransform julia = new JuliaTransform(point, 1);
             transforms.add(julia);
         }
+        return new ChaosGameDescription(minCoords, maxCoords, transforms);
 
-        chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
+        //chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
     }
 
     /**
