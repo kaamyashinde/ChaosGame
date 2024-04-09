@@ -16,6 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserInterface {
     /**
+     * Constant corresponding to the quite action.
+     */
+    private static final int QUIT = 0;
+    /**
      * Constant corresponding to the read from file action.
      */
     private static final int READ_FROM_FILE = 1;
@@ -106,7 +110,6 @@ public class UserInterface {
                         2. Write description to a file
                         3. Run a given number of iterations
                         4. Print the ASCII-fractal to the console
-                        5. Run a default configuration for the Sierpinski triangle
                         --------------------------
                         What would u like to do? (Enter a number between 0 and 4).
                         """);
@@ -119,12 +122,11 @@ public class UserInterface {
     private static void triggerChoice() {
         int choice = showMenu();
         switch (choice) {
-            case 0 -> quit();
+            case QUIT -> quit();
             case READ_FROM_FILE -> readFromFile();
             case WRITE_TO_FILE -> writeToFile();
             case RUN_ITERATIONS -> runIterations();
             case PRINT_FRACTAL -> printFractal();
-            case DEFAULT_CONFIG -> runDefaultConfig();
             default -> System.out.println("Invalid input, please try again.");
         }
     }
@@ -150,7 +152,7 @@ public class UserInterface {
         System.out.println("Enter the name of the file you want to read from: ");
         String fileName = input.nextLine();
 
-        String filePath = "src/main/java/edu/ntnu/idatt2003/model/engine/" + fileName;
+        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" + fileName;
         chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
 
         System.out.println("Here is the description of the chaos game read from the file:");
@@ -161,6 +163,21 @@ public class UserInterface {
      * Method to write to a file.
      */
     private static void writeToFile() {
+        System.out.println("Enter the name of the file you want to write to: ");
+        String fileName = input.next();
+
+        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" + fileName;
+
+        System.out.println("Which kind of transformation do you want to generate? 1: Affine, 2: Julia");
+        int choice = input.nextInt();
+        if (choice == 1) {
+            chaosGameDescription = ChaosGameFileHandler.initiateTransformationsAffine(filePath, 3);
+        } else if (choice == 2) {
+            chaosGameDescription = ChaosGameFileHandler.iniateTransformationsJulia(filePath, 3);
+        } else {
+            System.out.println("Invalid input, please try again.");
+        }
+        ChaosGameFileHandler.writeToFile(chaosGameDescription, filePath);
 
     }
 
@@ -168,6 +185,10 @@ public class UserInterface {
      * Method to run a specific number of iterations
      */
     private static void runIterations() {
+        if (chaosGameDescription == null) {
+            System.out.println("You need to read a chaos game description from a file first.");
+            return;
+        }
         System.out.println("Enter the width of the canvas: ");
         int inputWidth = input.nextInt();
         System.out.println("Enter the height of the canvas: ");
@@ -187,33 +208,17 @@ public class UserInterface {
 
         if (chaosGame == null) {
             System.out.println("You need to run the chaos game first.");
-        } else {
-            ChaosCanvas canvas = chaosGame.getCanvas();
-            int[][] canvasArray = canvas.getCanvasArray();
-            for (int i = 0; i < canvasArray.length; i++) {
-                for (int j = 0; j < canvasArray[i].length; j++) {
-                    System.out.print(canvasArray[i][j] == 0 ? " " : "*");
-                }
-                System.out.println(" ");
-            }
-        }
-
-    }
-    private static void runDefaultConfig(){
-        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/DefaultConfigTriangle.txt";
-        chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
-        if (chaosGameDescription == null){
-            System.out.println("Could not read the default configuration file.");
             return;
         }
-        chaosGame = new ChaosGame(chaosGameDescription, 60, 20);
+        ChaosCanvas canvas = chaosGame.getCanvas();
+        int[][] canvasArray = canvas.getCanvasArray();
+        for (int i = 0; i < canvasArray.length; i++) {
+            for (int j = 0; j < canvasArray[i].length; j++) {
+                System.out.print(canvasArray[i][j] == 0 ? " " : "*");
+            }
+            System.out.println(" ");
+        }
 
-        System.out.println("Enter the number of iterations you want to run: ");
-        int iterations = input.nextInt();
-        chaosGame.runSteps(iterations);
-        System.out.println("Successfully ran " + iterations + " iterations.");
-        System.out.println("Here is the ASCII-fractal: \n");
-        printFractal();
 
     }
 }
