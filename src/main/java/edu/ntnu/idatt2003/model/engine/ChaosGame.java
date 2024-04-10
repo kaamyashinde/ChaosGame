@@ -70,12 +70,8 @@ public class ChaosGame {
         for (int i = 0; i < steps; i++) {
             int randomIndex = random.nextInt(description.getTransforms().size());
             Vector2D newPoint = description.getTransforms().get(randomIndex).transform(currentPoint);
-            if (canvas.getPixel(newPoint) == 1) {
-                i--;
-            } else {
-                canvas.putPixel(newPoint);
-                currentPoint = newPoint;
-            }
+            canvas.putPixel(newPoint);
+            currentPoint = newPoint;
 
         }
     }
