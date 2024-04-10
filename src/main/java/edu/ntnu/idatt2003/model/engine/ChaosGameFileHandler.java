@@ -32,6 +32,7 @@ public class ChaosGameFileHandler {
     /**
      * Method to write a chaos game description to a file.
      *
+     * If the path does not exist, the method will create a new file.
      * @param chaosGameDescription the chaos game description to write
      * @param path the path to the file to write to
      */
@@ -82,7 +83,6 @@ public class ChaosGameFileHandler {
      * @param numberOfTransformations the number of transformations to create
      */
     public static ChaosGameDescription initiateTransformationsAffine(String path, int numberOfTransformations){
-        ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
         List<Transform2D> transforms = new ArrayList<>();
@@ -96,7 +96,7 @@ public class ChaosGameFileHandler {
             transforms.add(affine);
         }
         return new ChaosGameDescription(minCoords, maxCoords, transforms);
-        //chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
+
     }
 
     //Må lese nærmere på hvordan JuliaTranformations fungerer konkret
@@ -107,8 +107,7 @@ public class ChaosGameFileHandler {
      * @param path the path to the file to write to
      * @param numberOfTransformations the number of transformations to create
      */
-    public static ChaosGameDescription iniateTransformationsJulia(String path, int numberOfTransformations){
-        ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
+    public static ChaosGameDescription initiateTransformationsJulia(String path, int numberOfTransformations){
         Vector2D minCoords = new Vector2D(-1.6, -1);
         Vector2D maxCoords = new Vector2D(1.6, 1);
         List<Transform2D> transforms = new ArrayList<>();
@@ -122,8 +121,6 @@ public class ChaosGameFileHandler {
             transforms.add(julia);
         }
         return new ChaosGameDescription(minCoords, maxCoords, transforms);
-
-        //chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
     }
 
     /**
@@ -175,7 +172,7 @@ public class ChaosGameFileHandler {
 
         //samtidig som jeg skriver en fil med en juliatransformasjon
         ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt", 3);
-        ChaosGameFileHandler.iniateTransformationsJulia("src/main/java/edu/ntnu/idatt2003/resources/testJulia.txt", 3);
+        ChaosGameFileHandler.initiateTransformationsJulia("src/main/java/edu/ntnu/idatt2003/resources/testJulia.txt", 3);
         ChaosGameDescription testObject =  ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt");
         System.out.println(testObject);
         ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/resources/ReadToWrite.txt", 3);

@@ -185,7 +185,7 @@ public class UserInterface {
         if (choice == 1) {
             chaosGameDescription = ChaosGameFileHandler.initiateTransformationsAffine(filePath, 3);
         } else if (choice == 2) {
-            chaosGameDescription = ChaosGameFileHandler.iniateTransformationsJulia(filePath, 3);
+            chaosGameDescription = ChaosGameFileHandler.initiateTransformationsJulia(filePath, 3);
         } else {
             System.out.println("Invalid input, please try again.");
         }
