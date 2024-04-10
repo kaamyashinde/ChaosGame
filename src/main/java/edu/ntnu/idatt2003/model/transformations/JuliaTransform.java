@@ -71,22 +71,5 @@ public class JuliaTransform extends Transform2D {
             return new Vector2D(-sqrt.getX0(), -sqrt.getX1());
         }
     }
-/*
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        JuliaTransform that = (JuliaTransform) obj;
-        return Objects.equals(getPoint(), that.getPoint());
-    }
 
-    @Override
-public int hashCode() {
-    return Objects.hash(getPoint());
-}
-*/
 }

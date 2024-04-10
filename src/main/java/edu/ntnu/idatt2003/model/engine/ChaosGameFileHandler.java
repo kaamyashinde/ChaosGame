@@ -32,10 +32,11 @@ public class ChaosGameFileHandler {
     /**
      * Method to write a chaos game description to a file.
      *
+     * If the path does not exist, the method will create a new file.
      * @param chaosGameDescription the chaos game description to write
      * @param path the path to the file to write to
      */
-    public void writeToFile(ChaosGameDescription chaosGameDescription, String path) {
+    public static void writeToFile(ChaosGameDescription chaosGameDescription, String path) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             // Check if we have transformations and write the type of the first one
             if (!chaosGameDescription.getTransforms().isEmpty()) {
@@ -81,21 +82,20 @@ public class ChaosGameFileHandler {
      * @param path the path to the file to write to
      * @param numberOfTransformations the number of transformations to create
      */
-    public static void initiateTransformationsAffine(String path, int numberOfTransformations){
-        ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
+    public static ChaosGameDescription initiateTransformationsAffine(String path, int numberOfTransformations){
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
         List<Transform2D> transforms = new ArrayList<>();
-        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5); // er nå en rotasjonsmatrise, før med 1,0,0,1 var det en identitetsmatrise
+        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5);
 
-        // Create 3 transformations with slightly different vectors - //vet at opp til tre er riktig, med eksempelet vi har fått fra mappe tingz
+        // Create 3 transformations with slightly different vectors
         for (int i = 0; i < numberOfTransformations; i++) {
-            Vector2D vector = new Vector2D(i * 0.25, 0); // Change the vector for each transformation
+            double yComponent = (i == 1) ? 0.5 : 0; // Change the y-component for the second transformation
+            Vector2D vector = new Vector2D(i * 0.25, yComponent);
             AffineTransform2D affine = new AffineTransform2D(matrix, vector);
             transforms.add(affine);
         }
-
-        chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
+        return new ChaosGameDescription(minCoords, maxCoords, transforms);
 
     }
 
@@ -107,8 +107,7 @@ public class ChaosGameFileHandler {
      * @param path the path to the file to write to
      * @param numberOfTransformations the number of transformations to create
      */
-    public static void iniateTransformationsJulia(String path, int numberOfTransformations){
-        ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
+    public static ChaosGameDescription initiateTransformationsJulia(String path, int numberOfTransformations){
         Vector2D minCoords = new Vector2D(-1.6, -1);
         Vector2D maxCoords = new Vector2D(1.6, 1);
         List<Transform2D> transforms = new ArrayList<>();
@@ -121,8 +120,7 @@ public class ChaosGameFileHandler {
             JuliaTransform julia = new JuliaTransform(point, 1);
             transforms.add(julia);
         }
-
-        chaosGameFileHandler.writeToFile(new ChaosGameDescription(minCoords, maxCoords, transforms), path);
+        return new ChaosGameDescription(minCoords, maxCoords, transforms);
     }
 
     /**
@@ -173,11 +171,11 @@ public class ChaosGameFileHandler {
         //det som skjer her er at jeg skriver en tekstfil med en affinetransformasjon, og så leser jeg den samme filen og skriver den til en annen fil
 
         //samtidig som jeg skriver en fil med en juliatransformasjon
-        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/model/engine/testAffine.txt", 3);
-        ChaosGameFileHandler.iniateTransformationsJulia("src/main/java/edu/ntnu/idatt2003/model/engine/testJulia.txt", 3);
-        ChaosGameDescription testObject =  ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/model/engine/testAffine.txt");
+        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt", 3);
+        ChaosGameFileHandler.initiateTransformationsJulia("src/main/java/edu/ntnu/idatt2003/resources/testJulia.txt", 3);
+        ChaosGameDescription testObject =  ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt");
         System.out.println(testObject);
-        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/model/engine/ReadToWrite.txt", 3);
+        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/resources/ReadToWrite.txt", 3);
 
     }
 
