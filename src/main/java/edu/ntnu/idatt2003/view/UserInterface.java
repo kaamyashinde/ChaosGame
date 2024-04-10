@@ -1,10 +1,15 @@
 package edu.ntnu.idatt2003.view;
 
+import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
+import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
+import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
+import edu.ntnu.idatt2003.model.transformations.Transform2D;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -123,6 +128,7 @@ public class UserInterface {
             case WRITE_TO_FILE -> writeToFile();
             case RUN_ITERATIONS -> runIterations();
             case PRINT_FRACTAL -> printFractal();
+            case 9 -> printFern();
             default -> System.out.println("Invalid input, please try again.");
         }
     }
@@ -243,5 +249,37 @@ public class UserInterface {
         }
 
 
+    }
+    /**
+     * Method that is uesd to test whether the Bransley fern is printed correctly.
+     */
+    private static void printFern(){
+        Vector2D minCoords = new Vector2D(-2.65, 0);
+        Vector2D maxCoords = new Vector2D(2.65, 10);
+        Transform2D transform1 = new AffineTransform2D(
+                new Matrix2x2(0,0,0,0.16),
+                new Vector2D(0,0)
+        );
+        Transform2D transform2 = new AffineTransform2D(
+                new Matrix2x2(0.85,0.04,-0.04,0.85),
+                new Vector2D(0,1.6)
+        );
+        Transform2D transform3 = new AffineTransform2D(
+                new Matrix2x2(0.2,-0.26,0.23,0.22),
+                new Vector2D(0,1.6)
+        );
+        Transform2D transform4 = new AffineTransform2D(
+                new Matrix2x2(-0.15,0.28,0.26,0.24),
+                new Vector2D(0,0.44)
+        );
+        ChaosGameDescription chaosGameDescription = new ChaosGameDescription(
+                minCoords,
+                maxCoords, List.of(transform1, transform2, transform3, transform4)
+        );
+        chaosGame = new ChaosGame(chaosGameDescription, 200, 100);
+        System.out.println("Enter the number of iterations you want to run: ");
+        int n = input.nextInt();
+        chaosGame.runSteps(n);
+        printFractal();
     }
 }
