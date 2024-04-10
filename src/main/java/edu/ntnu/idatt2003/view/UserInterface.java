@@ -110,9 +110,10 @@ public class UserInterface {
                         1. Read description from a file
                         2. Write description to a file
                         3. Run a given number of iterations
-                        4. Print the ASCII-fractal to the console
+                        4. Print the fractal to the console
+                        5. Print the Barnsley fern
                         --------------------------
-                        What would u like to do? (Enter a number between 0 and 4).
+                        What would u like to do? (Enter a number between 0 and 5).
                         """);
         return input.nextInt();
     }
@@ -128,7 +129,7 @@ public class UserInterface {
             case WRITE_TO_FILE -> writeToFile();
             case RUN_ITERATIONS -> runIterations();
             case PRINT_FRACTAL -> printFractal();
-            case 9 -> printFern();
+            case 5 -> printFern();
             default -> System.out.println("Invalid input, please try again.");
         }
     }
@@ -239,6 +240,9 @@ public class UserInterface {
             System.out.println("You need to run the chaos game first.");
             return;
         }
+        System.out.println("Printing out the fractal with the following configuration:");
+        System.out.println(chaosGameDescription);
+        System.out.println("--------------------------------------------------------");
         ChaosCanvas canvas = chaosGame.getCanvas();
         int[][] canvasArray = canvas.getCanvasArray();
         for (int i = 0; i < canvasArray.length; i++) {
