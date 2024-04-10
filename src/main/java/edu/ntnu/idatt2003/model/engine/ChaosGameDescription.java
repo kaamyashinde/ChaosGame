@@ -60,26 +60,6 @@ public class ChaosGameDescription {
         return transforms;
     }
 
-  /*
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        ChaosGameDescription that = (ChaosGameDescription) obj;
-        return Objects.equals(minCoords, that.minCoords) &&
-                Objects.equals(maxCoords, that.maxCoords) &&
-                Objects.equals(transforms, that.transforms);
-    }
-
-    @Override
-public int hashCode() {
-    return Objects.hash(getMinCoords(), getMaxCoords(), getTransforms());
-}
-*/
     /**
      * Method to write the description of the chaos game to a file.
      * The description includes the type of the transformations, the coordinates of the lower left and upper right corners
