@@ -36,7 +36,7 @@ public class UserInterface {
     /**
      * Constant corresponding to the default configuration.
      */
-    private static final int DEFAULT_CONFIG = 5;
+    private static final int PRINT_FERN = 5;
     /**
      * A Scanner object to read input from the console.
      */
@@ -129,7 +129,7 @@ public class UserInterface {
             case WRITE_TO_FILE -> writeToFile();
             case RUN_ITERATIONS -> runIterations();
             case PRINT_FRACTAL -> printFractal();
-            case 5 -> printFern();
+            case PRINT_FERN -> printFern();
             default -> System.out.println("Invalid input, please try again.");
         }
     }
