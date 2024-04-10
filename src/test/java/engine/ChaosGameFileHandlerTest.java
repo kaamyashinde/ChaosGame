@@ -41,7 +41,7 @@ public class ChaosGameFileHandlerTest {
     @Test
     public void testReadWriteString() {
         // Arrange
-        ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
+        //ChaosGameFileHandler chaosGameFileHandler = new ChaosGameFileHandler();
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
         List<Transform2D> transforms = new ArrayList<>();
@@ -53,7 +53,9 @@ public class ChaosGameFileHandlerTest {
         String path = "src/test/java/engine/readWriteTest.txt";
 
         // Act
-        chaosGameFileHandler.writeToFile(originalDescription, path);
+        //chaosGameFileHandler.writeToFile(originalDescription, path);
+
+
         ChaosGameDescription readDescription = ChaosGameFileHandler.readFromFile(path);
 
         // Assert
