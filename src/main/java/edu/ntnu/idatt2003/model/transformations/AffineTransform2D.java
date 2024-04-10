@@ -71,24 +71,5 @@ public class AffineTransform2D extends Transform2D {
         return vector;
 
     }
-/*
-        @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        AffineTransform2D that = (AffineTransform2D) obj;
-        return Objects.equals(getMatrix(), that.getMatrix()) &&
-               Objects.equals(getVector(), that.getVector());
-    }
-
-    @Override
-public int hashCode() {
-    return Objects.hash(getMatrix(), getVector());
-}
-*/
 
 }

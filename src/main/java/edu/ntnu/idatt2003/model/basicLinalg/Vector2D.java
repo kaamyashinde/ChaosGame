@@ -68,23 +68,5 @@ public class Vector2D {
         return new Vector2D(this.x0 - inputVector2D.x0, this.x1 - inputVector2D.x1) {
         };
     }
-/*
-     @Override
-     public boolean equals(Object obj) {
-         if (this == obj) {
-             return true;
-         }
-         if (obj == null || getClass() != obj.getClass()) {
-             return false;
-         }
-         Vector2D that = (Vector2D) obj;
-         return Objects.equals(getX0(), that.getX0()) &&
-                 Objects.equals(getX1(), that.getX1());
-     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getX0(), getX1());
-    }
-*/
 }
