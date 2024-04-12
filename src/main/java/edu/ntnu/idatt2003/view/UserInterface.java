@@ -243,7 +243,7 @@ public class UserInterface {
         chaosGame = new ChaosGame(chaosGameDescription, 60, 20);
         chaosGame.runSteps(5);
         System.out.println("Printing out the fractal with the following configuration:");
-        System.out.println(chaosGameDescription);
+       // System.out.println(chaosGameDescription);
         System.out.println("--------------------------------------------------------");
         ChaosCanvas canvas = chaosGame.getCanvas();
         int[][] canvasArray = canvas.getCanvasArray();
