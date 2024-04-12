@@ -236,14 +236,13 @@ public class UserInterface {
      * </p>
      */
     private static void printFractal() {
-        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/testJulia.txt" ;
 
-        chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
-        assert chaosGameDescription != null;
-        chaosGame = new ChaosGame(chaosGameDescription, 60, 20);
-        chaosGame.runSteps(5);
+        if (chaosGame == null) {
+            System.out.println("You need to run the chaos game first.");
+            return;
+        }
         System.out.println("Printing out the fractal with the following configuration:");
-       // System.out.println(chaosGameDescription);
+        System.out.println(chaosGameDescription);
         System.out.println("--------------------------------------------------------");
         ChaosCanvas canvas = chaosGame.getCanvas();
         int[][] canvasArray = canvas.getCanvasArray();
@@ -252,11 +251,11 @@ public class UserInterface {
                 System.out.print(canvasArray[i][j] == 0 ? " " : "*");
             }
             System.out.println(" ");
-
         }
 
 
     }
+
     /**
      * Method that is uesd to test whether the Bransley fern is printed correctly.
      */
