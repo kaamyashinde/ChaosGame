@@ -159,6 +159,7 @@ public class UserInterface {
         String fileName = input.nextLine();
 
         String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" + fileName;
+
         chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
 
         System.out.println("Here is the description of the chaos game read from the file:");
@@ -235,11 +236,12 @@ public class UserInterface {
      * </p>
      */
     private static void printFractal() {
+        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/testJulia.txt" ;
 
-        if (chaosGame == null) {
-            System.out.println("You need to run the chaos game first.");
-            return;
-        }
+        chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
+        assert chaosGameDescription != null;
+        chaosGame = new ChaosGame(chaosGameDescription, 60, 20);
+        chaosGame.runSteps(5);
         System.out.println("Printing out the fractal with the following configuration:");
         System.out.println(chaosGameDescription);
         System.out.println("--------------------------------------------------------");
@@ -250,6 +252,7 @@ public class UserInterface {
                 System.out.print(canvasArray[i][j] == 0 ? " " : "*");
             }
             System.out.println(" ");
+
         }
 
 
