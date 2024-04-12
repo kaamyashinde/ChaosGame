@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.view;
 
+import edu.ntnu.idatt2003.model.basicLinalg.Complex;
 import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
@@ -7,8 +8,10 @@ import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
+import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -185,15 +188,60 @@ public class UserInterface {
         System.out.println("Which kind of transformation do you want to generate? 1: Affine, 2: Julia");
         int choice = input.nextInt();
         if (choice == 1) {
-            chaosGameDescription = ChaosGameFileHandler.initiateTransformationsAffine(filePath, 3);
+            chaosGameDescription = initiateTransformationsAffine( 3);
         } else if (choice == 2) {
-            chaosGameDescription = ChaosGameFileHandler.initiateTransformationsJulia(filePath, 3);
+            chaosGameDescription = initiateTransformationsJulia(3);
         } else {
             System.out.println("Invalid input, please try again.");
         }
         ChaosGameFileHandler.writeToFile(chaosGameDescription, filePath);
 
     }
+
+    /**
+     * Method to initiate a chaos game description with affine transformations and write it to a file.
+     * @param numberOfTransformations the number of transformations to create
+     */
+    public static ChaosGameDescription initiateTransformationsAffine( int numberOfTransformations){
+        Vector2D minCoords = new Vector2D(0, 0);
+        Vector2D maxCoords = new Vector2D(1, 1);
+        List<Transform2D> transforms = new ArrayList<>();
+        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5);
+
+        // Create 3 transformations with slightly different vectors
+        for (int i = 0; i < numberOfTransformations; i++) {
+            double yComponent = (i == 1) ? 0.5 : 0; // Change the y-component for the second transformation
+            Vector2D vector = new Vector2D(i * 0.25, yComponent);
+            AffineTransform2D affine = new AffineTransform2D(matrix, vector);
+            transforms.add(affine);
+        }
+        return new ChaosGameDescription(minCoords, maxCoords, transforms);
+
+    }
+
+    //Må lese nærmere på hvordan JuliaTranformations fungerer konkret
+
+    /**
+     * Method to initiate a chaos game description with Julia transformations and write it to a file.
+
+     * @param numberOfTransformations the number of transformations to create
+     */
+    public static ChaosGameDescription initiateTransformationsJulia( int numberOfTransformations){
+        Vector2D minCoords = new Vector2D(-1.6, -1);
+        Vector2D maxCoords = new Vector2D(1.6, 1);
+        List<Transform2D> transforms = new ArrayList<>();
+
+        // Create 3 JuliaTransforms with slightly different complex points
+        for (int i = 0; i < numberOfTransformations; i++) {
+            double realPart = -.74543 + i * 0.01; // Change the real part for each transformation
+            double imaginaryPart = .11301 + i * 0.01; // Change the imaginary part for each transformation
+            Complex point = new Complex(realPart, imaginaryPart);
+            JuliaTransform julia = new JuliaTransform(point, 1);
+            transforms.add(julia);
+        }
+        return new ChaosGameDescription(minCoords, maxCoords, transforms);
+    }
+
 
     /**
      * Method to run a specific number of iterations

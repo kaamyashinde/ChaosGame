@@ -77,53 +77,6 @@ public class ChaosGameFileHandler {
     }
 
     /**
-     * Method to initiate a chaos game description with affine transformations and write it to a file.
-     *
-     * @param path the path to the file to write to
-     * @param numberOfTransformations the number of transformations to create
-     */
-    public static ChaosGameDescription initiateTransformationsAffine(String path, int numberOfTransformations){
-        Vector2D minCoords = new Vector2D(0, 0);
-        Vector2D maxCoords = new Vector2D(1, 1);
-        List<Transform2D> transforms = new ArrayList<>();
-        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5);
-
-        // Create 3 transformations with slightly different vectors
-        for (int i = 0; i < numberOfTransformations; i++) {
-            double yComponent = (i == 1) ? 0.5 : 0; // Change the y-component for the second transformation
-            Vector2D vector = new Vector2D(i * 0.25, yComponent);
-            AffineTransform2D affine = new AffineTransform2D(matrix, vector);
-            transforms.add(affine);
-        }
-        return new ChaosGameDescription(minCoords, maxCoords, transforms);
-
-    }
-
-    //Må lese nærmere på hvordan JuliaTranformations fungerer konkret
-
-    /**
-     * Method to initiate a chaos game description with Julia transformations and write it to a file.
-     *
-     * @param path the path to the file to write to
-     * @param numberOfTransformations the number of transformations to create
-     */
-    public static ChaosGameDescription initiateTransformationsJulia(String path, int numberOfTransformations){
-        Vector2D minCoords = new Vector2D(-1.6, -1);
-        Vector2D maxCoords = new Vector2D(1.6, 1);
-        List<Transform2D> transforms = new ArrayList<>();
-
-        // Create 3 JuliaTransforms with slightly different complex points
-        for (int i = 0; i < numberOfTransformations; i++) {
-            double realPart = -.74543 + i * 0.01; // Change the real part for each transformation
-            double imaginaryPart = .11301 + i * 0.01; // Change the imaginary part for each transformation
-            Complex point = new Complex(realPart, imaginaryPart);
-            JuliaTransform julia = new JuliaTransform(point, 1);
-            transforms.add(julia);
-        }
-        return new ChaosGameDescription(minCoords, maxCoords, transforms);
-    }
-
-    /**
      * Method to read a chaos game description from a file.
      *
      * @param path the path to the file to read from
@@ -163,21 +116,4 @@ public class ChaosGameFileHandler {
             return null;
         }
     }
-
-
-    public static void main(String[] args) {
-
-
-        //det som skjer her er at jeg skriver en tekstfil med en affinetransformasjon, og så leser jeg den samme filen og skriver den til en annen fil
-
-        //samtidig som jeg skriver en fil med en juliatransformasjon
-        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt", 3);
-        ChaosGameFileHandler.initiateTransformationsJulia("src/main/java/edu/ntnu/idatt2003/resources/testJulia.txt", 3);
-        ChaosGameDescription testObject =  ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt");
-        System.out.println(testObject);
-        ChaosGameFileHandler.initiateTransformationsAffine("src/main/java/edu/ntnu/idatt2003/resources/ReadToWrite.txt", 3);
-
-    }
-
-
 }
