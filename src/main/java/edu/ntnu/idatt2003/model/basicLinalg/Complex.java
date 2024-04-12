@@ -31,7 +31,7 @@ public class Complex extends Vector2D {
    *
    * @return the square root of the complex number as an instance of Complex class.
    */
-  public Complex sqrt() {
+  /*public Complex sqrt() {
     double r = Math.sqrt(this.getX0() * this.getX0() + this.getX1() * this.getX1());
     double theta = Math.atan2(this.getX1(), this.getX0());
     double newR = Math.sqrt(r);
@@ -41,6 +41,20 @@ public class Complex extends Vector2D {
     double newImaginaryPart = newR * Math.sin(newTheta);
 
     return new Complex(newRealPart, newImaginaryPart);
+  }*/
+  public Complex[] sqrt() {
+    double r = Math.sqrt(this.getX0() * this.getX0() + this.getX1() * this.getX1());
+    double theta = Math.atan2(this.getX1(), this.getX0());
+    double newR = Math.sqrt(r);
+    double newTheta = theta / 2;
+
+    double newRealPart1 = newR * Math.cos(newTheta);
+    double newImaginaryPart1 = newR * Math.sin(newTheta);
+
+    double newRealPart2 = -newR * Math.cos(newTheta);
+    double newImaginaryPart2 = -newR * Math.sin(newTheta);
+
+    return new Complex[]{new Complex(newRealPart1, newImaginaryPart1), new Complex(newRealPart2, newImaginaryPart2)};
   }
 
   public double getReal() {

@@ -111,9 +111,11 @@ public class ChaosCanvas {
      */
     public void putPixel(Vector2D point) {
         Vector2D index = coordsToIndices(point);
-        int i = (int) index.getX0();
-        int j = (int) index.getX1();
+        int i = (int) Math.round(index.getX0());
+        int j = (int) Math.round(index.getX1());
+        System.out.println("i: " + i + " j: " + j);
         canvas[i][j] = 1;
+
     }
 
     /**

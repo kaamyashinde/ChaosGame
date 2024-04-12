@@ -5,6 +5,7 @@ import edu.ntnu.idatt2003.model.basicLinalg.Complex;
 
 import java.util.Objects;
 
+
 /**
  * Class representing a 2D transformation of the form T(z) = sqrt(p * (z - c)).
  * P is a complex number and c is a complex number.
@@ -20,6 +21,7 @@ public class JuliaTransform extends Transform2D {
 
     private Complex point;
     private int sign;
+    private boolean toggle = false;
 
     /**
      * Constructor for the JuliaTransform class
@@ -63,12 +65,15 @@ public class JuliaTransform extends Transform2D {
         Complex z = new Complex(point.getX0(), point.getX1());
         Vector2D subtracted = z.subtract(this.point);
         Complex subtractedComplex = new Complex(subtracted.getX0(), subtracted.getX1());
-        Complex sqrt = subtractedComplex.sqrt();
+        Complex[] sqrt = subtractedComplex.sqrt();
+
+        Complex chosenSqrt = sqrt[toggle ? 0 : 1];
+        toggle = !toggle;
 
         if (this.sign == 1) {
-            return new Vector2D(sqrt.getX0(), sqrt.getX1());
+            return new Vector2D(chosenSqrt.getX0(), chosenSqrt.getX1());
         } else {
-            return new Vector2D(-sqrt.getX0(), -sqrt.getX1());
+            return new Vector2D(-chosenSqrt.getX0(), -chosenSqrt.getX1());
         }
     }
 
