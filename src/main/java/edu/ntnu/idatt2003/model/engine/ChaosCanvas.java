@@ -109,7 +109,7 @@ public class ChaosCanvas {
      *
      * @param point the point to put the pixel at
      */
-    public void putPixel(Vector2D point) {
+    public void putPixel(Vector2D point) throws ArrayIndexOutOfBoundsException{
         Vector2D index = coordsToIndices(point);
         int i = (int) Math.round(index.getX0());
         int j = (int) Math.round(index.getX1());
