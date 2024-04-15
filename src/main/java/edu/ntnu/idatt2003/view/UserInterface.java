@@ -8,6 +8,7 @@ import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
+import edu.ntnu.idatt2003.model.transformations.InitateTransformations;
 import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
 
@@ -188,9 +189,9 @@ public class UserInterface {
         System.out.println("Which kind of transformation do you want to generate? 1: Affine, 2: Julia");
         int choice = input.nextInt();
         if (choice == 1) {
-            chaosGameDescription = initiateTransformationsAffine( 3);
+            chaosGameDescription = initiateTransformationAffine();
         } else if (choice == 2) {
-            chaosGameDescription = initiateTransformationsJulia(3);
+          chaosGameDescription = initiateTransformationJulia();
         } else {
             System.out.println("Invalid input, please try again.");
         }
@@ -198,49 +199,89 @@ public class UserInterface {
 
     }
 
-    /**
-     * Method to initiate a chaos game description with affine transformations and write it to a file.
-     * @param numberOfTransformations the number of transformations to create
-     */
-    public static ChaosGameDescription initiateTransformationsAffine( int numberOfTransformations){
-        Vector2D minCoords = new Vector2D(0, 0);
-        Vector2D maxCoords = new Vector2D(1, 1);
-        List<Transform2D> transforms = new ArrayList<>();
-        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5);
+    private static ChaosGameDescription initiateTransformationAffine(){
+        Vector2D[] coords = userInputForCoordsOfTransformations();
 
-        // Create 3 transformations with slightly different vectors
-        for (int i = 0; i < numberOfTransformations; i++) {
-            double yComponent = (i == 1) ? 0.5 : 0; // Change the y-component for the second transformation
-            Vector2D vector = new Vector2D(i * 0.25, yComponent);
-            AffineTransform2D affine = new AffineTransform2D(matrix, vector);
-            transforms.add(affine);
-        }
-        return new ChaosGameDescription(minCoords, maxCoords, transforms);
+        System.out.println("How do you want to generate the affine transformations? 1: Manually, 2: Automatically");
+        int choice = input.nextInt();
 
-    }
-
-    //Må lese nærmere på hvordan JuliaTranformations fungerer konkret
-
-    /**
-     * Method to initiate a chaos game description with Julia transformations and write it to a file.
-
-     * @param numberOfTransformations the number of transformations to create
-     */
-    public static ChaosGameDescription initiateTransformationsJulia( int numberOfTransformations){
-        Vector2D minCoords = new Vector2D(-1.6, -1);
-        Vector2D maxCoords = new Vector2D(1.6, 1);
         List<Transform2D> transforms = new ArrayList<>();
 
-        // Create 3 JuliaTransforms with slightly different complex points
-        for (int i = 0; i < numberOfTransformations; i++) {
-            double realPart = -.74543 + i * 0.01; // Change the real part for each transformation
-            double imaginaryPart = .11301 + i * 0.01; // Change the imaginary part for each transformation
-            Complex point = new Complex(realPart, imaginaryPart);
-            JuliaTransform julia = new JuliaTransform(point, 1);
-            transforms.add(julia);
+        if (choice == 1) {
+            System.out.println("How many transformations do you want to generate?");
+            int numberOfTransformations = input.nextInt();
+
+            for (int i = 0; i < numberOfTransformations; i++){
+                System.out.println("Enter the values for the matrix for transformation " + (i + 1) + ". Separate the values with a space.");
+                double matrix00 = input.nextDouble();
+                double matrix01 = input.nextDouble();
+                double matrix10 = input.nextDouble();
+                double matrix11 = input.nextDouble();
+               Matrix2x2 matrix = new Matrix2x2(matrix00, matrix01, matrix10, matrix11);
+
+                System.out.println("Enter the values for the vector for transformation " + (i + 1) + ". Separate the values with a space.");
+                double vector0 = input.nextDouble();
+                double vector1 = input.nextDouble();
+                Vector2D vector = new Vector2D(vector0, vector1);
+
+                transforms.add(new AffineTransform2D(matrix, vector));
+            }
+        } else if (choice == 2) {
+            System.out.println("How many transformations do you want to generate?");
+            int numberOfTransformations = input.nextInt();
+            System.out.println("Enter the values for the matrix. Separate the values with a space.");
+            double matrix00 = input.nextDouble();
+            double matrix01 = input.nextDouble();
+            double matrix10 = input.nextDouble();
+            double matrix11 = input.nextDouble();
+            transforms = InitateTransformations.listOfTransformationsAffineGeneration(numberOfTransformations, matrix00, matrix01, matrix10, matrix11);
+        } else {
+            System.out.println("Invalid input, please try again.");
         }
-        return new ChaosGameDescription(minCoords, maxCoords, transforms);
+        return new ChaosGameDescription(coords[0], coords[1], transforms);
     }
+
+    private static ChaosGameDescription initiateTransformationJulia(){
+        Vector2D[] coords = userInputForCoordsOfTransformations();
+
+        System.out.println("How do you want to generate the Julia transformations? 1: Manually, 2: Automatically");
+        int choice = input.nextInt();
+
+        List<Transform2D> transforms = new ArrayList<>();
+
+        if (choice == 1) {
+            System.out.println("How many transformations do you want to add");
+            int numberOfTransformations = input.nextInt();
+
+            for (int i = 0; i < numberOfTransformations; i++){
+                System.out.println("Enter the values for the complex number for transformation " + (i + 1) + ". Separate the values with a space.");
+                double realPart = input.nextDouble();
+                double imaginaryPart = input.nextDouble();
+                System.out.println("What is the sign of the complex number? 1: Positive, 2: Negative");
+                int sign = input.nextInt();
+                Complex point = new Complex(realPart, imaginaryPart);
+                transforms.add(new JuliaTransform(point, sign));
+            }
+        } else if (choice == 2) {
+            System.out.println("How many transformations do you want to generate?");
+            int numberOfTransformations = input.nextInt();
+            transforms = InitateTransformations.listOfTransformationsJuliaGeneration(numberOfTransformations);
+        } else {
+            System.out.println("Invalid input, please try again.");
+        }
+        return new ChaosGameDescription(coords[0], coords[1], transforms);
+    }
+
+    private static Vector2D[] userInputForCoordsOfTransformations(){
+        System.out.println("What are the minimum coordinates for the canvas? Separate the x and y values with a space.");
+        double minCoordsX0 = input.nextDouble();
+        double minCoordsX1 = input.nextDouble();
+        System.out.println("What are the maximum coordinates for the canvas? Separate the x and y values with a space.");
+        double maxCoordsX0 = input.nextDouble();
+        double maxCoordsX1 = input.nextDouble();
+        return InitateTransformations.coordsForTransformation(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
+    }
+
 
 
     /**
