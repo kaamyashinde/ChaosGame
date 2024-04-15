@@ -80,7 +80,7 @@ public class UserInterface {
      * This is to ensure that the iterations can be run without the user being forced to manually run the readFromFile method.
      */
     private static void init() {
-        chaosGameDescription = ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/testAffine.txt");
+        chaosGameDescription = ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/Default.txt");
     }
 
     /**
