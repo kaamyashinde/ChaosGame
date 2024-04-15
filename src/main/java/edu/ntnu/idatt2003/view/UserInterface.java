@@ -39,6 +39,14 @@ public class UserInterface {
      */
     private static final int PRINT_FRACTAL = 4;
     /**
+     * Constant corresponding the clear canvas action.
+     */
+    private static final int CLEAR_CANVAS = 5;
+    /**
+     * Constant corresponding to the change canvas size action.
+     */
+    private static final int CHANGE_CANVAS_SIZE = 6;
+    /**
      * A Scanner object to read input from the console.
      */
     private static final Scanner input = new Scanner(System.in);
@@ -93,7 +101,7 @@ public class UserInterface {
      * This is to ensure that the iterations can be run without the user being forced to manually run the readFromFile method.
      */
     private static void init() {
-        chaosGameDescription = ChaosGameFileHandler.readFromFile("src/main/java/edu/ntnu/idatt2003/resources/Default.txt");
+        chaosGameDescription = defaultSierpinskiTriangle();
     }
 
     /**
@@ -135,6 +143,8 @@ public class UserInterface {
                         2. Write description to a file
                         3. Run a given number of iterations
                         4. Print the fractal to the console
+                        5. Clear the canvas
+                        6. Chance the canvas size
                         --------------------------
                         What would u like to do? (Enter a number between 0 and 5).
                         """);
@@ -152,6 +162,8 @@ public class UserInterface {
             case WRITE_TO_FILE -> writeToFile();
             case RUN_ITERATIONS -> runIterations();
             case PRINT_FRACTAL -> printFractal();
+            case CLEAR_CANVAS -> clearCanvas();
+            case CHANGE_CANVAS_SIZE -> changeCanvasSize();
             default -> System.out.println(INVALID_INPUT);
         }
     }
@@ -403,6 +415,9 @@ public class UserInterface {
         }
     }
 
+    /**
+     * Method to set up the canvas by asking the user whether they want to enter the size of the canvas or use the default configuration. This information is used to initialise the chaosGame object.
+     */
     private static void setUpCanvas() {
         if (chaosGameDescription == null) {
             System.out.println("-> You need to read a chaos game description from a file first.");
@@ -412,12 +427,33 @@ public class UserInterface {
         System.out.println("The default configuration is " + canvasWidth + "x" + canvasHeight);
         int choice = input.nextInt();
         if (choice == 1) {
-            System.out.println("Enter the width of the canvas: ");
-            canvasWidth = input.nextInt();
-            System.out.println("Enter the height of the canvas: ");
-            canvasHeight = input.nextInt();
+            changeCanvasSize();
         }
         chaosGame = new ChaosGame(chaosGameDescription, canvasWidth, canvasHeight);
+    }
+
+    /**
+     * Method to clear the canvas.
+     */
+    private static void clearCanvas() {
+        if (chaosGame == null) {
+            System.out.println("You need to run the chaos game first.");
+            return;
+        }
+        chaosGame.getCanvas().clear();
+        System.out.println("-> Successfully cleared the canvas.");
+    }
+
+    /**
+     * Method to change the size of the canvas.
+     */
+    private static void changeCanvasSize() {
+        System.out.println("Enter the width of the canvas: ");
+        canvasWidth = input.nextInt();
+        System.out.println("Enter the height of the canvas: ");
+        canvasHeight = input.nextInt();
+        chaosGame = new ChaosGame(chaosGameDescription, canvasWidth, canvasHeight);
+        System.out.println("-> Successfully changed the size of the canvas to " + canvasWidth + "x" + canvasHeight + ".");
     }
 
     /**
