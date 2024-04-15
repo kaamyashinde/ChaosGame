@@ -112,7 +112,7 @@ public class ChaosGameFileHandler {
 
             return new ChaosGameDescription(minCoords, maxCoords, transforms);
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + path);
+            System.out.println("File not found: " + path + ". Please try again.");
             return null;
         }
     }

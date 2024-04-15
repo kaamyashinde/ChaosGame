@@ -170,9 +170,10 @@ public class UserInterface {
         String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" + fileName + ".txt";
 
         chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
-
-        System.out.println("-> Here is the description of the chaos game read from the file:");
-        System.out.println(chaosGameDescription);
+        if (chaosGameDescription != null) {
+            System.out.println("-> Here is the description of the chaos game read from the file:");
+            System.out.println(chaosGameDescription);
+        }
     }
 
     /**
@@ -392,8 +393,7 @@ public class UserInterface {
             System.out.println("You need to run the chaos game first.");
             return;
         }
-        System.out.println("-> Printing out the fractal with the following configuration:");
-        System.out.println(chaosGameDescription);
+        System.out.println("-> Printing out the fractal now:");
         System.out.println("--------------------------------------------------------");
         ChaosCanvas canvas = chaosGame.getCanvas();
         int[][] canvasArray = canvas.getCanvasArray();
