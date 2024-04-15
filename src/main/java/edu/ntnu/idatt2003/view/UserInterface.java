@@ -167,7 +167,7 @@ public class UserInterface {
         System.out.println("Enter the name of the file you want to read from: ");
         String fileName = input.nextLine();
 
-        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" + fileName;
+        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" + fileName + ".txt";
 
         chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
 
@@ -189,7 +189,7 @@ public class UserInterface {
         System.out.println("Enter the name of the file you want to write to: ");
         String fileName = input.next();
 
-        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" + fileName;
+        String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" + fileName + ".txt";
         System.out.println("Do u want to generate your own transformation or use a preset? 1: ");
         System.out.println("""
                 1. Own
