@@ -393,7 +393,8 @@ public class UserInterface {
             System.out.println("You need to run the chaos game first.");
             return;
         }
-        System.out.println("-> Printing out the fractal now:");
+        String transformType = (chaosGameDescription.getTransformType() == AffineTransform2D.class ? "Affine" : "Julia");
+        System.out.println("-> Printing out the fractal of the type " + transformType.toUpperCase() + " to the console.");
         System.out.println("--------------------------------------------------------");
         ChaosCanvas canvas = chaosGame.getCanvas();
         int[][] canvasArray = canvas.getCanvasArray();
