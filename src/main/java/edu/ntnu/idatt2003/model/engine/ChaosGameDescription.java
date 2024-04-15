@@ -105,4 +105,16 @@ public class ChaosGameDescription {
 
         return sb.toString();
     }
+
+    /**
+     * Method to find out about the type of the transformations.
+     *
+     * @return The type of the transformations
+     */
+    public Class<?> getTransformType() {
+        if (transforms.isEmpty()) {
+            return null;
+        }
+        return transforms.get(0).getClass();
+    }
 }
