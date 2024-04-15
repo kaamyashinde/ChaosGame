@@ -208,10 +208,15 @@ public class UserInterface {
             }
         } else if (ownOrPreset == 2) {
             runPreset();
+
         } else {
             System.out.println("-> Invalid input, please try again.");
         }
-
+        System.out.println("-> Your choice has been registered.");
+        System.out.println("""
+                    -> If you want to see the description, please choose to the option to read from a file.
+                    -> If you want to run the iterations, please choose the option to run the iterations.
+                    """);
         ChaosGameFileHandler.writeToFile(chaosGameDescription, filePath);
 
     }
