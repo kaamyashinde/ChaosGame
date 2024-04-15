@@ -134,7 +134,7 @@ public class UserInterface {
             case RUN_ITERATIONS -> runIterations();
             case PRINT_FRACTAL -> printFractal();
             case PRINT_FERN -> printFern();
-            default -> System.out.println("Invalid input, please try again.");
+            default -> System.out.println("-> Invalid input, please try again.");
         }
     }
 
@@ -166,7 +166,7 @@ public class UserInterface {
 
         chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath);
 
-        System.out.println("Here is the description of the chaos game read from the file:");
+        System.out.println("-> Here is the description of the chaos game read from the file:");
         System.out.println(chaosGameDescription);
     }
 
@@ -193,11 +193,26 @@ public class UserInterface {
         } else if (choice == 2) {
           chaosGameDescription = initiateTransformationJulia();
         } else {
-            System.out.println("Invalid input, please try again.");
+            System.out.println("-> Invalid input, please try again.");
         }
         ChaosGameFileHandler.writeToFile(chaosGameDescription, filePath);
 
     }
+    /**
+     * Method to initiate the transformation for the Affine set.
+     * <p>
+     *   The user is prompted to enter the coordinates for the transformations.
+     *   Then the user is asked whether they want to create the transformations manually or automatically.
+     *   <ol>
+     *       <li>
+     *       If the user chooses to create the transformations manually, they are prompted to enter the values for the complex number for each transformation.
+     *       </li>
+     *       <li>
+     *           If the user chooses to create the transformations automatically, they are prompted to enter the number of transformations to generate.
+     *           </li>
+     *   </ol>
+     * @return an object of the ChaosGameDescription class containing the coordinates and transformations.
+     */
 
     private static ChaosGameDescription initiateTransformationAffine(){
         Vector2D[] coords = userInputForCoordsOfTransformations();
@@ -236,11 +251,26 @@ public class UserInterface {
             double matrix11 = input.nextDouble();
             transforms = InitateTransformations.listOfTransformationsAffineGeneration(numberOfTransformations, matrix00, matrix01, matrix10, matrix11);
         } else {
-            System.out.println("Invalid input, please try again.");
+            System.out.println("-> Invalid input, please try again.");
         }
         return new ChaosGameDescription(coords[0], coords[1], transforms);
     }
 
+    /**
+     * Method to initiate the transformation for the Julia set.
+     * <p>
+     *   The user is prompted to enter the coordinates for the transformations.
+     *   Then the user is asked whether they want to create the transformations manually or automatically.
+     *   <ol>
+     *       <li>
+     *       If the user chooses to create the transformations manually, they are prompted to enter the values for the complex number for each transformation.
+     *       </li>
+     *       <li>
+     *           If the user chooses to create the transformations automatically, they are prompted to enter the number of transformations to generate.
+ *           </li>
+     *   </ol>
+     * @return an object of the ChaosGameDescription class containing the coordinates and transformations.
+     */
     private static ChaosGameDescription initiateTransformationJulia(){
         Vector2D[] coords = userInputForCoordsOfTransformations();
 
@@ -267,11 +297,16 @@ public class UserInterface {
             int numberOfTransformations = input.nextInt();
             transforms = InitateTransformations.listOfTransformationsJuliaGeneration(numberOfTransformations);
         } else {
-            System.out.println("Invalid input, please try again.");
+            System.out.println("-> Invalid input, please try again.");
         }
         return new ChaosGameDescription(coords[0], coords[1], transforms);
     }
 
+    /**
+     * Method that prompts the user for the minimum and maximum coordinates of a transformation.
+     * This is then used to create an array of Vector2D objects that is returned.
+     * @return an array of Vector2D objects containing the min and max coordinates.
+     */
     private static Vector2D[] userInputForCoordsOfTransformations(){
         System.out.println("What are the minimum coordinates for the canvas? Separate the x and y values with a space.");
         double minCoordsX0 = input.nextDouble();
@@ -293,28 +328,32 @@ public class UserInterface {
      */
     private static void runIterations() {
         if (chaosGameDescription == null) {
-            System.out.println("You need to read a chaos game description from a file first.");
+            System.out.println("-> You need to read a chaos game description from a file first.");
             return;
         }
         System.out.println("Would u like to enter the size of the canvas or use the default configuration? 1: Enter size, 2: Default configuration");
+        System.out.println("The default configuration is 60x20");
         int choice = input.nextInt();
-        int inputWidth;
-        int inputHeight;
+        int inputWidth = 60;
+        int inputHeight = 20;
         if (choice == 1) {
             System.out.println("Enter the width of the canvas: ");
             inputWidth = input.nextInt();
             System.out.println("Enter the height of the canvas: ");
             inputHeight = input.nextInt();
-        } else {
-            inputWidth = 60;
-            inputHeight = 20;
         }
         chaosGame = new ChaosGame(chaosGameDescription, inputWidth, inputHeight);
 
         System.out.println("Enter the number of iterations you want to run: ");
         int iterations = input.nextInt();
-        chaosGame.runSteps(iterations);
-        System.out.println("Successfully ran " + iterations + " iterations.");
+        try {
+            chaosGame.runSteps(iterations);
+            System.out.println("Successfully ran " + iterations + " iterations.");
+        } catch (Exception e) {
+            System.out.println("-> The configurations provided cannot be run as a chaos game. Please write a new configuration or try running one of our default configurations.");
+            chaosGame = null;
+        }
+
     }
 
     /**
@@ -325,12 +364,11 @@ public class UserInterface {
      * </p>
      */
     private static void printFractal() {
-
         if (chaosGame == null) {
             System.out.println("You need to run the chaos game first.");
             return;
         }
-        System.out.println("Printing out the fractal with the following configuration:");
+        System.out.println("-> Printing out the fractal with the following configuration:");
         System.out.println(chaosGameDescription);
         System.out.println("--------------------------------------------------------");
         ChaosCanvas canvas = chaosGame.getCanvas();
@@ -341,8 +379,6 @@ public class UserInterface {
             }
             System.out.println(" ");
         }
-
-
     }
 
     /**
