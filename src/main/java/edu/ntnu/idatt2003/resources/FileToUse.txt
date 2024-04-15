@@ -1,6 +1,7 @@
 JuliaTransform # Type of transformation
--1.6,-1.0 # Lower left
-1.6,1.0 # Upper right
--0.74543,0.11301 # 1st transform
--0.73543,0.12301 # 2st transform
--0.72543,0.13301 # 3st transform
+0.0,0.0 # Lower left
+1.0,1.0 # Upper right
+1.0,2.0 # 1st transform
+3.0,2.0 # 2st transform
+2.0,3.0 # 3st transform
+2.0,1.0 # 4st transform

@@ -42,6 +42,10 @@ public class UserInterface {
      */
     private static final Scanner input = new Scanner(System.in);
     /**
+     * A string containing the error message for invalid input.
+     */
+    private static final String INVALID_INPUT = "-> Invalid input, please try again.";
+    /**
      * A boolean to keep track of whether the application is running or not.
      */
     private static boolean running = true;
@@ -53,10 +57,6 @@ public class UserInterface {
      * An object of the ChaosGame class that will run the chaos game.
      */
     private static ChaosGame chaosGame;
-    /**
-     * An object of the ChaosCanvas class that would be used to print the fractal.
-     */
-    private static ChaosCanvas chaosCanvas;
 
     /**
      * Constructor for the UserInterface class.
@@ -139,7 +139,7 @@ public class UserInterface {
             case WRITE_TO_FILE -> writeToFile();
             case RUN_ITERATIONS -> runIterations();
             case PRINT_FRACTAL -> printFractal();
-            default -> System.out.println("-> Invalid input, please try again.");
+            default -> System.out.println(INVALID_INPUT);
         }
     }
 
@@ -204,19 +204,19 @@ public class UserInterface {
             } else if (choice == 2) {
                 chaosGameDescription = initiateTransformationJulia();
             } else {
-                System.out.println("-> Invalid input, please try again.");
+                System.out.println(INVALID_INPUT);
             }
         } else if (ownOrPreset == 2) {
             runPreset();
 
         } else {
-            System.out.println("-> Invalid input, please try again.");
+            System.out.println(INVALID_INPUT);
         }
         System.out.println("-> Your choice has been registered.");
         System.out.println("""
-                    -> If you want to see the description, please choose to the option to read from a file.
-                    -> If you want to run the iterations, please choose the option to run the iterations.
-                    """);
+                -> If you want to see the description, please choose to the option to read from a file.
+                -> If you want to run the iterations, please choose the option to run the iterations.
+                """);
         ChaosGameFileHandler.writeToFile(chaosGameDescription, filePath);
 
     }
@@ -251,14 +251,14 @@ public class UserInterface {
             int numberOfTransformations = input.nextInt();
 
             for (int i = 0; i < numberOfTransformations; i++) {
-                System.out.println("Enter the values for the matrix for transformation " + (i + 1) + ". Separate the values with a space.");
+                System.out.println("Enter the values for the matrix for transformation " + (i + 1) + ". Separate the values with a space. For example: 1 0 0 1");
                 double matrix00 = input.nextDouble();
                 double matrix01 = input.nextDouble();
                 double matrix10 = input.nextDouble();
                 double matrix11 = input.nextDouble();
                 Matrix2x2 matrix = new Matrix2x2(matrix00, matrix01, matrix10, matrix11);
 
-                System.out.println("Enter the values for the vector for transformation " + (i + 1) + ". Separate the values with a space.");
+                System.out.println("Enter the values for the vector for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 0");
                 double vector0 = input.nextDouble();
                 double vector1 = input.nextDouble();
                 Vector2D vector = new Vector2D(vector0, vector1);
@@ -268,14 +268,14 @@ public class UserInterface {
         } else if (choice == 2) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();
-            System.out.println("Enter the values for the matrix. Separate the values with a space.");
+            System.out.println("Enter the values for the matrix. Separate the values with a space. For example: 1 0 0 1");
             double matrix00 = input.nextDouble();
             double matrix01 = input.nextDouble();
             double matrix10 = input.nextDouble();
             double matrix11 = input.nextDouble();
             transforms = InitateTransformations.listOfTransformationsAffineGeneration(numberOfTransformations, matrix00, matrix01, matrix10, matrix11);
         } else {
-            System.out.println("-> Invalid input, please try again.");
+            System.out.println(INVALID_INPUT);
         }
         return new ChaosGameDescription(coords[0], coords[1], transforms);
     }
@@ -309,7 +309,7 @@ public class UserInterface {
             int numberOfTransformations = input.nextInt();
 
             for (int i = 0; i < numberOfTransformations; i++) {
-                System.out.println("Enter the values for the complex number for transformation " + (i + 1) + ". Separate the values with a space.");
+                System.out.println("Enter the values for the complex number for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 1");
                 double realPart = input.nextDouble();
                 double imaginaryPart = input.nextDouble();
                 System.out.println("What is the sign of the complex number? 1: Positive, 2: Negative");
@@ -322,7 +322,7 @@ public class UserInterface {
             int numberOfTransformations = input.nextInt();
             transforms = InitateTransformations.listOfTransformationsJuliaGeneration(numberOfTransformations);
         } else {
-            System.out.println("-> Invalid input, please try again.");
+            System.out.println(INVALID_INPUT);
         }
         return new ChaosGameDescription(coords[0], coords[1], transforms);
     }
@@ -334,10 +334,10 @@ public class UserInterface {
      * @return an array of Vector2D objects containing the min and max coordinates.
      */
     private static Vector2D[] userInputForCoordsOfTransformations() {
-        System.out.println("What are the minimum coordinates for the canvas? Separate the x and y values with a space.");
+        System.out.println("What are the minimum coordinates for the canvas? Separate the x and y values with a space. For example: 0 0");
         double minCoordsX0 = input.nextDouble();
         double minCoordsX1 = input.nextDouble();
-        System.out.println("What are the maximum coordinates for the canvas? Separate the x and y values with a space.");
+        System.out.println("What are the maximum coordinates for the canvas? Separate the x and y values with a space. For example: 1 1");
         double maxCoordsX0 = input.nextDouble();
         double maxCoordsX1 = input.nextDouble();
         return InitateTransformations.coordsForTransformation(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
@@ -414,7 +414,7 @@ public class UserInterface {
             case 1 -> chaosGameDescription = defaultSierpinskiTriangle();
             case 2 -> chaosGameDescription = defaultBarnsleyFern();
             case 3 -> chaosGameDescription = defaultJuliaSet();
-            default -> System.out.println("-> Invalid input, please try again.");
+            default -> System.out.println(INVALID_INPUT);
         }
     }
 
