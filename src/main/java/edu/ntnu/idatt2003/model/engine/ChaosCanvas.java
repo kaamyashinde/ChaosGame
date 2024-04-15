@@ -113,7 +113,6 @@ public class ChaosCanvas {
         Vector2D index = coordsToIndices(point);
         int i = (int) Math.round(index.getX0());
         int j = (int) Math.round(index.getX1());
-        System.out.println("i: " + i + " j: " + j);
         canvas[i][j] = 1;
 
     }
