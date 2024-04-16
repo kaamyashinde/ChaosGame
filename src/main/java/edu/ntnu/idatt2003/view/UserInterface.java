@@ -144,7 +144,7 @@ public class UserInterface {
                         3. Run a given number of iterations
                         4. Print the fractal to the console
                         5. Clear the canvas
-                        6. Chance the canvas size
+                        6. Change the canvas size
                         --------------------------
                         What would u like to do? (Enter a number between 0 and 5).
                         """);
