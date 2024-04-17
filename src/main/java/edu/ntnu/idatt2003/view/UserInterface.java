@@ -18,65 +18,35 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class UserInterface {
-    /**
-     * Constant corresponding to the quite action.
-     */
+
     private static final int QUIT = 0;
-    /**
-     * Constant corresponding to the read from file action.
-     */
+
     private static final int READ_FROM_FILE = 1;
-    /**
-     * Constant corresponding to the write to file action.
-     */
+
     private static final int WRITE_TO_FILE = 2;
-    /**
-     * Constant corresponding to the run iterations action.
-     */
+
     private static final int RUN_ITERATIONS = 3;
-    /**
-     * Constant corresponding to the print fractal action.
-     */
+
     private static final int PRINT_FRACTAL = 4;
-    /**
-     * Constant corresponding the clear canvas action.
-     */
+
     private static final int CLEAR_CANVAS = 5;
-    /**
-     * Constant corresponding to the change canvas size action.
-     */
+
     private static final int CHANGE_CANVAS_SIZE = 6;
-    /**
-     * A Scanner object to read input from the console.
-     */
+
     private static final Scanner input = new Scanner(System.in);
-    /**
-     * A string containing the error message for invalid input.
-     */
+
     private static final String INVALID_INPUT = "-> Invalid input, please try again.";
-    /**
-     * A boolean to keep track of whether the application is running or not.
-     */
+
     private static boolean running = true;
-    /**
-     * An object of the ChaosGameDescription class that will be used to store the data read from the file.
-     */
+
     private static ChaosGameDescription chaosGameDescription;
-    /**
-     * An object of the ChaosGame class that will run the chaos game.
-     */
+
     private static ChaosGame chaosGame;
-    /**
-     * A duplicate of the ChaosGameDescription object that will be used to track whether the user has run the chaos game before or not.
-     */
+
     private static ChaosGameDescription chaosGameDescriptionDuplicate;
-    /**
-     * The width of the canvas, set to 60 by default.
-     */
+
     private static int canvasWidth = 60;
-    /**
-     * The height of the canvas, set to 20 by default.
-     */
+
     private static int canvasHeight = 20;
 
     /**
@@ -123,7 +93,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to show the menu and take the user input.
+     * Shows the menu and takes in user input
      * <ol>
      *     <li> The user is able to read a description from a file. This description is printed out and the configurations are saved in the variable {@code chaosGameDescription}.</li>
      *     <li> The user is able to write a description to a file. If the file does not exist, a new one will be created. The description can either be generated automatically or entered manually.</li>
@@ -169,7 +139,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to quit the application.
+     * Ends the application
      */
     private static void quit() {
         running = false;
@@ -181,7 +151,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to read a chaos game description from a file.
+     * Reads a chaos game description from a file.
      * <p>
      * It reads the name of the file from the user and uses the ChaosGameFileHandler class to read the description from the file. This is then printed to the console for the user to view.
      * </p>
@@ -202,7 +172,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to write to a file.
+     * Writes to a file
      * <p>
      * It reads the name of the file from the user and uses the ChaosGameFileHandler class to write the description to the file.
      * The user can choose between generating an affine or a julia transformation.
@@ -249,7 +219,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to initiate the transformation for the Affine set.
+     * Initiates the transformation for the Affine set.
      * <p>
      * The user is prompted to enter the coordinates for the transformations.
      * Then the user is asked whether they want to create the transformations manually or automatically.
@@ -308,7 +278,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to initiate the transformation for the Julia set.
+     * Initiates the transformation for the Julia set.
      * <p>
      * The user is prompted to enter the coordinates for the transformations.
      * Then the user is asked whether they want to create the transformations manually or automatically.
@@ -355,7 +325,7 @@ public class UserInterface {
     }
 
     /**
-     * Method that prompts the user for the minimum and maximum coordinates of a transformation.
+     * Prompts the user for the minimum and maximum coordinates of a transformation.
      * This is then used to create an array of Vector2D objects that is returned.
      *
      * @return an array of Vector2D objects containing the min and max coordinates.
@@ -371,7 +341,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to run a specific number of iterations
+     * Runs a specific number of iterations
      * <p>
      * The user can decide between entering values for the width and height of the canvas or use the default configuration.
      * Then the user is prompted to enter the number of iterations to run. A message is printed after the iterations are run.
@@ -398,7 +368,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to check if the canvas is new or not.
+     * Checks if the canvas is new or not.
      * <p>
      * The method checks if the chaosGameDescriptionDuplicate object is the same as the chaosGameDescription object.
      * If the chaosGameDescriptionDuplicate object is null, it means that no canvas has been created yet. Therefore the canvas is new.
@@ -416,7 +386,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to set up the canvas by asking the user whether they want to enter the size of the canvas or use the default configuration. This information is used to initialise the chaosGame object.
+     * Sets up the canvas by asking the user whether they want to enter the size of the canvas or use the default configuration. This information is used to initialise the chaosGame object.
      */
     private static void setUpCanvas() {
         if (chaosGameDescription == null) {
@@ -433,7 +403,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to clear the canvas.
+     * Clears the canvas.
      */
     private static void clearCanvas() {
         if (chaosGame == null) {
@@ -445,7 +415,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to change the size of the canvas.
+     * Changes the size of the canvas
      */
     private static void changeCanvasSize() {
         System.out.println("Enter the width of the canvas: ");
@@ -457,7 +427,7 @@ public class UserInterface {
     }
 
     /**
-     * Method to print the ASCII-fractal to the console.
+     * Prints the ASCII-fractal to the console.
      * <p>
      * If the chaosGame object is empty, the user is prompted to run the chaos game first.
      * The chaosGame object might be empty if the user has not run the runIterations method.
@@ -495,7 +465,7 @@ public class UserInterface {
     }
 
     /**
-     * Method that prompts the user to choose a preset from the following list:
+     * Prompts the user to choose a preset from the following list:
      * <ol>
      *     <li>Sierpinski triangle</li>
      *     <li>Barnsley fern</li>
@@ -517,7 +487,7 @@ public class UserInterface {
 
 
     /**
-     * The method initiates the Sierpinski triangle preset.
+     * Initiates the Sierpinski triangle preset.
      *
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Sierpinski triangle.
      */
@@ -528,7 +498,7 @@ public class UserInterface {
     }
 
     /**
-     * The method initiates the Barnsley fern preset.
+     * Initiates the Barnsley fern preset.
      *
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Barnsley fern.
      */
@@ -555,7 +525,7 @@ public class UserInterface {
     }
 
     /**
-     * The method initiates the Julia set preset.
+     * Initiates the Julia set preset.
      *
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Julia set.
      */
