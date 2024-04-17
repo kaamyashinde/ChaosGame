@@ -1,7 +1,4 @@
 package edu.ntnu.idatt2003.model.basicLinalg;
-
-import java.util.Objects;
-
 /**
  * A class to represent a 2D vector.
  * The class has accessor methods for the x and y components, and methods to add and subtract vectors.
