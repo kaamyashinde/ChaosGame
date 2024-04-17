@@ -7,6 +7,7 @@ package edu.ntnu.idatt2003.model.basicLinalg;
  * @since 0.1.0
  * @version 0.2.0
  * @author 10041
+ * @see Vector2D
  */
 
 public class Complex extends Vector2D {
@@ -31,17 +32,6 @@ public class Complex extends Vector2D {
    *
    * @return the square root of the complex number as an instance of Complex class.
    */
-  /*public Complex sqrt() {
-    double r = Math.sqrt(this.getX0() * this.getX0() + this.getX1() * this.getX1());
-    double theta = Math.atan2(this.getX1(), this.getX0());
-    double newR = Math.sqrt(r);
-    double newTheta = theta / 2;
-
-    double newRealPart = newR * Math.cos(newTheta);
-    double newImaginaryPart = newR * Math.sin(newTheta);
-
-    return new Complex(newRealPart, newImaginaryPart);
-  }*/
   public Complex[] sqrt() {
     double r = Math.sqrt(this.getX0() * this.getX0() + this.getX1() * this.getX1());
     double theta = Math.atan2(this.getX1(), this.getX0());
@@ -57,11 +47,21 @@ public class Complex extends Vector2D {
     return new Complex[]{new Complex(newRealPart1, newImaginaryPart1), new Complex(newRealPart2, newImaginaryPart2)};
   }
 
+  /**
+   * Returns a double representing the real part of the complex number.
+   *
+   * @return the real part of the complex number
+   */
   public double getReal() {
     return this.getX0();
   }
 
-    public double getImaginary() {
+  /**
+   * Returns a double representing the imaginary part of the complex number.
+   *
+   * @return the imaginary part of the complex number
+   */
+  public double getImaginary() {
         return this.getX1();
     }
 

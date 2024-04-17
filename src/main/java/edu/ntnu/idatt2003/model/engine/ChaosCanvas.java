@@ -24,29 +24,12 @@ import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
  */
 
 public class ChaosCanvas {
-    /**
-     * The canvas represented as a two-dimensional table of integers.
-     */
+
     private int[][] canvas;
-    /**
-     * The number of columns in the canvas (N).
-     */
     private int width;
-    /**
-     * The number of rows in the canvas (M).
-     */
     private int height;
-    /**
-     * The minimum coordinates of the canvas.
-     */
     private Vector2D minCoords;
-    /**
-     * The maximum coordinates of the canvas.
-     */
     private Vector2D maxCoords;
-    /**
-     * The affine transformation to convert coordinates to indices.
-     */
     private AffineTransform2D transformCoordsToIndices;
 
     /**
@@ -91,10 +74,10 @@ public class ChaosCanvas {
     }
 
     /**
-     * Method to get the pixel value at a given point.
+     * Returns the integer representation of the pixel at the given point.
      *
-     * @param point the point to get the pixel value at
-     * @return the value of the pixel
+     * @param point the point to get the pixel at
+     * @return the value of the pixel at the given point
      */
 
     public int getPixel(Vector2D point) {
@@ -105,9 +88,10 @@ public class ChaosCanvas {
     }
 
     /**
-     * Method to put a pixel at a given point.
+     * Puts a pixel at the given point.
      *
      * @param point the point to put the pixel at
+     * @throws ArrayIndexOutOfBoundsException if the point is outside the canvas
      */
     public void putPixel(Vector2D point) throws ArrayIndexOutOfBoundsException{
         Vector2D index = coordsToIndices(point);
@@ -118,7 +102,8 @@ public class ChaosCanvas {
     }
 
     /**
-     * Method to get the canvas as a two-dimensional table of integers.
+     * Returns the dimension of the canvas as a two-dimensional table of integers representing the height and width
+     * of the canvas.
      *
      * @return the canvas as a two-dimensional table of integers
      */
@@ -128,7 +113,7 @@ public class ChaosCanvas {
     }
 
     /**
-     * Method to clear the canvas by setting all the pixels to 0.
+     * Clears the canvas by setting all the pixels to 0.
      */
     public void clear() {
         for (int i = 0; i < height; i++) {

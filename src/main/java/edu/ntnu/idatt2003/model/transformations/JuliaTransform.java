@@ -12,6 +12,8 @@ import java.util.Objects;
  *
  * <p> The class includes a method to transform a 2D point using the transformation.
  *
+ * @author janja
+ * @version 0.2.0
  * @see Transform2D
  * @see Complex
  * @see Vector2D
@@ -35,7 +37,7 @@ public class JuliaTransform extends Transform2D {
     }
 
     /**
-     * Method to get the complex number c of the transformation.
+     * Returns a Complex object representing the complex number c of the transformation.
      *
      * @return the complex number c
      */
@@ -45,7 +47,7 @@ public class JuliaTransform extends Transform2D {
     }
 
     /**
-     * Method to get the sign of the transformation.
+     * Returns an int representing the sign of the transformation.
      *
      * @return the sign of the transformation
      */
@@ -55,7 +57,7 @@ public class JuliaTransform extends Transform2D {
     }
 
     /**
-     * Transform a 2D point using the Julia transformation.
+     * Transforms a 2D point using the Julia transformation.
      *
      * @param point the point to transform
      * @return the transformed point as an instance of Vector2D

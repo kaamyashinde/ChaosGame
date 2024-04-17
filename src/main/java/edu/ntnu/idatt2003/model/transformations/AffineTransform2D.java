@@ -18,14 +18,9 @@ import java.util.Objects;
  */
 
 public class AffineTransform2D extends Transform2D {
-    /**
-     * The matrix of the affine transformation.
-     */
 
     private Matrix2x2 matrix;
-    /**
-     * The vector of the affine transformation.
-     */
+
     private Vector2D vector;
 
     /**
@@ -34,14 +29,13 @@ public class AffineTransform2D extends Transform2D {
      * @param inputMatrix the matrix of the affine transformation
      * @param inputVector the vector of the affine transformation
      */
-
     public AffineTransform2D(Matrix2x2 inputMatrix, Vector2D inputVector) {
         this.matrix = inputMatrix;
         this.vector = inputVector;
     }
 
     /**
-     * Method to transform a 2D point using the affine transformation.
+     * Returns a Vector2D object representing a 2D point using the affine transformation.
      *
      * @param inputPoint the point to transform
      * @return the transformed point as an instance of Vector2D
@@ -51,7 +45,7 @@ public class AffineTransform2D extends Transform2D {
     }
 
     /**
-     * Method to get the matrix of the affine transformation.
+     * Returns a Matrix2x2 object representing the matrix of the affine transformation.
      *
      * @return the matrix of the affine transformation
      */
@@ -62,7 +56,7 @@ public class AffineTransform2D extends Transform2D {
     }
 
     /**
-     * Method to get the vector of the affine transformation.
+     * Returns a Vector2D object representing the vector of the affine transformation.
      *
      * @return the vector of the affine transformation
      */

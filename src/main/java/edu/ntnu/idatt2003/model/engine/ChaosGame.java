@@ -11,24 +11,23 @@ import java.util.Random;
  * So the most important thing - a method runSteps(int) to play a given number of rounds of the chaos game.
  * In the method, you must throw dice (use the class java.util.Random and the method nextInt(int)), choose a transformation, move there, and draw a point.
  * Implement the class ChaosGame according to figure 6.
+ *
+ * @author 10041
+ * @version 0.2.0
+ * @see ChaosCanvas
+ * @see ChaosGameDescription
+ * @see Vector2D
+ * @since 0.2.0
  */
 
 public class ChaosGame {
-    /**
-     * The canvas where the fractal is drawn.
-     */
+
     private ChaosCanvas canvas;
-    /**
-     * The description of the chaos game.
-     */
+
     private ChaosGameDescription description;
-    /**
-     * The current point in the chaos game.
-     */
+
     private Vector2D currentPoint;
-    /**
-     * The random number generator.
-     */
+
     private Random random;
 
     /**
@@ -49,7 +48,7 @@ public class ChaosGame {
     }
 
     /**
-     * Getter for the canvas.
+     * Returns the canvas of the chaos game.
      *
      * @return the canvas
      */

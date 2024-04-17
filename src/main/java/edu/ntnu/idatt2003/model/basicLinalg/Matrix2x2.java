@@ -6,6 +6,9 @@ package edu.ntnu.idatt2003.model.basicLinalg;
  * <p> contains a constructor to create a 2x2 matrix object with associated attributes.
  * The class also includes a method to multiply the matrix with a vector.
  *
+ * @since 0.1.0
+ * @version 0.2.0
+ * @author janja //fikser senere
  */
 public class Matrix2x2 {
 
@@ -41,18 +44,38 @@ public class Matrix2x2 {
         return new Vector2D(x, y);
     }
 
-public double getA00() {
+    /**
+     * Returns a double representing the value of a00
+     *
+     * @return a00 element of the matrix
+     */
+    public double getA00() {
         return a00;
     }
 
+    /**
+     * Returns a double representing the value of a01
+     *
+     * @return a01 element of the matrix
+     */
     public double getA01() {
         return a01;
     }
 
+    /**
+     * Returns a double representing the value of a10
+     *
+     * @return a10 element of the matrix
+     */
     public double getA10() {
         return a10;
     }
 
+    /**
+     * Returns a double representing the value of a11
+     *
+     * @return a11 element of the matrix
+     */
     public double getA11() {
         return a11;
     }
