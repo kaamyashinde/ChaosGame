@@ -7,6 +7,7 @@ package edu.ntnu.idatt2003.model.basicLinalg;
  * @since 0.1.0
  * @version 0.2.0
  * @author 10041
+ * @see Vector2D
  */
 
 public class Complex extends Vector2D {

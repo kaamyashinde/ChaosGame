@@ -7,13 +7,21 @@ import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
 
 import java.util.List;
-import java.util.Objects;
+
 
 /**
  * A class to represent a description of a chaos game. The description includes the coordinates of the lower left and
  * upper right corners of the canvas, as well as a list of transformations to apply to the points.
  * The transformations can be of the type AffineTransform2D or JuliaTransform.
  * The class also has a toString method to write the description to a file.
+ *
+ * @author janja
+ * @version 0.2.0
+ * @see AffineTransform2D
+ * @see JuliaTransform
+ * @see Transform2D
+ * @see Vector2D
+ * @since 0.2.0
  */
 public class ChaosGameDescription {
 
@@ -34,7 +42,7 @@ public class ChaosGameDescription {
     }
 
     /**
-     * Method to get the coordinates of the lower left corner of the canvas.
+     * Returns a Vector2D object with the coordinates of the lower left corner of the canvas.
      *
      * @return the coordinates of the lower left corner
      */
@@ -43,7 +51,7 @@ public class ChaosGameDescription {
     }
 
     /**
-     * Method to get the coordinates of the upper right corner of the canvas.
+     * Returns a Vector2D object with the coordinates of the upper right corner of the canvas.
      *
      * @return the coordinates of the upper right corner
      */
@@ -52,7 +60,7 @@ public class ChaosGameDescription {
     }
 
     /**
-     * Method to get the list of transformations.
+     * Returns the list of transformations with the parameters of the chaos game.
      *
      * @return the list of transformations
      */
@@ -61,7 +69,7 @@ public class ChaosGameDescription {
     }
 
     /**
-     * Method to write the description of the chaos game to a file.
+     * Writes the description of the chaos game to a file.
      * The description includes the type of the transformations, the coordinates of the lower left and upper right corners
      * of the canvas, and the parameters of each transformation.
      *
@@ -107,7 +115,7 @@ public class ChaosGameDescription {
     }
 
     /**
-     * Method to find out about the type of the transformations.
+     * Returns the type of the transformations in the description.
      *
      * @return The type of the transformations
      */

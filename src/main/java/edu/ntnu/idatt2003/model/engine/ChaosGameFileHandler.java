@@ -30,8 +30,8 @@ public class ChaosGameFileHandler {
     }
 
     /**
-     * Method to write a chaos game description to a file.
-     *
+     * Writes a chaos game description to a file.
+     * <p>
      * If the path does not exist, the method will create a new file.
      * @param chaosGameDescription the chaos game description to write
      * @param path the path to the file to write to
@@ -77,7 +77,7 @@ public class ChaosGameFileHandler {
     }
 
     /**
-     * Method to read a chaos game description from a file.
+     * Reads a chaos game description from a file.
      *
      * @param path the path to the file to read from
      * @return the chaos game description read from the file
