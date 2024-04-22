@@ -21,11 +21,14 @@ public class InitateTransformations {
      * @param maxCoordsX1 the maximum y-coordinate
      * @return an array of Vector2D objects representing the minimum and maximum coordinates
      */
+    /*
     public static Vector2D[] coordsForTransformation(double minCoordsX0, double minCoordsX1, double maxCoordsX0, double maxCoordsX1){
         Vector2D minCoords = new Vector2D(minCoordsX0, minCoordsX1);
         Vector2D maxCoords = new Vector2D(maxCoordsX0, maxCoordsX1);
         return new Vector2D[]{minCoords, maxCoords};
     }
+    */
+
 
     /**
      * Generates a list of AffineTransform2D objects.
