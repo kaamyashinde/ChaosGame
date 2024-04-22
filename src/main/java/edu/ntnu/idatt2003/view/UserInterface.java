@@ -7,10 +7,7 @@ import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
-import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
-import edu.ntnu.idatt2003.model.transformations.InitateTransformations;
-import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
-import edu.ntnu.idatt2003.model.transformations.Transform2D;
+import edu.ntnu.idatt2003.model.transformations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -241,27 +238,15 @@ public class UserInterface {
         System.out.println("How do you want to generate the affine transformations? 1: Manually, 2: Automatically");
         int choice = input.nextInt();
 
-        List<Transform2D> transforms = new ArrayList<>();
-
         if (choice == 1) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();
-
-            for (int i = 0; i < numberOfTransformations; i++) {
-                System.out.println("Enter the values for the matrix for transformation " + (i + 1) + ". Separate the values with a space. For example: 1 0 0 1");
-                double matrix00 = input.nextDouble();
-                double matrix01 = input.nextDouble();
-                double matrix10 = input.nextDouble();
-                double matrix11 = input.nextDouble();
-                Matrix2x2 matrix = new Matrix2x2(matrix00, matrix01, matrix10, matrix11);
-
-                System.out.println("Enter the values for the vector for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 0");
-                double vector0 = input.nextDouble();
-                double vector1 = input.nextDouble();
-                Vector2D vector = new Vector2D(vector0, vector1);
-
-                transforms.add(new AffineTransform2D(matrix, vector));
-            }
+            System.out.println("Enter the values for the matrix. Separate the values with a space. For example: 1 0 0 1");
+            double matrix00 = input.nextDouble();
+            double matrix01 = input.nextDouble();
+            double matrix10 = input.nextDouble();
+            double matrix11 = input.nextDouble();
+            return ChaosGameDescriptionFactory.createAffineChaosGameDescription(numberOfTransformations, matrix00, matrix01, matrix10, matrix11, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else if (choice == 2) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();
@@ -270,11 +255,11 @@ public class UserInterface {
             double matrix01 = input.nextDouble();
             double matrix10 = input.nextDouble();
             double matrix11 = input.nextDouble();
-            transforms = InitateTransformations.listOfTransformationsAffineGeneration(numberOfTransformations, matrix00, matrix01, matrix10, matrix11);
+            return ChaosGameDescriptionFactory.createAffineChaosGameDescription(numberOfTransformations, matrix00, matrix01, matrix10, matrix11, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else {
             System.out.println(INVALID_INPUT);
+            return null;
         }
-        return new ChaosGameDescription(coords[0], coords[1], transforms);
     }
 
     /**
@@ -299,29 +284,21 @@ public class UserInterface {
         System.out.println("How do you want to generate the Julia transformations? 1: Manually, 2: Automatically");
         int choice = input.nextInt();
 
-        List<Transform2D> transforms = new ArrayList<>();
-
         if (choice == 1) {
             System.out.println("How many transformations do you want to add");
             int numberOfTransformations = input.nextInt();
-
-            for (int i = 0; i < numberOfTransformations; i++) {
-                System.out.println("Enter the values for the complex number for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 1");
-                double realPart = input.nextDouble();
-                double imaginaryPart = input.nextDouble();
-                System.out.println("What is the sign of the complex number? 1: Positive, 2: Negative");
-                int sign = input.nextInt();
-                Complex point = new Complex(realPart, imaginaryPart);
-                transforms.add(new JuliaTransform(point, sign));
-            }
+            System.out.println("Enter the values for the complex number. Separate the values with a space. For example: 0 1");
+            double realPart = input.nextDouble();
+            double imaginaryPart = input.nextDouble();
+            return ChaosGameDescriptionFactory.createJuliaChaosGameDescription(numberOfTransformations, realPart, imaginaryPart, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else if (choice == 2) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();
-            transforms = InitateTransformations.listOfTransformationsJuliaGeneration(numberOfTransformations);
+            return ChaosGameDescriptionFactory.createJuliaChaosGameDescription(numberOfTransformations, -.74543, .11301, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else {
             System.out.println(INVALID_INPUT);
+            return null;
         }
-        return new ChaosGameDescription(coords[0], coords[1], transforms);
     }
 
     /**
@@ -337,7 +314,7 @@ public class UserInterface {
         System.out.println("What are the maximum coordinates for the canvas? Separate the x and y values with a space. For example: 1 1");
         double maxCoordsX0 = input.nextDouble();
         double maxCoordsX1 = input.nextDouble();
-        return InitateTransformations.coordsForTransformation(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
+        return ChaosGameDescriptionFactory.coordsForTransformation(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
     }
 
     /**
@@ -492,9 +469,8 @@ public class UserInterface {
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Sierpinski triangle.
      */
     private static ChaosGameDescription defaultSierpinskiTriangle() {
-        Vector2D[] coords = InitateTransformations.coordsForTransformation(0, 0, 1, 1);
-        List<Transform2D> transforms = InitateTransformations.listOfTransformationsAffineGeneration(3, 0.5, 0, 0, 0.5);
-        return new ChaosGameDescription(coords[0], coords[1], transforms);
+        Vector2D[] coords = ChaosGameDescriptionFactory.coordsForTransformation(0, 0, 1, 1);
+        return ChaosGameDescriptionFactory.createAffineChaosGameDescription(3, 0.5, 0, 0, 0.5, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
     }
 
     /**
@@ -503,25 +479,7 @@ public class UserInterface {
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Barnsley fern.
      */
     private static ChaosGameDescription defaultBarnsleyFern() {
-        Vector2D[] coords = InitateTransformations.coordsForTransformation(-2.65, 0, 2.65, 10);
-        Transform2D transform1 = new AffineTransform2D(
-                new Matrix2x2(0, 0, 0, 0.16),
-                new Vector2D(0, 0)
-        );
-        Transform2D transform2 = new AffineTransform2D(
-                new Matrix2x2(0.85, 0.04, -0.04, 0.85),
-                new Vector2D(0, 1.6)
-        );
-        Transform2D transform3 = new AffineTransform2D(
-                new Matrix2x2(0.2, -0.26, 0.23, 0.22),
-                new Vector2D(0, 1.6)
-        );
-        Transform2D transform4 = new AffineTransform2D(
-                new Matrix2x2(-0.15, 0.28, 0.26, 0.24),
-                new Vector2D(0, 0.44)
-        );
-        List<Transform2D> transforms = List.of(transform1, transform2, transform3, transform4);
-        return new ChaosGameDescription(coords[0], coords[1], transforms);
+        return ChaosGameDescriptionFactory.createBarnsleyFernChaosGameDescription();
     }
 
     /**
@@ -530,8 +488,7 @@ public class UserInterface {
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Julia set.
      */
     private static ChaosGameDescription defaultJuliaSet() {
-        Vector2D[] coords = InitateTransformations.coordsForTransformation(-1.6, -1.0, 1.6, 1.0);
-        List<Transform2D> transforms = InitateTransformations.listOfTransformationsJuliaGeneration(10);
-        return new ChaosGameDescription(coords[0], coords[1], transforms);
+        Vector2D[] coords = ChaosGameDescriptionFactory.coordsForTransformation(-1.6, -1.0, 1.6, 1.0);
+        return ChaosGameDescriptionFactory.createJuliaChaosGameDescription(10, -.74543, .11301, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
     }
 }
