@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.view;
 
+import edu.ntnu.idatt2003.controller.Controller;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
@@ -21,6 +22,7 @@ import static javafx.application.Application.launch;
 public class AffineScene extends Application {
   Button switchToJulia;
   Button getHelp;
+  Controller controller;
   TextField sceneTitle;
   StackPane chaosGamePane;
   AnchorPane layout = new AnchorPane();
@@ -36,6 +38,8 @@ public class AffineScene extends Application {
     setChaosGamePane();
     drawFractal(setChaosGame());
     setScene(primaryStage);
+    controller = new Controller(primaryStage);
+    switchToJulia.setOnAction(e -> controller.switchToJulia());
   }
   public void drawFractal(ChaosGame chaosGame) {
     chaosGame.runSteps(1000000);
@@ -68,7 +72,7 @@ public class AffineScene extends Application {
   }
 
   private ChaosGameDescription retrieveChaosGameDescription(){
-    String filePath = "src/main/java/edu/ntnu/idatt2003/resources/" ;
+    String filePath = "src/main/resources/" ;
     chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
     return chaosGameDescription;
   }
@@ -103,7 +107,7 @@ public class AffineScene extends Application {
    * This involves creating the text field, along with the positioning and padding.
    */
   private void setSceneTitle(){
-    sceneTitle = new TextField("Affine Transformations");
+    sceneTitle = new TextField("Affine Transformation");
     sceneTitle.setEditable(false);
     sceneTitle.setAlignment(Pos.CENTER);
     layout.getChildren().add(sceneTitle);
