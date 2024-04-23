@@ -86,6 +86,12 @@ public class ChaosCanvas {
         int j = (int) index.getX1();
         return canvas[i][j];
     }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
 
     /**
      * Puts a pixel at the given point.
