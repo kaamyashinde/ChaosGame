@@ -12,8 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -21,6 +20,7 @@ public class JuliaScene extends Application {
   Button switchToAffine;
   Button getHelp;
   Controller controller;
+  HBox navigationBar;
   TextField sceneTitle;
   StackPane chaosGamePane;
   AnchorPane layout = new AnchorPane();
@@ -30,9 +30,8 @@ public class JuliaScene extends Application {
   }
   @Override
   public void start(Stage primaryStage) {
-    setSwitchToAffineButton();
+    setNavigationBar();
     setSceneTitle();
-    setGetHelpButton();
     setChaosGamePane();
     drawFractal(setChaosGame());
     setScene(primaryStage);
@@ -79,30 +78,31 @@ public class JuliaScene extends Application {
   private ChaosGame setChaosGame() {
     return new ChaosGame(retrieveChaosGameDescription(), 500, 500);
   }
+
   /**
-   * Method that sets the switch to Julia button.
-   * This involves creating the button, along with the positioning and padding.
+   * Method that adds the navigation bar to the layout and adds the buttons to the navigation bar.
    */
-  private void setSwitchToAffineButton(){
-    switchToAffine = new Button("Switch to Affine");
-    switchToAffine.setOnAction(e -> System.out.println("Switching to Affine..."));
-    layout.getChildren().add(switchToAffine);
-    AnchorPane.setTopAnchor(switchToAffine, 10.0);
-    AnchorPane.setLeftAnchor(switchToAffine, 10.0);
+  private void setNavigationBar() {
+    initiateNavBarButtons();
+    navigationBar = new HBox();
+    layout.getChildren().add(navigationBar);
+    AnchorPane.setTopAnchor(navigationBar, 10.0);
+    AnchorPane.setLeftAnchor(navigationBar, 10.0);
+    AnchorPane.setRightAnchor(navigationBar, 10.0);
 
-
+    Region spacer = new Region();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+    navigationBar.getChildren().addAll(switchToAffine, spacer, getHelp);
   }
+
   /**
-   * Method that sets the get help button.
-   * This involves creating the button, along with the positioning and padding.
+   * Initiate the buttons to add to the navigation bar.
    */
-  private void setGetHelpButton(){
+  private void initiateNavBarButtons() {
+    switchToAffine = new Button("Switch to Julia");
     getHelp = new Button("Get Help");
-    getHelp.setOnAction(e -> System.out.println("Getting help..."));
-    layout.getChildren().add(getHelp);
-    AnchorPane.setTopAnchor(getHelp, 10.0);
-    AnchorPane.setRightAnchor(getHelp, 10.0);
   }
+
 
   /**
    * Method that sets the scene title.

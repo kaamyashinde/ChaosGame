@@ -12,54 +12,91 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import static javafx.application.Application.launch;
-
 public class AffineScene extends Application {
-  Button switchToJulia;
-  Button getHelp;
-  Controller controller;
-  TextField sceneTitle;
-  StackPane chaosGamePane;
   AnchorPane layout = new AnchorPane();
-  private ChaosGameDescription chaosGameDescription;
+  Button addTen;
+  Button getHelp;
+  Button startGame;
+
+  Button switchToJulia;
+  Controller controller;
+  GraphicsContext gc;
+  HBox bodyRow;
+  HBox footerRow;
+  HBox navigationRow;
+  HBox titleRow;
+  StackPane chaosGamePane;
+  TextField sceneTitle;
+  VBox leftBodyRow;
+  VBox rightBodyRow;
+  VBox root;
+  private Canvas canvas;
+  private ChaosCanvas chaosGameCanvas;
+  private ChaosGame chaosGame;
+
   public static void main(String[] args) {
-   launch(args);
+    launch(args);
   }
+
   @Override
   public void start(Stage primaryStage) {
-    setSwitchToJuliaButton();
-    setSceneTitle();
-    setGetHelpButton();
-    setChaosGamePane();
-    drawFractal(setChaosGame());
+    setLayout();
+    startGame();
+
     setScene(primaryStage);
     controller = new Controller(primaryStage);
     switchToJulia.setOnAction(e -> controller.switchToJulia());
+    addTen.setOnAction(e -> runTenSteps());
   }
-  public void drawFractal(ChaosGame chaosGame) {
-    chaosGame.runSteps(1000000);
-    ChaosCanvas chaosCanvas = chaosGame.getCanvas();
-    int[][] canvasArray = chaosCanvas.getCanvasArray();
 
-    // Create a new Canvas and add it to the layout
-    Canvas canvas = new Canvas(chaosCanvas.getWidth(), chaosCanvas.getHeight());
-    layout.getChildren().add(canvas);
+  /**
+   * Set the vbox for the layout.
+   */
+  private void setLayout() {
+    root = new VBox();
+    root.prefWidthProperty().bind(layout.widthProperty());
+    layout.getChildren().add(root);
 
-    // Position the Canvas in the center
-    AnchorPane.setTopAnchor(canvas, 100.0);
-    AnchorPane.setBottomAnchor(canvas, 100.0);
-    AnchorPane.setLeftAnchor(canvas, 200.0);
-    AnchorPane.setRightAnchor(canvas, 100.0);
+    setNavigationBar();
+    setTitleRow();
+    setBodyRow();
+    setFooterRow();
+    root.getChildren().addAll(navigationRow, titleRow, bodyRow, footerRow);
+  }
 
-    // Retrieve the GraphicsContext
-    GraphicsContext gc = canvas.getGraphicsContext2D();
 
-    // Iterate over the canvasArray and draw a rectangle for each value that is not 0
+  /**
+   * Method that retrieves the chaos game description from a file.
+   * A chaos game is initialised with the chaos game description.
+   */
+  private void startGame(){
+    String filePath = "src/main/resources/";
+   ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
+    assert chaosGameDescription != null;
+    chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
+    chaosGameCanvas = chaosGame.getCanvas();
+    canvas = new Canvas(chaosGameCanvas.getWidth(), chaosGameCanvas.getHeight());
+  }
+
+  /**
+   * Method that runs the chaos game for ten steps and stores the canvas.
+   */
+  private void runTenSteps() {
+    chaosGame.runSteps(1000);
+    drawFractal();
+  }
+  /**
+   * Method that uses the chaos game canvas to draw the fractal.
+   */
+  private void drawFractal(){
+    int[][] canvasArray = chaosGame.getCanvas().getCanvasArray();
+    chaosGamePane.getChildren().add(canvas);
+
+    gc = canvas.getGraphicsContext2D();
     for (int y = 0; y < canvasArray.length; y++) {
       for (int x = 0; x < canvasArray[y].length; x++) {
         if (canvasArray[y][x] != 0) {
@@ -68,67 +105,74 @@ public class AffineScene extends Application {
         }
       }
     }
-    StackPane.setAlignment(layout, Pos.CENTER);
+    StackPane.setAlignment(bodyRow, Pos.CENTER);
   }
 
-  private ChaosGameDescription retrieveChaosGameDescription(){
-    String filePath = "src/main/resources/" ;
-    chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
-    return chaosGameDescription;
-  }
-  private ChaosGame setChaosGame() {
-    return new ChaosGame(retrieveChaosGameDescription(), 500, 500);
-    }
+
+
   /**
-   * Method that sets the switch to Julia button.
-   * This involves creating the button, along with the positioning and padding.
+   * Method that adds the navigation bar to the layout and adds the buttons to the navigation bar.
    */
-  private void setSwitchToJuliaButton(){
+  private void setNavigationBar() {
     switchToJulia = new Button("Switch to Julia");
-    switchToJulia.setOnAction(e -> System.out.println("Switching to Julia..."));
-    layout.getChildren().add(switchToJulia);
-    AnchorPane.setTopAnchor(switchToJulia, 10.0);
-    AnchorPane.setLeftAnchor(switchToJulia, 10.0);
-  }
-  /**
-   * Method that sets the get help button.
-   * This involves creating the button, along with the positioning and padding.
-   */
-  private void setGetHelpButton(){
     getHelp = new Button("Get Help");
-    getHelp.setOnAction(e -> System.out.println("Getting help..."));
-    layout.getChildren().add(getHelp);
-    AnchorPane.setTopAnchor(getHelp, 10.0);
-    AnchorPane.setRightAnchor(getHelp, 10.0);
+    navigationRow = new HBox();
+    navigationRow.prefWidthProperty().bind(root.widthProperty());
+    Region spacer = new Region();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
+    navigationRow.getChildren().addAll(switchToJulia, spacer, getHelp);
+    navigationRow.setAlignment(Pos.CENTER);
   }
 
   /**
    * Method that sets the scene title.
    * This involves creating the text field, along with the positioning and padding.
    */
-  private void setSceneTitle(){
+  private void setTitleRow() {
+    titleRow = new HBox();
+    layout.getChildren().add(titleRow);
     sceneTitle = new TextField("Affine Transformation");
     sceneTitle.setEditable(false);
     sceneTitle.setAlignment(Pos.CENTER);
-    layout.getChildren().add(sceneTitle);
-    AnchorPane.setTopAnchor(sceneTitle, 50.0);
-    AnchorPane.setLeftAnchor(sceneTitle, 10.0);
-    AnchorPane.setRightAnchor(sceneTitle, 10.0);
+    titleRow.getChildren().add(sceneTitle);
+    titleRow.setAlignment(Pos.CENTER);
+
   }
-  private void setChaosGamePane(){
+
+  /**
+   * Method that sets the body row.
+   */
+  private void setBodyRow() {
+    bodyRow = new HBox();
+    bodyRow.prefWidthProperty().bind(root.widthProperty());
+    leftBodyRow = new VBox();
     chaosGamePane = new StackPane();
-    layout.getChildren().add(chaosGamePane);
-    AnchorPane.setTopAnchor(chaosGamePane, 100.0);
-    AnchorPane.setLeftAnchor(chaosGamePane, 10.0);
-    AnchorPane.setRightAnchor(chaosGamePane, 10.0);
-    AnchorPane.setBottomAnchor(chaosGamePane, 10.0);
+    rightBodyRow = new VBox();
+    startGame();
+
+    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
+    bodyRow.setAlignment(Pos.CENTER);
+  }
+
+  /**
+   * Method that sets the footer row.
+   */
+  private void setFooterRow() {
+    footerRow = new HBox();
+    footerRow.prefWidthProperty().bind(root.widthProperty());
+    addTen = new Button("Add 10");
+    footerRow.getChildren().add(addTen);
+    footerRow.setAlignment(Pos.CENTER);
+
+
   }
 
   /**
    * Method to set the scene of the stage.
+   *
    * @param primaryStage the stage to set the scene for
    */
-  private void setScene(Stage primaryStage){
+  private void setScene(Stage primaryStage) {
     Scene scene = new Scene(layout, 1000, 700);
     primaryStage.setScene(scene);
     primaryStage.show();
