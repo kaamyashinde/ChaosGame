@@ -240,6 +240,7 @@ public class UserInterface {
             int numberOfTransformations = input.nextInt();
 
             double[][] matrices = new double[numberOfTransformations][4];
+            double[][] vectors = new double[numberOfTransformations][2];
 
             for (int i = 0; i < numberOfTransformations; i++) {
                 System.out.println("Enter the values for the matrix for transformation " + (i + 1) + ". Separate the values with a space. For example: 1 0 0 1");
@@ -247,9 +248,13 @@ public class UserInterface {
                 matrices[i][1] = input.nextDouble();
                 matrices[i][2] = input.nextDouble();
                 matrices[i][3] = input.nextDouble();
+
+                System.out.println("Enter the values for the vector for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 1");
+                vectors[i][0] = input.nextDouble();
+                vectors[i][1] = input.nextDouble();
             }
 
-            return ChaosGameDescriptionFactory.createAffineChaosGameDescriptionManual(numberOfTransformations, matrices, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+            return ChaosGameDescriptionFactory.createAffineChaosGameDescriptionManual(numberOfTransformations, matrices, vectors, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else if (choice == 2) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();

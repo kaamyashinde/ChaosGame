@@ -39,14 +39,13 @@ public class ChaosGameDescriptionFactory {
         return new ChaosGameDescription(minCoords, maxCoords, transforms);
     }
 
-    public static ChaosGameDescription createAffineChaosGameDescriptionManual(int numberOfTransformations, double[][] matrices, double minCoordsX0, double minCoordsX1, double maxCoordsX0, double maxCoordsX1){
+    public static ChaosGameDescription createAffineChaosGameDescriptionManual(int numberOfTransformations, double[][] matrices, double[][] vectors, double minCoordsX0, double minCoordsX1, double maxCoordsX0, double maxCoordsX1){
         Vector2D minCoords = new Vector2D(minCoordsX0, minCoordsX1);
         Vector2D maxCoords = new Vector2D(maxCoordsX0, maxCoordsX1);
         List<Transform2D> transforms = new ArrayList<>();
         for (int i = 0; i < numberOfTransformations; i++) {
             Matrix2x2 matrix = new Matrix2x2(matrices[i][0], matrices[i][1], matrices[i][2], matrices[i][3]);
-            double yComponent = (i == 1) ? 0.5 : 0; // Change the y-component for the second transformation
-            Vector2D vector = new Vector2D(i * 0.25, yComponent);
+            Vector2D vector = new Vector2D(vectors[i][0], vectors[i][1]);
             AffineTransform2D affine = new AffineTransform2D(matrix, vector);
             transforms.add(affine);
         }

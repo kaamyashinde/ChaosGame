@@ -1,6 +1,6 @@
-JuliaTransform # Type of transformation
+AffineTransform2D # Type of transformation
 0.0,0.0 # Lower left
 1.0,1.0 # Upper right
-0.0,1.0 # 1st transform
-0.0,1.0 # 2st transform
-1.0,0.0 # 3st transform
+0.5,0.0,0.0,0.5,0.0,1.0 # 1st transform
+1.0,0.0,0.4,0.0,3.0,0.1 # 2st transform
+1.0,0.0,0.0,1.0,0.0,1.0 # 3st transform
