@@ -21,11 +21,14 @@ public class InitateTransformations {
      * @param maxCoordsX1 the maximum y-coordinate
      * @return an array of Vector2D objects representing the minimum and maximum coordinates
      */
+    /*
     public static Vector2D[] coordsForTransformation(double minCoordsX0, double minCoordsX1, double maxCoordsX0, double maxCoordsX1){
         Vector2D minCoords = new Vector2D(minCoordsX0, minCoordsX1);
         Vector2D maxCoords = new Vector2D(maxCoordsX0, maxCoordsX1);
         return new Vector2D[]{minCoords, maxCoords};
     }
+    */
+
 
     /**
      * Generates a list of AffineTransform2D objects.
@@ -37,6 +40,7 @@ public class InitateTransformations {
      * @param matrix11 the a11 element of the transformation matrix
      * @return a list of Transform2D objects representing the generated transformations
      */
+    /*
     public static List<Transform2D> listOfTransformationsAffineGeneration(int numberOfTransformations, double matrix00, double matrix01, double matrix10, double matrix11){
         Matrix2x2 matrix = new Matrix2x2(matrix00, matrix01, matrix10, matrix11);
         List<Transform2D> transforms = new ArrayList<>();
@@ -55,6 +59,7 @@ public class InitateTransformations {
      * @param numberOfTransformations the number of transformations to generate
      * @return a list of Transform2D objects representing the generated transformations
      */
+    /*
     public static List<Transform2D> listOfTransformationsJuliaGeneration(int numberOfTransformations){
         List<Transform2D> transforms = new ArrayList<>();
         for (int i = 0; i < numberOfTransformations; i++) {
@@ -66,4 +71,7 @@ public class InitateTransformations {
         }
         return transforms;
     }
+    */
+
+
 }
