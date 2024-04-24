@@ -74,7 +74,7 @@ public class AffineScene extends Application {
    * A chaos game is initialised with the chaos game description.
    */
   private void startGame(){
-    String filePath = "src/main/resources/";
+    String filePath = "src/main/java/edu/ntnu/idatt2003/resources/";
    ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
     assert chaosGameDescription != null;
     chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
