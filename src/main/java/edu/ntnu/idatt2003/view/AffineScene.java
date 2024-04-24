@@ -1,6 +1,8 @@
 package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.Controller;
+import edu.ntnu.idatt2003.model.Observer;
+import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
@@ -16,9 +18,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class AffineScene extends Application {
+public class AffineScene extends Application implements Observer {
   AnchorPane layout = new AnchorPane();
-  Button addTen;
+  Button addThousandPixels;
   Button getHelp;
   Button startGame;
 
@@ -46,12 +48,56 @@ public class AffineScene extends Application {
   public void start(Stage primaryStage) {
     setLayout();
     startGame();
-
+    chaosGame.addObserver(this);
     setScene(primaryStage);
     controller = new Controller(primaryStage);
     switchToJulia.setOnAction(e -> controller.switchToJulia());
-    addTen.setOnAction(e -> runTenSteps());
+    addThousandPixels.setOnAction(e -> runThousandSteps());
   }
+
+  @Override
+  public void update(double X0, double X1){
+     /* Vector2D pointInChaosGameSpace = new Vector2D(X0, X1);
+    Vector2D pointInCanvasSpace = chaosGame.getCanvas().coordsToIndices(pointInChaosGameSpace);
+    gc.setFill(Color.BLACK);
+    gc.fillRect(pointInCanvasSpace.getX0(), pointInCanvasSpace.getX1(), 1, 1);*/
+    gc.setFill(Color.BLACK);
+    gc.fillRect(X0, X1, 1, 1);
+
+  }
+
+
+
+
+
+  /**
+   * Method that runs the chaos game for ten steps and stores the canvas.
+   */
+  private void runThousandSteps() {
+    chaosGame.runSteps(10000);
+    chaosGame.returnEachPointInArray();
+  }
+  /**
+   * Method that uses the chaos game canvas to draw the fractal.
+   */
+
+/*  private void drawFractal(){
+    int[][] canvasArray = chaosGame.getCanvas().getCanvasArray();
+
+    for (int y = 0; y < canvasArray.length; y++) {
+      for (int x = 0; x < canvasArray[y].length; x++) {
+        if (canvasArray[y][x] != 0) {
+          gc.setFill(Color.BLACK);
+          gc.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+    StackPane.setAlignment(bodyRow, Pos.CENTER);
+  }*/
+
+
+
+
 
   /**
    * Set the vbox for the layout.
@@ -67,45 +113,32 @@ public class AffineScene extends Application {
     setFooterRow();
     root.getChildren().addAll(navigationRow, titleRow, bodyRow, footerRow);
   }
-
-
   /**
    * Method that retrieves the chaos game description from a file.
-   * A chaos game is initialised with the chaos game description.
+   * The {@link ChaosGame} object is initialised with the retrieved description, which in turn initialises a {@link ChaosCanvas} object.
+   * This initialises a {@link Canvas} object, which is added to the layout. The canvas is where the fractal is drawn.
+   * The {@link GraphicsContext} object is retrieved from the canvas and used to draw the fractal.
    */
   private void startGame(){
     String filePath = "src/main/java/edu/ntnu/idatt2003/resources/";
-   ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
+    ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
     assert chaosGameDescription != null;
     chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
     chaosGameCanvas = chaosGame.getCanvas();
     canvas = new Canvas(chaosGameCanvas.getWidth(), chaosGameCanvas.getHeight());
-  }
-
-  /**
-   * Method that runs the chaos game for ten steps and stores the canvas.
-   */
-  private void runTenSteps() {
-    chaosGame.runSteps(1000);
-    drawFractal();
-  }
-  /**
-   * Method that uses the chaos game canvas to draw the fractal.
-   */
-  private void drawFractal(){
-    int[][] canvasArray = chaosGame.getCanvas().getCanvasArray();
     chaosGamePane.getChildren().add(canvas);
-
     gc = canvas.getGraphicsContext2D();
-    for (int y = 0; y < canvasArray.length; y++) {
-      for (int x = 0; x < canvasArray[y].length; x++) {
-        if (canvasArray[y][x] != 0) {
-          gc.setFill(Color.BLACK);
-          gc.fillRect(x, y, 1, 1);
-        }
-      }
-    }
-    StackPane.setAlignment(bodyRow, Pos.CENTER);
+
+  }
+  /**
+   * Method to set the scene of the stage.
+   *
+   * @param primaryStage the stage to set the scene for
+   */
+  private void setScene(Stage primaryStage) {
+    Scene scene = new Scene(layout, 1000, 700);
+    primaryStage.setScene(scene);
+    primaryStage.show();
   }
 
 
@@ -136,7 +169,6 @@ public class AffineScene extends Application {
     sceneTitle.setAlignment(Pos.CENTER);
     titleRow.getChildren().add(sceneTitle);
     titleRow.setAlignment(Pos.CENTER);
-
   }
 
   /**
@@ -153,28 +185,14 @@ public class AffineScene extends Application {
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
   }
-
   /**
    * Method that sets the footer row.
    */
   private void setFooterRow() {
     footerRow = new HBox();
     footerRow.prefWidthProperty().bind(root.widthProperty());
-    addTen = new Button("Add 10");
-    footerRow.getChildren().add(addTen);
+    addThousandPixels = new Button("Add 10");
+    footerRow.getChildren().add(addThousandPixels);
     footerRow.setAlignment(Pos.CENTER);
-
-
-  }
-
-  /**
-   * Method to set the scene of the stage.
-   *
-   * @param primaryStage the stage to set the scene for
-   */
-  private void setScene(Stage primaryStage) {
-    Scene scene = new Scene(layout, 1000, 700);
-    primaryStage.setScene(scene);
-    primaryStage.show();
   }
 }
