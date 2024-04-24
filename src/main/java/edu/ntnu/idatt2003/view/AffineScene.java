@@ -2,7 +2,6 @@ package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.Controller;
 import edu.ntnu.idatt2003.model.Observer;
-import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
@@ -20,11 +19,10 @@ import javafx.stage.Stage;
 
 public class AffineScene extends Application implements Observer {
   AnchorPane layout = new AnchorPane();
-  Button addThousandPixels;
-  Button getHelp;
-  Button startGame;
-
-  Button switchToJulia;
+  Button addThousandPixelsButton;
+  Button getHelpButton;
+  Button clearCanvasButton;
+  Button switchToJuliaButton;
   Controller controller;
   GraphicsContext gc;
   HBox bodyRow;
@@ -49,54 +47,35 @@ public class AffineScene extends Application implements Observer {
     setLayout();
     startGame();
     chaosGame.addObserver(this);
+    chaosGameCanvas.addObserver(this);
     setScene(primaryStage);
     controller = new Controller(primaryStage);
-    switchToJulia.setOnAction(e -> controller.switchToJulia());
-    addThousandPixels.setOnAction(e -> runThousandSteps());
+    switchToJuliaButton.setOnAction(e -> controller.switchToJulia());
+    addThousandPixelsButton.setOnAction(e -> runThousandSteps());
+    clearCanvasButton.setOnAction(e -> clearCanvas());
   }
 
   @Override
-  public void update(double X0, double X1){
-     /* Vector2D pointInChaosGameSpace = new Vector2D(X0, X1);
-    Vector2D pointInCanvasSpace = chaosGame.getCanvas().coordsToIndices(pointInChaosGameSpace);
-    gc.setFill(Color.BLACK);
-    gc.fillRect(pointInCanvasSpace.getX0(), pointInCanvasSpace.getX1(), 1, 1);*/
+  public void updateAddPixel(double X0, double X1) {
     gc.setFill(Color.BLACK);
     gc.fillRect(X0, X1, 1, 1);
-
+  }
+  @Override
+  public void updateRemovePixel(double X0, double X1) {
+    gc.clearRect(X0, X1, 1, 1);
   }
 
 
-
-
-
   /**
-   * Method that runs the chaos game for ten steps and stores the canvas.
+   * Method that runs the chaos game for 10000 steps.
+   * Also runs the action that notifies the observers about the changes.
    */
   private void runThousandSteps() {
     chaosGame.runSteps(10000);
-    chaosGame.returnEachPointInArray();
+    chaosGame.actionToNotifyObserversAbout();
   }
-  /**
-   * Method that uses the chaos game canvas to draw the fractal.
-   */
-
-/*  private void drawFractal(){
-    int[][] canvasArray = chaosGame.getCanvas().getCanvasArray();
-
-    for (int y = 0; y < canvasArray.length; y++) {
-      for (int x = 0; x < canvasArray[y].length; x++) {
-        if (canvasArray[y][x] != 0) {
-          gc.setFill(Color.BLACK);
-          gc.fillRect(x, y, 1, 1);
-        }
-      }
-    }
-    StackPane.setAlignment(bodyRow, Pos.CENTER);
-  }*/
-
-
-
+  private void clearCanvas(){
+    chaosGameCanvas.clear();}
 
 
   /**
@@ -147,13 +126,13 @@ public class AffineScene extends Application implements Observer {
    * Method that adds the navigation bar to the layout and adds the buttons to the navigation bar.
    */
   private void setNavigationBar() {
-    switchToJulia = new Button("Switch to Julia");
-    getHelp = new Button("Get Help");
+    switchToJuliaButton = new Button("Switch to Julia");
+    getHelpButton = new Button("Get Help");
     navigationRow = new HBox();
     navigationRow.prefWidthProperty().bind(root.widthProperty());
     Region spacer = new Region();
     HBox.setHgrow(spacer, Priority.ALWAYS);
-    navigationRow.getChildren().addAll(switchToJulia, spacer, getHelp);
+    navigationRow.getChildren().addAll(switchToJuliaButton, spacer, getHelpButton);
     navigationRow.setAlignment(Pos.CENTER);
   }
 
@@ -191,8 +170,9 @@ public class AffineScene extends Application implements Observer {
   private void setFooterRow() {
     footerRow = new HBox();
     footerRow.prefWidthProperty().bind(root.widthProperty());
-    addThousandPixels = new Button("Add 10");
-    footerRow.getChildren().add(addThousandPixels);
+    addThousandPixelsButton = new Button("Add 10");
+    clearCanvasButton = new Button("Clear Canvas");
+    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
     footerRow.setAlignment(Pos.CENTER);
   }
 }

@@ -80,12 +80,12 @@ public class ChaosGame {
       //notifyObservers(currentPoint.getX0(), currentPoint.getX1());
     }
   }
-  public void returnEachPointInArray(){
+  public void actionToNotifyObserversAbout(){
     canvas.getCanvasArray();
     for (int y = 0; y < canvas.getCanvasArray().length; y++) {
       for (int x = 0; x < canvas.getCanvasArray()[y].length; x++) {
         if (canvas.getCanvasArray()[y][x] != 0) {
-          notifyObservers(x, y);
+          notifyObserverAddPixel(x, y);
         }
       }
     }
@@ -110,8 +110,8 @@ public class ChaosGame {
   /**
    * Notifies all observers in the list of observers.
    */
-  public void notifyObservers(double X0, double X1) {
-    observers.forEach(observer -> observer.update(X0, X1));
+  public void notifyObserverAddPixel(double X0, double X1) {
+    observers.forEach(observer -> observer.updateAddPixel(X0, X1));
   }
 
 }

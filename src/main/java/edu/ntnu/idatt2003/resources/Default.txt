@@ -1,6 +1,13 @@
-AffineTransform2D # Type of transformation
-0.0,0.0 # Lower left
-1.0,1.0 # Upper right
-0.5,0.0,0.0,0.5,0.0,0.0 # 1st transform
-0.5,0.0,0.0,0.5,0.25,0.5 # 2st transform
-0.5,0.0,0.0,0.5,0.5,0.0 # 3st transform
+JuliaTransform # Type of transformation
+-1.6,-1.0 # Lower left
+1.6,1.0 # Upper right
+-0.74543,0.11301 # 1st transform
+-0.73543,0.12301 # 2st transform
+-0.72543,0.13301 # 3st transform
+-0.71543,0.14301 # 4st transform
+-0.70543,0.15301 # 5st transform
+-0.69543,0.16301 # 6st transform
+-0.68543,0.17301 # 7st transform
+-0.67543,0.18301 # 8st transform
+-0.6654300000000001,0.19301000000000001 # 9st transform
+-0.6554300000000001,0.20301 # 10st transform
