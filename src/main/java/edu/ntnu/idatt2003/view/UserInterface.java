@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.model.basicLinalg.Complex;
-import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
@@ -9,8 +8,6 @@ import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
 import edu.ntnu.idatt2003.model.transformations.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -241,12 +238,18 @@ public class UserInterface {
         if (choice == 1) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();
-            System.out.println("Enter the values for the matrix. Separate the values with a space. For example: 1 0 0 1");
-            double matrix00 = input.nextDouble();
-            double matrix01 = input.nextDouble();
-            double matrix10 = input.nextDouble();
-            double matrix11 = input.nextDouble();
-            return ChaosGameDescriptionFactory.createAffineChaosGameDescription(numberOfTransformations, matrix00, matrix01, matrix10, matrix11, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+
+            double[][] matrices = new double[numberOfTransformations][4];
+
+            for (int i = 0; i < numberOfTransformations; i++) {
+                System.out.println("Enter the values for the matrix for transformation " + (i + 1) + ". Separate the values with a space. For example: 1 0 0 1");
+                matrices[i][0] = input.nextDouble();
+                matrices[i][1] = input.nextDouble();
+                matrices[i][2] = input.nextDouble();
+                matrices[i][3] = input.nextDouble();
+            }
+
+            return ChaosGameDescriptionFactory.createAffineChaosGameDescriptionManual(numberOfTransformations, matrices, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else if (choice == 2) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();
@@ -287,10 +290,18 @@ public class UserInterface {
         if (choice == 1) {
             System.out.println("How many transformations do you want to add");
             int numberOfTransformations = input.nextInt();
-            System.out.println("Enter the values for the complex number. Separate the values with a space. For example: 0 1");
-            double realPart = input.nextDouble();
-            double imaginaryPart = input.nextDouble();
-            return ChaosGameDescriptionFactory.createJuliaChaosGameDescription(numberOfTransformations, realPart, imaginaryPart, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+
+            double[][] complexNumbers = new double[numberOfTransformations][2];
+            int[] signs = new int[numberOfTransformations];
+
+            for (int i = 0; i < numberOfTransformations; i++) {
+                System.out.println("Enter the values for the complex number for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 1");
+                complexNumbers[i][0] = input.nextDouble(); // real part
+                complexNumbers[i][1] = input.nextDouble(); // imaginary part
+                System.out.println("What is the sign of the complex number? 1: Positive, -1: Negative");
+                signs[i] = input.nextInt();
+            }
+            return ChaosGameDescriptionFactory.createJuliaChaosGameDescriptionManual(numberOfTransformations, complexNumbers, signs, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else if (choice == 2) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();

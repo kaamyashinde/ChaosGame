@@ -39,6 +39,20 @@ public class ChaosGameDescriptionFactory {
         return new ChaosGameDescription(minCoords, maxCoords, transforms);
     }
 
+    public static ChaosGameDescription createAffineChaosGameDescriptionManual(int numberOfTransformations, double[][] matrices, double minCoordsX0, double minCoordsX1, double maxCoordsX0, double maxCoordsX1){
+        Vector2D minCoords = new Vector2D(minCoordsX0, minCoordsX1);
+        Vector2D maxCoords = new Vector2D(maxCoordsX0, maxCoordsX1);
+        List<Transform2D> transforms = new ArrayList<>();
+        for (int i = 0; i < numberOfTransformations; i++) {
+            Matrix2x2 matrix = new Matrix2x2(matrices[i][0], matrices[i][1], matrices[i][2], matrices[i][3]);
+            double yComponent = (i == 1) ? 0.5 : 0; // Change the y-component for the second transformation
+            Vector2D vector = new Vector2D(i * 0.25, yComponent);
+            AffineTransform2D affine = new AffineTransform2D(matrix, vector);
+            transforms.add(affine);
+        }
+        return new ChaosGameDescription(minCoords, maxCoords, transforms);
+    }
+
     public static ChaosGameDescription createJuliaChaosGameDescription(int numberOfTransformations, double realPartBase, double imaginaryPartBase, double minCoordsX0, double minCoordsX1, double maxCoordsX0, double maxCoordsX1){
         Vector2D minCoords = new Vector2D(minCoordsX0, minCoordsX1);
         Vector2D maxCoords = new Vector2D(maxCoordsX0, maxCoordsX1);
@@ -48,6 +62,20 @@ public class ChaosGameDescriptionFactory {
             double imaginaryPart = imaginaryPartBase + i * 0.01; // Change the imaginary part for each transformation
             Complex point = new Complex(realPart, imaginaryPart);
             JuliaTransform julia = new JuliaTransform(point, 1);
+            transforms.add(julia);
+        }
+        return new ChaosGameDescription(minCoords, maxCoords, transforms);
+    }
+
+    public static ChaosGameDescription createJuliaChaosGameDescriptionManual(int numberOfTransformations, double[][] complexNumbers, int[] signs, double minCoordsX0, double minCoordsX1, double maxCoordsX0, double maxCoordsX1){
+        Vector2D minCoords = new Vector2D(minCoordsX0, minCoordsX1);
+        Vector2D maxCoords = new Vector2D(maxCoordsX0, maxCoordsX1);
+        List<Transform2D> transforms = new ArrayList<>();
+        for (int i = 0; i < numberOfTransformations; i++) {
+            double realPart = complexNumbers[i][0];
+            double imaginaryPart = complexNumbers[i][1];
+            Complex point = new Complex(realPart, imaginaryPart);
+            JuliaTransform julia = new JuliaTransform(point, signs[i]);
             transforms.add(julia);
         }
         return new ChaosGameDescription(minCoords, maxCoords, transforms);
