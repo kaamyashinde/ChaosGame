@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.Controller;
-import edu.ntnu.idatt2003.model.Observer;
+import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
@@ -17,7 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class AffineScene extends Application implements Observer {
+public class AffineScene extends Application implements ChaosGameObserver {
   AnchorPane layout = new AnchorPane();
   Button addThousandPixelsButton;
   Button getHelpButton;
@@ -74,8 +74,13 @@ public class AffineScene extends Application implements Observer {
     chaosGame.runSteps(10000);
     chaosGame.actionToNotifyObserversAbout();
   }
+
+  /**
+   * Method that clears the canvas.
+   */
   private void clearCanvas(){
-    chaosGameCanvas.clear();}
+    chaosGameCanvas.clear();
+  }
 
 
   /**

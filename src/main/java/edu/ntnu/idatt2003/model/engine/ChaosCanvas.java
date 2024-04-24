@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2003.model.engine;
 
-import edu.ntnu.idatt2003.model.Observer;
+import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
@@ -35,7 +35,7 @@ public class ChaosCanvas {
     private Vector2D minCoords;
     private Vector2D maxCoords;
     private AffineTransform2D transformCoordsToIndices;
-    private List<Observer> observers = new ArrayList<>();
+    private List<ChaosGameObserver> observers = new ArrayList<>();
 
     /**
      * Constructor for the ChaosCanvas class.
@@ -134,12 +134,10 @@ public class ChaosCanvas {
             }
         }
     }
-    public void addObserver(Observer observer) {
+    public void addObserver(ChaosGameObserver observer) {
         observers.add(observer);
     }
     public void notifyObserverRemovePixel(double X0, double X1) {
-        for (Observer observer : observers) {
-            observer.updateRemovePixel(X0, X1);
-        }
+        observers.forEach(observer -> observer.updateRemovePixel(X0, X1));
     }
 }
