@@ -71,7 +71,7 @@ public class JuliaScene extends Application {
   }
 
   private ChaosGameDescription retrieveChaosGameDescription(){
-    String filePath = "src/main/java/edu/ntnu/idatt2003/resources/";
+    String filePath = "src/main/java/resources/";
     chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
     return chaosGameDescription;
   }

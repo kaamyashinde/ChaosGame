@@ -104,7 +104,7 @@ public class AffineScene extends Application implements ChaosGameObserver {
    * The {@link GraphicsContext} object is retrieved from the canvas and used to draw the fractal.
    */
   private void startGame(){
-    String filePath = "src/main/java/edu/ntnu/idatt2003/resources/";
+    String filePath = "src/main/resources/";
     ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
     assert chaosGameDescription != null;
     chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
@@ -175,7 +175,7 @@ public class AffineScene extends Application implements ChaosGameObserver {
   private void setFooterRow() {
     footerRow = new HBox();
     footerRow.prefWidthProperty().bind(root.widthProperty());
-    addThousandPixelsButton = new Button("Add 10");
+    addThousandPixelsButton = new Button("Add 10000");
     clearCanvasButton = new Button("Clear Canvas");
     footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
     footerRow.setAlignment(Pos.CENTER);
