@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2003.controller;
 
-import edu.ntnu.idatt2003.view.AffineScene;
+import edu.ntnu.idatt2003.view.ChaosGameScene;
 import edu.ntnu.idatt2003.view.JuliaScene;
 import javafx.stage.Stage;
 
@@ -10,9 +10,9 @@ public class Controller {
     this.stage = stage;
   }
   public void switchToAffine(){
-    AffineScene affineScene = new AffineScene();
+    ChaosGameScene chaosGameScene = new ChaosGameScene();
     try {
-      affineScene.start(stage);
+      chaosGameScene.start(stage);
     } catch (Exception e) {
       e.printStackTrace();
     }

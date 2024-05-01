@@ -18,12 +18,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class AffineScene extends Application implements ChaosGameObserver {
+public class ChaosGameScene extends Application implements ChaosGameObserver {
   AnchorPane layout = new AnchorPane();
   Button addThousandPixelsButton;
   Button getHelpButton;
   Button clearCanvasButton;
-  Button switchToJuliaButton;
   Controller controller;
   GraphicsContext gc;
   HBox bodyRow;
@@ -31,7 +30,7 @@ public class AffineScene extends Application implements ChaosGameObserver {
   HBox navigationRow;
   HBox titleRow;
   StackPane chaosGamePane;
-  TextField sceneTitle;
+  TextField sceneHeading;
   VBox leftBodyRow;
   VBox rightBodyRow;
   VBox root;
@@ -52,7 +51,6 @@ public class AffineScene extends Application implements ChaosGameObserver {
     chaosGameCanvas.addObserver(this);
     setScene(primaryStage);
     controller = new Controller(primaryStage);
-    switchToJuliaButton.setOnAction(e -> controller.switchToJulia());
     addThousandPixelsButton.setOnAction(e -> runThousandSteps());
     clearCanvasButton.setOnAction(e -> clearCanvas());
   }
@@ -134,13 +132,10 @@ public class AffineScene extends Application implements ChaosGameObserver {
    * Method that adds the navigation bar to the layout and adds the buttons to the navigation bar.
    */
   private void setNavigationBar() {
-    switchToJuliaButton = new Button("Switch to " + (isAffine ? "Julia" : "Affine") + " Fractal");
-    getHelpButton = new Button("Get Help");
+    getHelpButton = new Button("User Manual");
     navigationRow = new HBox();
     navigationRow.prefWidthProperty().bind(root.widthProperty());
-    Region spacer = new Region();
-    HBox.setHgrow(spacer, Priority.ALWAYS);
-    navigationRow.getChildren().addAll(switchToJuliaButton, spacer, getHelpButton);
+    navigationRow.getChildren().addAll(getHelpButton);
     navigationRow.setAlignment(Pos.CENTER);
   }
 
@@ -151,10 +146,10 @@ public class AffineScene extends Application implements ChaosGameObserver {
   private void setTitleRow() {
     titleRow = new HBox();
     layout.getChildren().add(titleRow);
-    sceneTitle = new TextField( (isAffine ? "Affine" : "Julia")+ " Transformation");
-    sceneTitle.setEditable(false);
-    sceneTitle.setAlignment(Pos.CENTER);
-    titleRow.getChildren().add(sceneTitle);
+    sceneHeading = new TextField( ("Chaos Game"));
+    sceneHeading.setEditable(false);
+    sceneHeading.setAlignment(Pos.CENTER);
+    titleRow.getChildren().add(sceneHeading);
     titleRow.setAlignment(Pos.CENTER);
   }
 
