@@ -1,7 +1,10 @@
 package edu.ntnu.idatt2003.model.engine;
 
+import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -22,57 +25,93 @@ import java.util.Random;
 
 public class ChaosGame {
 
-    private ChaosCanvas canvas;
+  private ChaosCanvas canvas;
 
-    private ChaosGameDescription description;
+  private ChaosGameDescription description;
 
-    private Vector2D currentPoint;
+  private Vector2D currentPoint;
 
-    private Random random;
+  private Random random;
+  private List<ChaosGameObserver> observers = new ArrayList<>();
 
-    /**
-     * Constructor for the ChaosGame class.
-     * The constructor initialises the attributes of the class.
-     * The current point is initialised to (0, 0), and the canvas is initialised with the given width and height.
-     *
-     * @param inputDescription the description of the chaos game
-     * @param width            the width of the canvas
-     * @param height           the height of the canvas
-     */
+  /**
+   * Constructor for the ChaosGame class.
+   * The constructor initialises the attributes of the class.
+   * The current point is initialised to (0, 0), and the canvas is initialised with the given width and height.
+   *
+   * @param inputDescription the description of the chaos game
+   * @param width            the width of the canvas
+   * @param height           the height of the canvas
+   */
 
-    public ChaosGame(ChaosGameDescription inputDescription, int width, int height) {
-        this.description = inputDescription;
-        this.canvas = new ChaosCanvas(width, height, inputDescription.getMinCoords(), inputDescription.getMaxCoords());
-        this.currentPoint = new Vector2D(0, 0);
-        this.random = new Random();
+  public ChaosGame(ChaosGameDescription inputDescription, int width, int height) {
+    this.description = inputDescription;
+    this.canvas = new ChaosCanvas(width, height, inputDescription.getMinCoords(), inputDescription.getMaxCoords());
+    this.currentPoint = new Vector2D(0, 0);
+    this.random = new Random();
+  }
+
+  /**
+   * Returns the canvas of the chaos game.
+   *
+   * @return the canvas
+   */
+  public ChaosCanvas getCanvas() {
+    return canvas;
+  }
+
+  /**
+   * Runs a given number of steps of the chaos game.
+   * In each step, a random transformation is chosen from the list of transformations in the description.
+   * The current point is then transformed using the chosen transformation, and the new point is drawn on the canvas.
+   * If the chosen point is already colored, the step is run again.
+   * This ensures that the number of iterations and the number of points drawn are the same.
+   *
+   * @param steps the number of steps to run
+   */
+
+  public void runSteps(int steps) {
+    for (int i = 0; i < steps; i++) {
+      int randomIndex = random.nextInt(description.getTransforms().size());
+      Vector2D newPoint = description.getTransforms().get(randomIndex).transform(currentPoint);
+      canvas.putPixel(newPoint);
+      currentPoint = newPoint;
+
+      //notifyObservers(currentPoint.getX0(), currentPoint.getX1());
     }
-
-    /**
-     * Returns the canvas of the chaos game.
-     *
-     * @return the canvas
-     */
-    public ChaosCanvas getCanvas() {
-        return canvas;
-    }
-
-    /**
-     * Runs a given number of steps of the chaos game.
-     * In each step, a random transformation is chosen from the list of transformations in the description.
-     * The current point is then transformed using the chosen transformation, and the new point is drawn on the canvas.
-     * If the chosen point is already colored, the step is run again.
-     * This ensures that the number of iterations and the number of points drawn are the same.
-     * @param steps the number of steps to run
-     */
-
-    public void runSteps(int steps) {
-        for (int i = 0; i < steps; i++) {
-            int randomIndex = random.nextInt(description.getTransforms().size());
-            Vector2D newPoint = description.getTransforms().get(randomIndex).transform(currentPoint);
-            canvas.putPixel(newPoint);
-            currentPoint = newPoint;
-
+  }
+  public void actionToNotifyObserversAbout(){
+    canvas.getCanvasArray();
+    for (int y = 0; y < canvas.getCanvasArray().length; y++) {
+      for (int x = 0; x < canvas.getCanvasArray()[y].length; x++) {
+        if (canvas.getCanvasArray()[y][x] != 0) {
+          notifyObserverAddPixel(x, y);
         }
+      }
     }
+  }
+
+  /**
+   * Adds an observer to the list of observers.
+   * @param observer the observer to add
+   */
+  public void addObserver(ChaosGameObserver observer) {
+    observers.add(observer);
+  }
+
+  /**
+   * Removes an observer from the list of observers.
+   * @param observer the observer to remove
+   */
+  public void removeObserver(ChaosGameObserver observer) {
+    observers.remove(observer);
+  }
+
+  /**
+   * Notifies all observers in the list of observers.
+   */
+  public void notifyObserverAddPixel(double X0, double X1) {
+    observers.forEach(observer -> observer.updateAddPixel(X0, X1));
+  }
 
 }

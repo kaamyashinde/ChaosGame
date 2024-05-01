@@ -1,8 +1,12 @@
 package edu.ntnu.idatt2003.model.engine;
 
+import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class tha represents a canvas to draw the fractals on.
@@ -31,6 +35,7 @@ public class ChaosCanvas {
     private Vector2D minCoords;
     private Vector2D maxCoords;
     private AffineTransform2D transformCoordsToIndices;
+    private List<ChaosGameObserver> observers = new ArrayList<>();
 
     /**
      * Constructor for the ChaosCanvas class.
@@ -86,6 +91,12 @@ public class ChaosCanvas {
         int j = (int) index.getX1();
         return canvas[i][j];
     }
+    public int getWidth() {
+        return width;
+    }
+    public int getHeight() {
+        return height;
+    }
 
     /**
      * Puts a pixel at the given point.
@@ -119,7 +130,14 @@ public class ChaosCanvas {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 canvas[i][j] = 0;
+                notifyObserverRemovePixel(i, j);
             }
         }
+    }
+    public void addObserver(ChaosGameObserver observer) {
+        observers.add(observer);
+    }
+    public void notifyObserverRemovePixel(double X0, double X1) {
+        observers.forEach(observer -> observer.updateRemovePixel(X0, X1));
     }
 }
