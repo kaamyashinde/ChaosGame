@@ -6,6 +6,7 @@ import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
+import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,6 +35,7 @@ public class AffineScene extends Application implements ChaosGameObserver {
   VBox leftBodyRow;
   VBox rightBodyRow;
   VBox root;
+  private boolean isAffine;
   private Canvas canvas;
   private ChaosCanvas chaosGameCanvas;
   private ChaosGame chaosGame;
@@ -105,8 +107,9 @@ public class AffineScene extends Application implements ChaosGameObserver {
    */
   private void startGame(){
     String filePath = "src/main/resources/";
-    ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
+    ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Affine.txt");
     assert chaosGameDescription != null;
+    isAffine = (chaosGameDescription.getTransformType() == AffineTransform2D.class);
     chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
     chaosGameCanvas = chaosGame.getCanvas();
     canvas = new Canvas(chaosGameCanvas.getWidth(), chaosGameCanvas.getHeight());
@@ -131,7 +134,7 @@ public class AffineScene extends Application implements ChaosGameObserver {
    * Method that adds the navigation bar to the layout and adds the buttons to the navigation bar.
    */
   private void setNavigationBar() {
-    switchToJuliaButton = new Button("Switch to Julia");
+    switchToJuliaButton = new Button("Switch to " + (isAffine ? "Julia" : "Affine") + " Fractal");
     getHelpButton = new Button("Get Help");
     navigationRow = new HBox();
     navigationRow.prefWidthProperty().bind(root.widthProperty());
@@ -148,7 +151,7 @@ public class AffineScene extends Application implements ChaosGameObserver {
   private void setTitleRow() {
     titleRow = new HBox();
     layout.getChildren().add(titleRow);
-    sceneTitle = new TextField("Affine Transformation");
+    sceneTitle = new TextField( (isAffine ? "Affine" : "Julia")+ " Transformation");
     sceneTitle.setEditable(false);
     sceneTitle.setAlignment(Pos.CENTER);
     titleRow.getChildren().add(sceneTitle);
