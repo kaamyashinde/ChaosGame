@@ -38,6 +38,7 @@ public class ChaosGameScene extends Application implements ChaosGameObserver {
   private Canvas canvas;
   private ChaosCanvas chaosGameCanvas;
   private ChaosGame chaosGame;
+  private static final String FILE_PATH = "src/main/resources/";
 
   public static void main(String[] args) {
     launch(args);
@@ -81,7 +82,24 @@ public class ChaosGameScene extends Application implements ChaosGameObserver {
   private void clearCanvas(){
     chaosGameCanvas.clear();
   }
-
+  /**
+   * Method that creates a preset button.
+   */
+  private Button createPresetButton(String presetName) {
+    Button presetButton = new Button(presetName);
+    presetButton.setOnAction(e -> {
+      String filePath = presetName + ".txt";
+      ChaosGameDescription chaosGameDescription = readChaosGameDescriptionFromFile(filePath);
+      assert chaosGameDescription != null;
+      isAffine = (chaosGameDescription.getTransformType() == AffineTransform2D.class);
+      chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
+      chaosGameCanvas = chaosGame.getCanvas();
+      canvas = createCanvas(500, 500);
+      chaosGamePane.getChildren().add(canvas);
+      gc = canvas.getGraphicsContext2D();
+    });
+    return presetButton;
+  }
 
   /**
    * Set the vbox for the layout.
@@ -104,16 +122,26 @@ public class ChaosGameScene extends Application implements ChaosGameObserver {
    * The {@link GraphicsContext} object is retrieved from the canvas and used to draw the fractal.
    */
   private void startGame(){
-    String filePath = "src/main/resources/";
-    ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Affine.txt");
+    ChaosGameDescription chaosGameDescription = readChaosGameDescriptionFromFile("Affine.txt");
     assert chaosGameDescription != null;
     isAffine = (chaosGameDescription.getTransformType() == AffineTransform2D.class);
     chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
     chaosGameCanvas = chaosGame.getCanvas();
-    canvas = new Canvas(chaosGameCanvas.getWidth(), chaosGameCanvas.getHeight());
+    canvas = createCanvas(500, 500);
     chaosGamePane.getChildren().add(canvas);
     gc = canvas.getGraphicsContext2D();
 
+  }
+
+  /**
+   * Method that reads the chaosGameDescription object from a file.
+   */
+  private ChaosGameDescription readChaosGameDescriptionFromFile(String fileName) {
+    return ChaosGameFileHandler.readFromFile(FILE_PATH + fileName);
+  }
+  private Canvas createCanvas(double width, double height) {
+    Canvas canvas = new Canvas(width, height);
+    return canvas;
   }
   /**
    * Method to set the scene of the stage.
@@ -125,6 +153,7 @@ public class ChaosGameScene extends Application implements ChaosGameObserver {
     primaryStage.setScene(scene);
     primaryStage.show();
   }
+
 
 
 
@@ -163,7 +192,8 @@ public class ChaosGameScene extends Application implements ChaosGameObserver {
     chaosGamePane = new StackPane();
     rightBodyRow = new VBox();
     startGame();
-
+    rightBodyRow.getChildren().add(createPresetButton("Affine"));
+    rightBodyRow.getChildren().add(createPresetButton("Barnsley"));
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
   }
