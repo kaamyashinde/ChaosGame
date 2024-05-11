@@ -1,140 +1,110 @@
 package edu.ntnu.idatt2003.view;
 
-import edu.ntnu.idatt2003.controller.Controller;
-import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
-import edu.ntnu.idatt2003.model.engine.ChaosGame;
-import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
-import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
+
+import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class JuliaScene extends Application {
-  Button switchToAffine;
-  Button getHelp;
-  Controller controller;
-  HBox navigationBar;
-  TextField sceneTitle;
-  StackPane chaosGamePane;
-  AnchorPane layout = new AnchorPane();
-  private ChaosGameDescription chaosGameDescription;
+public class JuliaScene extends Application implements ChaosGameObserver {
+  private static final String FILE_PATH = "src/main/resources/";
+  AnchorPane layout;
+  GraphicsContext gc;
+
   public static void main(String[] args) {
     launch(args);
   }
+
   @Override
   public void start(Stage primaryStage) {
-    setNavigationBar();
-    setSceneTitle();
-    setChaosGamePane();
-    drawFractal(setChaosGame());
-    setScene(primaryStage);
+    layout = new AnchorPane();
+    VBox root = new VBox();
+    layout.prefWidthProperty().bind(primaryStage.widthProperty());
+    root.prefWidthProperty().bind(layout.widthProperty());
+    layout.getChildren().add(root);
+    root.getChildren().addAll(navigationHBox(), titleHBox(), bodyHBox(), footerHBox());
+    root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
 
-    controller = new Controller(primaryStage);
-    switchToAffine.setOnAction(e -> controller.switchToAffine());
-
-  }
-  public void drawFractal(ChaosGame chaosGame) {
-    chaosGame.runSteps(1000000);
-    ChaosCanvas chaosCanvas = chaosGame.getCanvas();
-    int[][] canvasArray = chaosCanvas.getCanvasArray();
-
-    // Create a new Canvas and add it to the layout
-    Canvas canvas = new Canvas(chaosCanvas.getWidth(), chaosCanvas.getHeight());
-    layout.getChildren().add(canvas);
-
-    // Position the Canvas in the center
-    AnchorPane.setTopAnchor(canvas, 100.0);
-    AnchorPane.setBottomAnchor(canvas, 100.0);
-    AnchorPane.setLeftAnchor(canvas, 200.0);
-    AnchorPane.setRightAnchor(canvas, 100.0);
-
-    // Retrieve the GraphicsContext
-    GraphicsContext gc = canvas.getGraphicsContext2D();
-
-    // Iterate over the canvasArray and draw a rectangle for each value that is not 0
-    for (int y = 0; y < canvasArray.length; y++) {
-      for (int x = 0; x < canvasArray[y].length; x++) {
-        if (canvasArray[y][x] != 0) {
-          gc.setFill(Color.BLACK);
-          gc.fillRect(x, y, 1, 1);
-        }
-      }
-    }
-    StackPane.setAlignment(layout, Pos.CENTER);
-  }
-
-  private ChaosGameDescription retrieveChaosGameDescription(){
-    String filePath = "src/main/java/resources/";
-    chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Default.txt");
-    return chaosGameDescription;
-  }
-  private ChaosGame setChaosGame() {
-    return new ChaosGame(retrieveChaosGameDescription(), 500, 500);
-  }
-
-  /**
-   * Method that adds the navigation bar to the layout and adds the buttons to the navigation bar.
-   */
-  private void setNavigationBar() {
-    initiateNavBarButtons();
-    navigationBar = new HBox();
-    layout.getChildren().add(navigationBar);
-    AnchorPane.setTopAnchor(navigationBar, 10.0);
-    AnchorPane.setLeftAnchor(navigationBar, 10.0);
-    AnchorPane.setRightAnchor(navigationBar, 10.0);
-
-    Region spacer = new Region();
-    HBox.setHgrow(spacer, Priority.ALWAYS);
-    navigationBar.getChildren().addAll(switchToAffine, spacer, getHelp);
-  }
-
-  /**
-   * Initiate the buttons to add to the navigation bar.
-   */
-  private void initiateNavBarButtons() {
-    switchToAffine = new Button("Switch to Julia");
-    getHelp = new Button("Get Help");
-  }
-
-
-  /**
-   * Method that sets the scene title.
-   * This involves creating the text field, along with the positioning and padding.
-   */
-  private void setSceneTitle(){
-    sceneTitle = new TextField("Julia Transformation");
-    sceneTitle.setEditable(false);
-    sceneTitle.setAlignment(Pos.CENTER);
-    layout.getChildren().add(sceneTitle);
-    AnchorPane.setTopAnchor(sceneTitle, 50.0);
-    AnchorPane.setLeftAnchor(sceneTitle, 10.0);
-    AnchorPane.setRightAnchor(sceneTitle, 10.0);
-  }
-  private void setChaosGamePane(){
-    chaosGamePane = new StackPane();
-    layout.getChildren().add(chaosGamePane);
-    AnchorPane.setTopAnchor(chaosGamePane, 100.0);
-    AnchorPane.setLeftAnchor(chaosGamePane, 10.0);
-    AnchorPane.setRightAnchor(chaosGamePane, 10.0);
-    AnchorPane.setBottomAnchor(chaosGamePane, 10.0);
-  }
-
-  /**
-   * Method to set the scene of the stage.
-   * @param primaryStage the stage to set the scene for
-   */
-  private void setScene(Stage primaryStage){
     Scene scene = new Scene(layout, 1000, 700);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
 
+  @Override
+  public void updateAddPixel(double X0, double X1) {
+    gc.setFill(Color.BLACK);
+    gc.fillRect(X0, X1, 1, 1);
+  }
+
+  @Override
+  public void updateRemovePixel(double X0, double X1) {
+    gc.clearRect(X0, X1, 1, 1);
+  }
+
+  /**
+   * Method that creates a HBox with a button for the user manual. This HBox is returned.
+   *
+   * @return The HBox with the button for the user manual.
+   */
+  private HBox navigationHBox() {
+    Button getHelpButton = new Button("User Manual");
+    HBox navigationRow = new HBox();
+    navigationRow.getChildren().addAll(getHelpButton);
+    navigationRow.setAlignment(Pos.CENTER);
+    return navigationRow;
+  }
+
+  /**
+   * Method that sets the title of the scene to "Chaos Game" and returns the HBox with the title.
+   *
+   * @return The HBox with the title.
+   */
+  private HBox titleHBox() {
+    HBox titleRow = new HBox();
+    TextField sceneHeading = new TextField(("Chaos Game"));
+    sceneHeading.setEditable(false);
+    sceneHeading.setAlignment(Pos.CENTER);
+    titleRow.getChildren().add(sceneHeading);
+    titleRow.setAlignment(Pos.CENTER);
+    return titleRow;
+  }
+
+  /**
+   * Method that creates the body row by creating three VBoxes and a StackPane.
+   * The StackPane is where the canvas is placed and is at the centre of the body row.
+   */
+  private HBox bodyHBox() {
+    HBox bodyRow = new HBox();
+    VBox leftBodyRow = new VBox();
+    StackPane chaosGamePane = new StackPane();
+    VBox rightBodyRow = new VBox();
+    //startGame();
+    //rightBodyRow.getChildren().add(createPresetButton("Affine"));
+    //rightBodyRow.getChildren().add(createPresetButton("Barnsley"));
+    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
+    bodyRow.setAlignment(Pos.CENTER);
+    return bodyRow;
+  }
+
+  /**
+   * Method that returns the footer row.
+   */
+  private HBox footerHBox() {
+    HBox footerRow = new HBox();
+    Button addThousandPixelsButton = new Button("Add 10000");
+    Button clearCanvasButton = new Button("Clear Canvas");
+    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
+    footerRow.setAlignment(Pos.CENTER);
+    return footerRow;
+  }
 
 }
