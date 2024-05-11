@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.view;
 
 
+import edu.ntnu.idatt2003.controller.Controller;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -19,6 +20,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   private static final String FILE_PATH = "src/main/resources/";
   AnchorPane layout;
   GraphicsContext gc;
+  Controller controller;
 
   public static void main(String[] args) {
     launch(args);
@@ -26,6 +28,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
 
   @Override
   public void start(Stage primaryStage) {
+    controller = new Controller(primaryStage);
     layout = new AnchorPane();
     VBox root = new VBox();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
@@ -88,8 +91,9 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     StackPane chaosGamePane = new StackPane();
     VBox rightBodyRow = new VBox();
     //startGame();
-    //rightBodyRow.getChildren().add(createPresetButton("Affine"));
-    //rightBodyRow.getChildren().add(createPresetButton("Barnsley"));
+    rightBodyRow.getChildren().add(controller.createPresetFractalButton("Affine"));
+    rightBodyRow.getChildren().add(controller.createPresetFractalButton("Barnsley"));
+    rightBodyRow.getChildren().add(controller.createPresetFractalButton("Sierpinski"));
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
