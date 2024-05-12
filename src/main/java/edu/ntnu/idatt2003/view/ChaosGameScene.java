@@ -18,12 +18,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class AffineScene extends Application implements ChaosGameObserver {
+public class ChaosGameScene extends Application implements ChaosGameObserver {
   AnchorPane layout = new AnchorPane();
   Button addThousandPixelsButton;
   Button getHelpButton;
   Button clearCanvasButton;
-  Button switchToJuliaButton;
   Controller controller;
   GraphicsContext gc;
   HBox bodyRow;
@@ -31,7 +30,7 @@ public class AffineScene extends Application implements ChaosGameObserver {
   HBox navigationRow;
   HBox titleRow;
   StackPane chaosGamePane;
-  TextField sceneTitle;
+  TextField sceneHeading;
   VBox leftBodyRow;
   VBox rightBodyRow;
   VBox root;
@@ -39,6 +38,7 @@ public class AffineScene extends Application implements ChaosGameObserver {
   private Canvas canvas;
   private ChaosCanvas chaosGameCanvas;
   private ChaosGame chaosGame;
+  private static final String FILE_PATH = "src/main/resources/";
 
   public static void main(String[] args) {
     launch(args);
@@ -52,7 +52,6 @@ public class AffineScene extends Application implements ChaosGameObserver {
     chaosGameCanvas.addObserver(this);
     setScene(primaryStage);
     controller = new Controller(primaryStage);
-    switchToJuliaButton.setOnAction(e -> controller.switchToJulia());
     addThousandPixelsButton.setOnAction(e -> runThousandSteps());
     clearCanvasButton.setOnAction(e -> clearCanvas());
   }
@@ -83,7 +82,24 @@ public class AffineScene extends Application implements ChaosGameObserver {
   private void clearCanvas(){
     chaosGameCanvas.clear();
   }
-
+  /**
+   * Method that creates a preset button.
+   */
+  private Button createPresetButton(String presetName) {
+    Button presetButton = new Button(presetName);
+    presetButton.setOnAction(e -> {
+      String filePath = presetName + ".txt";
+      ChaosGameDescription chaosGameDescription = readChaosGameDescriptionFromFile(filePath);
+      assert chaosGameDescription != null;
+      isAffine = (chaosGameDescription.getTransformType() == AffineTransform2D.class);
+      chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
+      chaosGameCanvas = chaosGame.getCanvas();
+      canvas = createCanvas(500, 500);
+      chaosGamePane.getChildren().add(canvas);
+      gc = canvas.getGraphicsContext2D();
+    });
+    return presetButton;
+  }
 
   /**
    * Set the vbox for the layout.
@@ -106,16 +122,26 @@ public class AffineScene extends Application implements ChaosGameObserver {
    * The {@link GraphicsContext} object is retrieved from the canvas and used to draw the fractal.
    */
   private void startGame(){
-    String filePath = "src/main/resources/";
-    ChaosGameDescription chaosGameDescription = ChaosGameFileHandler.readFromFile(filePath + "Affine.txt");
+    ChaosGameDescription chaosGameDescription = readChaosGameDescriptionFromFile("Affine.txt");
     assert chaosGameDescription != null;
     isAffine = (chaosGameDescription.getTransformType() == AffineTransform2D.class);
     chaosGame = new ChaosGame(chaosGameDescription, 500, 500);
     chaosGameCanvas = chaosGame.getCanvas();
-    canvas = new Canvas(chaosGameCanvas.getWidth(), chaosGameCanvas.getHeight());
+    canvas = createCanvas(500, 500);
     chaosGamePane.getChildren().add(canvas);
     gc = canvas.getGraphicsContext2D();
 
+  }
+
+  /**
+   * Method that reads the chaosGameDescription object from a file.
+   */
+  private ChaosGameDescription readChaosGameDescriptionFromFile(String fileName) {
+    return ChaosGameFileHandler.readFromFile(FILE_PATH + fileName);
+  }
+  private Canvas createCanvas(double width, double height) {
+    Canvas canvas = new Canvas(width, height);
+    return canvas;
   }
   /**
    * Method to set the scene of the stage.
@@ -130,17 +156,15 @@ public class AffineScene extends Application implements ChaosGameObserver {
 
 
 
+
   /**
    * Method that adds the navigation bar to the layout and adds the buttons to the navigation bar.
    */
   private void setNavigationBar() {
-    switchToJuliaButton = new Button("Switch to " + (isAffine ? "Julia" : "Affine") + " Fractal");
-    getHelpButton = new Button("Get Help");
+    getHelpButton = new Button("User Manual");
     navigationRow = new HBox();
     navigationRow.prefWidthProperty().bind(root.widthProperty());
-    Region spacer = new Region();
-    HBox.setHgrow(spacer, Priority.ALWAYS);
-    navigationRow.getChildren().addAll(switchToJuliaButton, spacer, getHelpButton);
+    navigationRow.getChildren().addAll(getHelpButton);
     navigationRow.setAlignment(Pos.CENTER);
   }
 
@@ -151,10 +175,10 @@ public class AffineScene extends Application implements ChaosGameObserver {
   private void setTitleRow() {
     titleRow = new HBox();
     layout.getChildren().add(titleRow);
-    sceneTitle = new TextField( (isAffine ? "Affine" : "Julia")+ " Transformation");
-    sceneTitle.setEditable(false);
-    sceneTitle.setAlignment(Pos.CENTER);
-    titleRow.getChildren().add(sceneTitle);
+    sceneHeading = new TextField( ("Chaos Game"));
+    sceneHeading.setEditable(false);
+    sceneHeading.setAlignment(Pos.CENTER);
+    titleRow.getChildren().add(sceneHeading);
     titleRow.setAlignment(Pos.CENTER);
   }
 
@@ -168,7 +192,8 @@ public class AffineScene extends Application implements ChaosGameObserver {
     chaosGamePane = new StackPane();
     rightBodyRow = new VBox();
     startGame();
-
+    rightBodyRow.getChildren().add(createPresetButton("Affine"));
+    rightBodyRow.getChildren().add(createPresetButton("Barnsley"));
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
   }
