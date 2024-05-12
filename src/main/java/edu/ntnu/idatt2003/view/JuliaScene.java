@@ -71,6 +71,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     StackPane chaosGamePane = new StackPane();
     chaosGamePane.getChildren().add(canvas);
 
+
     return chaosGamePane;
   }
 
@@ -176,6 +177,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     );
 
     Button clearCanvasButton = new Button("Clear Canvas");
+    clearCanvasButton.setOnAction(e -> game.getCanvas().clear());
     footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
