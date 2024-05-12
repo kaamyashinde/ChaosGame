@@ -5,6 +5,7 @@ import edu.ntnu.idatt2003.controller.Controller;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
+import edu.ntnu.idatt2003.model.transformations.Transform2D;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,7 +20,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JuliaScene extends Application implements ChaosGameObserver {
   private static final String FILE_PATH = "src/main/resources/";
@@ -29,6 +31,21 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   ChaosGame game;
   Button addThousandPixelsButton;
   ChaosGameDescription chaosGameDescription;
+  TextField minCoordsX0;
+  TextField minCoordsX1;
+  TextField maxCoordsX0;
+  TextField maxCoordsX1;
+  TextField constantC;
+  TextField matrixA00;
+  TextField matrixA01;
+  TextField matrixA10;
+  TextField matrixA11;
+  TextField vectorB0;
+  TextField vectorB1;
+  Button nextTransformation;
+  Button previousTransformation;
+  int transformNum;
+
   public static void main(String[] args) {
     launch(args);
   }
@@ -60,13 +77,13 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   public void updateRemovePixel(double X0, double X1) {
     gc.clearRect(X0, X1, 1, 1);
   }
+
   /**
    * Method that uses the controller to gain access to the chaos game.
-   *
    */
   private StackPane gamePaneCanvas() {
     updateChaosGameObject(controller.readChaosGameDescriptionFromFile("Affine.txt"));
-    Canvas canvas = new Canvas(1000, 700);
+    Canvas canvas = new Canvas(500, 500);
     gc = canvas.getGraphicsContext2D();
     StackPane chaosGamePane = new StackPane();
     chaosGamePane.getChildren().add(canvas);
@@ -77,14 +94,15 @@ public class JuliaScene extends Application implements ChaosGameObserver {
 
   /**
    * Method that creates the buttons for the different fractals and returns them.
+   *
    * @param fractalName The name of the fractal.
    * @return The button for the fractal.
    */
 
-  public Button createPresetFractalButton(String fractalName){
+  public Button createPresetFractalButton(String fractalName) {
     Button button = new Button(fractalName);
-    button.setOnAction(e ->{
-      switch (fractalName){
+    button.setOnAction(e -> {
+      switch (fractalName) {
         case "Julia":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Julia.txt");
           updateChaosGameObject(chaosGameDescription);
@@ -111,11 +129,12 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     });
     return button;
   }
+
   /**
    * Update the chaosGame object.
    */
-  private void updateChaosGameObject(ChaosGameDescription input){
-    game = new ChaosGame(input, 1000, 1000);
+  private void updateChaosGameObject(ChaosGameDescription input) {
+    game = new ChaosGame(input, 500, 500);
     game.getCanvas().addObserver(this);
   }
 
@@ -157,10 +176,33 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     StackPane chaosGamePane = gamePaneCanvas();
 
     VBox rightBodyRow = new VBox();
+
+
     //startGame();
     rightBodyRow.getChildren().add(createPresetFractalButton("Julia"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
+
+    minCoordsX0 = new TextField("Min Coords");
+    minCoordsX1 = new TextField("Min Coords");
+    maxCoordsX0 = new TextField("Max Coords");
+    maxCoordsX1 = new TextField("Max Coords");
+
+    previousTransformation = new Button("Previous Transformation");
+    ChaosGameDescription desc = chaosGameDescription;
+    List<Transform2D> transforms = desc.getTransforms();
+    transformNum = transforms.size();
+    previousTransformation.setOnAction(e-> {
+      //TODO: Display the previous transformation
+    });
+    nextTransformation = new Button("Next Transformation");
+    nextTransformation.setOnAction(e-> {
+      //TODO: Display the next transformation
+    });
+
+
+    rightBodyRow.getChildren().addAll(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
+
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
@@ -173,7 +215,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     HBox footerRow = new HBox();
     addThousandPixelsButton = new Button("Add 10000");
     addThousandPixelsButton.setOnAction(e ->
-      game.runSteps(10000)
+        game.runSteps(10000)
     );
 
     Button clearCanvasButton = new Button("Clear Canvas");
@@ -182,5 +224,18 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
   }
+
+  /**
+   * Method to initiate the user adjustments for the chaos game.
+   */
+  private void startGameMenu() {
+    matrixA00 = new TextField("Matrix A00");
+    matrixA01 = new TextField("Matrix A01");
+    matrixA10 = new TextField("Matrix A10");
+    matrixA11 = new TextField("Matrix A11");
+    vectorB0 = new TextField("Vector B0");
+    vectorB1 = new TextField("Vector B1");
+  }
+
 
 }

@@ -9,8 +9,10 @@ import edu.ntnu.idatt2003.view.JuliaScene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -68,5 +70,6 @@ public class Controller {
   public ChaosGameDescription getChaosGameDescription() {
     return chaosGameDescriptions.get(chaosGameDescriptions.size() - 1);
   }
+
 
 }
