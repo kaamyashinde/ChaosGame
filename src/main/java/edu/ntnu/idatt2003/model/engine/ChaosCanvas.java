@@ -109,6 +109,8 @@ public class ChaosCanvas {
         int i = (int) Math.round(index.getX0());
         int j = (int) Math.round(index.getX1());
         canvas[i][j] = 1;
+        notifyObserverAddPixel(j, i);
+
 
     }
 
@@ -140,4 +142,11 @@ public class ChaosCanvas {
     public void notifyObserverRemovePixel(double X0, double X1) {
         observers.forEach(observer -> observer.updateRemovePixel(X0, X1));
     }
+    /**
+     * Notifies all observers in the list of observers.
+     */
+    public void notifyObserverAddPixel(double X0, double X1) {
+        observers.forEach(observer -> observer.updateAddPixel(X0, X1));
+    }
+
 }

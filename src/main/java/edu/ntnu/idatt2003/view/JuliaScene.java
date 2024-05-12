@@ -115,7 +115,6 @@ public class JuliaScene extends Application implements ChaosGameObserver {
    */
   private void updateChaosGameObject(ChaosGameDescription input){
     game = new ChaosGame(input, 1000, 1000);
-    game.addObserver(this);
     game.getCanvas().addObserver(this);
   }
 
@@ -173,11 +172,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     HBox footerRow = new HBox();
     addThousandPixelsButton = new Button("Add 10000");
     addThousandPixelsButton.setOnAction(e ->
-    {
-      game.runSteps(10000);
-      game.actionToNotifyObserversAbout();
-
-    });
+      game.runSteps(10000)
+    );
 
     Button clearCanvasButton = new Button("Clear Canvas");
     footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
