@@ -45,6 +45,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   Button nextTransformation;
   Button previousTransformation;
   int transformNum;
+  VBox rightBodyRow;
 
   public static void main(String[] args) {
     launch(args);
@@ -108,18 +109,19 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           updateChaosGameObject(chaosGameDescription);
           game.getCanvas().clear();
           System.out.println("Julia");
+          displayConstantC();
           break;
         case "Barnsley":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
           updateChaosGameObject(chaosGameDescription);
-          displayConfigInfo();
+          displayTransformationMatrices();
           game.getCanvas().clear();
           System.out.println("Barnsley");
           break;
         case "Sierpinski":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
           updateChaosGameObject(chaosGameDescription);
-          displayConfigInfo();
+          displayTransformationMatrices();
           game.getCanvas().clear();
           System.out.println("Sierpinski");
           break;
@@ -179,7 +181,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     VBox leftBodyRow = new VBox();
     StackPane chaosGamePane = gamePaneCanvas();
 
-    VBox rightBodyRow = new VBox();
+    rightBodyRow = new VBox();
 
 
     //startGame();
@@ -198,6 +200,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     vectorB0 = new TextField("Vector B0");
     vectorB1 = new TextField("Vector B1");
 
+    constantC = new TextField("Constant C");
+
 
     previousTransformation = new Button("Previous Transformation");
     nextTransformation = new Button("Next Transformation");
@@ -206,11 +210,24 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     transformationNumber.setEditable(false);
 
 
-    rightBodyRow.getChildren().addAll(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, previousTransformation, nextTransformation, transformationNumber);
+    rightBodyRow.getChildren().addAll(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
+  }
+  private void displayTransformationMatrices(){
+    rightBodyRow.getChildren().remove(constantC);
+    if (!rightBodyRow.getChildren().contains(transformationNumber)){
+      rightBodyRow.getChildren().addAll(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1,previousTransformation, nextTransformation, transformationNumber);
+    }
+    displayConfigInfo();
+  }
+  private void displayConstantC(){
+    rightBodyRow.getChildren().removeAll(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1,previousTransformation, nextTransformation, transformationNumber);
+    if (!rightBodyRow.getChildren().contains(constantC)){
+      rightBodyRow.getChildren().add(constantC);
+    }
   }
   /**
    * Method that shows the current chaos game description in the field.
