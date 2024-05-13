@@ -214,6 +214,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     editGameConfigButton.setOnAction(e -> editGameConfig());
     Button registerCoordsButton = new Button("Register Coordinates");
     registerCoordsButton.setOnAction(e -> registerCoordinates());
+    Button registerAffineTransformationsButton = new Button("Register Affine Transformations");
+    registerAffineTransformationsButton.setOnAction(e -> registerAffineTransformations());
 
     //to traverse between the different transformations
     previousTransformation = new Button("Previous Transformation");
@@ -223,7 +225,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     transformationNumber.setEditable(false);
 
 
-    rightBodyRow.getChildren().addAll(editGameConfigButton, minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, registerCoordsButton);
+    rightBodyRow.getChildren().addAll(editGameConfigButton, minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, registerCoordsButton, registerAffineTransformationsButton);
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
@@ -323,7 +325,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
 
     constantC = new TextField();
 
-
+    setPromptText();
     List<TextField> textFields = List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, constantC);
     textFields.forEach(textField -> textField.setEditable(false));
   }
@@ -358,11 +360,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
 
   private void setPromptText() {
     minCoordsX0.setPromptText("Min X0");
-
     minCoordsX1.setPromptText("Min X1");
-
     maxCoordsX0.setPromptText("Max X0");
-
     maxCoordsX1.setPromptText("Max X1");
     matrixA00.setPromptText("Matrix A00");
     matrixA01.setPromptText("Matrix A01");
@@ -373,4 +372,16 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     matrixA11.setPromptText("Matrix A11");
   }
 
+  /**
+   * Method that registers the transformations of the affine type.
+   */
+  private void registerAffineTransformations(){
+    double matrixA00 = Double.parseDouble(this.matrixA00.getText());
+    double matrixA01 = Double.parseDouble(this.matrixA01.getText());
+    double matrixA10 = Double.parseDouble(this.matrixA10.getText());
+    double matrixA11 = Double.parseDouble(this.matrixA11.getText());
+    double vectorB0 = Double.parseDouble(this.vectorB0.getText());
+    double vectorB1 = Double.parseDouble(this.vectorB1.getText());
+    System.out.println(matrixA00 + " " + matrixA01 + " | " + matrixA10 + " " + matrixA11 + " | " + vectorB0 + " " + vectorB1);
+  }
 }
