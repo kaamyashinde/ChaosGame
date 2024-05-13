@@ -71,8 +71,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   @Override
   public void updateAddPixel(double X0, double X1) {
     // Define the start and end colors for the gradient
-    Color startColor = Color.rgb(230, 183,183); // bright red
-    Color endColor = Color.rgb(215,8,8); // dark red
+    Color startColor = Color.rgb(230, 183, 183); // bright red
+    Color endColor = Color.rgb(215, 8, 8); // dark red
 
     // Calculate the fraction based on the y-coordinate
     double fraction = X1 / 500; // assuming the height of the canvas is 500
@@ -107,6 +107,19 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   }
 
   /**
+   * Method that creates a list containing the max and min coordinates text fields.
+   */
+  private List<TextField> maxAndMinCoordsTextFieldsList() {
+    return List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
+  }
+
+  /**
+   * Method that creates a list containing the matrix and vector for a specific affine transformation.
+   */
+  private List<TextField> affineTransformationTextFieldsList() {
+    return List.of(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);}
+
+  /**
    * Method that creates the buttons for the different fractals and returns them.
    *
    * @param fractalName The name of the fractal.
@@ -121,25 +134,27 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Julia.txt");
           updateChaosGameObject(chaosGameDescription);
           game.getCanvas().clear();
-          System.out.println("Julia");
+          System.out.println("Julia preset button was clicked!");
           displayConstantC();
-          displayMinMaxCoords();
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFieldsList());
+
           break;
         case "Barnsley":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
           updateChaosGameObject(chaosGameDescription);
           displayTransformationMatrices();
           game.getCanvas().clear();
-          System.out.println("Barnsley");
-          displayMinMaxCoords();
+          System.out.println("Barnsley preset button was clicked!");
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFieldsList());
           break;
         case "Sierpinski":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
           updateChaosGameObject(chaosGameDescription);
           displayTransformationMatrices();
           game.getCanvas().clear();
-          System.out.println("Sierpinski");
-          displayMinMaxCoords();
+          System.out.println("Sierpinski preset button was clicked!");
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFieldsList());
+
 
           break;
         default:
@@ -225,7 +240,14 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     transformationNumber.setEditable(false);
 
 
-    rightBodyRow.getChildren().addAll(editGameConfigButton, minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, registerCoordsButton, registerAffineTransformationsButton);
+    rightBodyRow.getChildren().addAll(
+        editGameConfigButton,
+        maxAndMinCoordsTextFieldsList().get(0),
+        maxAndMinCoordsTextFieldsList().get(1),
+        maxAndMinCoordsTextFieldsList().get(2),
+        maxAndMinCoordsTextFieldsList().get(3),
+        registerCoordsButton,
+        registerAffineTransformationsButton);
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
@@ -261,16 +283,13 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     ChaosGameDescription desc = chaosGameDescription;
     List<Transform2D> transforms = desc.getTransforms();
     transformNum = 0;
-    controller.displayCanvasCoordinates(
-        0, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
+    controller.displayAffineTransformations(0, desc, affineTransformationTextFieldsList());
     previousTransformation.setOnAction(e -> {
       transformNum--;
       if (transformNum < 0) {
         transformNum = transforms.size() - 1;
       }
-      controller.displayCanvasCoordinates(
-          transformNum, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1)
-      ;
+      controller.displayAffineTransformations(transformNum, desc, affineTransformationTextFieldsList());
       transformationNumber.setText(String.valueOf(transformNum + 1));
 
     });
@@ -279,9 +298,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
       if (transformNum == transforms.size()) {
         transformNum = 0;
       }
-      controller.displayCanvasCoordinates(
-          transformNum, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1)
-      ;
+      controller.displayAffineTransformations(transformNum, desc, affineTransformationTextFieldsList());
+
       transformationNumber.setText(String.valueOf(transformNum + 1));
 
     });
@@ -339,17 +357,6 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     textFields.forEach(textField -> textField.setEditable(true));
   }
 
-  /**
-   * Method that displays the current chaosGameDescription Object's coordinates.
-   */
-  private void displayMinMaxCoords(){
-    ChaosGameDescription desc = chaosGameDescription;
-    minCoordsX0.setText(String.valueOf(desc.getMinCoords().getX0()));
-    minCoordsX1.setText(String.valueOf(desc.getMinCoords().getX1()));
-    maxCoordsX0.setText(String.valueOf(desc.getMaxCoords().getX0()));
-    maxCoordsX1.setText(String.valueOf(desc.getMaxCoords().getX1()));
-
-  }
   private void registerCoordinates() {
     double minCoordsX0 = Double.parseDouble(this.minCoordsX0.getText());
     double minCoordsX1 = Double.parseDouble(this.minCoordsX1.getText());
@@ -375,7 +382,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   /**
    * Method that registers the transformations of the affine type.
    */
-  private void registerAffineTransformations(){
+  private void registerAffineTransformations() {
     double matrixA00 = Double.parseDouble(this.matrixA00.getText());
     double matrixA01 = Double.parseDouble(this.matrixA01.getText());
     double matrixA10 = Double.parseDouble(this.matrixA10.getText());
