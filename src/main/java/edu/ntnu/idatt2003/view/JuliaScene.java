@@ -189,20 +189,10 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
 
-    minCoordsX0 = new TextField("Min Coords");
-    minCoordsX1 = new TextField("Min Coords");
-    maxCoordsX0 = new TextField("Max Coords");
-    maxCoordsX1 = new TextField("Max Coords");
-    matrixA00 = new TextField("Matrix A00");
-    matrixA01 = new TextField("Matrix A01");
-    matrixA10 = new TextField("Matrix A10");
-    matrixA11 = new TextField("Matrix A11");
-    vectorB0 = new TextField("Vector B0");
-    vectorB1 = new TextField("Vector B1");
+    //initialise the different text fields
+    startGameMenu();
 
-    constantC = new TextField("Constant C");
-
-
+    //to traverse between the different transformations
     previousTransformation = new Button("Previous Transformation");
     nextTransformation = new Button("Next Transformation");
 
@@ -216,23 +206,32 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
   }
-  private void displayTransformationMatrices(){
+
+  /**
+   * Method that displays the transformation matrices and the current transformation number after removing the constant C.
+   */
+  private void displayTransformationMatrices() {
     rightBodyRow.getChildren().remove(constantC);
-    if (!rightBodyRow.getChildren().contains(transformationNumber)){
-      rightBodyRow.getChildren().addAll(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1,previousTransformation, nextTransformation, transformationNumber);
+    if (!rightBodyRow.getChildren().contains(transformationNumber)) {
+      rightBodyRow.getChildren().addAll(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, previousTransformation, nextTransformation, transformationNumber);
     }
     displayConfigInfo();
   }
-  private void displayConstantC(){
-    rightBodyRow.getChildren().removeAll(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1,previousTransformation, nextTransformation, transformationNumber);
-    if (!rightBodyRow.getChildren().contains(constantC)){
+
+  /**
+   * Method that removes the transformation matrices and displays the constant C.
+   */
+  private void displayConstantC() {
+    rightBodyRow.getChildren().removeAll(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, previousTransformation, nextTransformation, transformationNumber);
+    if (!rightBodyRow.getChildren().contains(constantC)) {
       rightBodyRow.getChildren().add(constantC);
     }
   }
+
   /**
    * Method that shows the current chaos game description in the field.
    */
-  private void displayConfigInfo(){
+  private void displayConfigInfo() {
     System.out.println("Displaying config info");
     ChaosGameDescription desc = chaosGameDescription;
     List<Transform2D> transforms = desc.getTransforms();
@@ -247,18 +246,18 @@ public class JuliaScene extends Application implements ChaosGameObserver {
       controller.displayCanvasCoordinates(
           transformNum, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1)
       ;
-      transformationNumber.setText(String.valueOf(transformNum+1));
+      transformationNumber.setText(String.valueOf(transformNum + 1));
 
     });
     nextTransformation.setOnAction(e -> {
       transformNum++;
-      if (transformNum==transforms.size()){
+      if (transformNum == transforms.size()) {
         transformNum = 0;
       }
       controller.displayCanvasCoordinates(
           transformNum, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1)
       ;
-      transformationNumber.setText(String.valueOf(transformNum+1));
+      transformationNumber.setText(String.valueOf(transformNum + 1));
 
     });
   }
@@ -284,12 +283,18 @@ public class JuliaScene extends Application implements ChaosGameObserver {
    * Method to initiate the user adjustments for the chaos game.
    */
   private void startGameMenu() {
+    minCoordsX0 = new TextField("Min Coords");
+    minCoordsX1 = new TextField("Min Coords");
+    maxCoordsX0 = new TextField("Max Coords");
+    maxCoordsX1 = new TextField("Max Coords");
     matrixA00 = new TextField("Matrix A00");
     matrixA01 = new TextField("Matrix A01");
     matrixA10 = new TextField("Matrix A10");
     matrixA11 = new TextField("Matrix A11");
     vectorB0 = new TextField("Vector B0");
     vectorB1 = new TextField("Vector B1");
+
+    constantC = new TextField("Constant C");
   }
 
 
