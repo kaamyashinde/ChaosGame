@@ -20,7 +20,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class JuliaScene extends Application implements ChaosGameObserver {
@@ -35,6 +34,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   TextField minCoordsX1;
   TextField maxCoordsX0;
   TextField maxCoordsX1;
+  TextField transformationNumber;
   TextField constantC;
   TextField matrixA00;
   TextField matrixA01;
@@ -107,21 +107,25 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Julia.txt");
           updateChaosGameObject(chaosGameDescription);
           game.getCanvas().clear();
+          System.out.println("Julia");
           break;
         case "Barnsley":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
           updateChaosGameObject(chaosGameDescription);
+          displayConfigInfo();
           game.getCanvas().clear();
-
+          System.out.println("Barnsley");
           break;
         case "Sierpinski":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
           updateChaosGameObject(chaosGameDescription);
+          displayConfigInfo();
           game.getCanvas().clear();
-
+          System.out.println("Sierpinski");
           break;
         default:
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");
+          displayConfigInfo();
           updateChaosGameObject(chaosGameDescription);
 
           break;
@@ -187,25 +191,59 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     minCoordsX1 = new TextField("Min Coords");
     maxCoordsX0 = new TextField("Max Coords");
     maxCoordsX1 = new TextField("Max Coords");
+    matrixA00 = new TextField("Matrix A00");
+    matrixA01 = new TextField("Matrix A01");
+    matrixA10 = new TextField("Matrix A10");
+    matrixA11 = new TextField("Matrix A11");
+    vectorB0 = new TextField("Vector B0");
+    vectorB1 = new TextField("Vector B1");
+
 
     previousTransformation = new Button("Previous Transformation");
-    ChaosGameDescription desc = chaosGameDescription;
-    List<Transform2D> transforms = desc.getTransforms();
-    transformNum = transforms.size();
-    previousTransformation.setOnAction(e-> {
-      //TODO: Display the previous transformation
-    });
     nextTransformation = new Button("Next Transformation");
-    nextTransformation.setOnAction(e-> {
-      //TODO: Display the next transformation
-    });
+
+    transformationNumber = new TextField("1");
+    transformationNumber.setEditable(false);
 
 
-    rightBodyRow.getChildren().addAll(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
+    rightBodyRow.getChildren().addAll(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, previousTransformation, nextTransformation, transformationNumber);
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
+  }
+  /**
+   * Method that shows the current chaos game description in the field.
+   */
+  private void displayConfigInfo(){
+    System.out.println("Displaying config info");
+    ChaosGameDescription desc = chaosGameDescription;
+    List<Transform2D> transforms = desc.getTransforms();
+    transformNum = 0;
+    controller.displayCanvasCoordinates(
+        0, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
+    previousTransformation.setOnAction(e -> {
+      transformNum--;
+      if (transformNum < 0) {
+        transformNum = transforms.size() - 1;
+      }
+      controller.displayCanvasCoordinates(
+          transformNum, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1)
+      ;
+      transformationNumber.setText(String.valueOf(transformNum+1));
+
+    });
+    nextTransformation.setOnAction(e -> {
+      transformNum++;
+      if (transformNum==transforms.size()){
+        transformNum = 0;
+      }
+      controller.displayCanvasCoordinates(
+          transformNum, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1)
+      ;
+      transformationNumber.setText(String.valueOf(transformNum+1));
+
+    });
   }
 
   /**
