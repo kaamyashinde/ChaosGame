@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.controller;
 
+import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
@@ -59,6 +60,15 @@ public class Controller {
     inputTextFields.get(5).setText(String.valueOf(affine.getVector().getX1()));
   }
 
+  /**
+   * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
+   */
+  public Vector2D[] registerCoordinates(List<TextField> inputList){
+    Vector2D minCoords = new Vector2D(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
+    Vector2D maxCoords = new Vector2D(Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
+    System.out.println(minCoords + " " + maxCoords);
+    return new Vector2D[]{minCoords, maxCoords};
+  }
 
 
 
