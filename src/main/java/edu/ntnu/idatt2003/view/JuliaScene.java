@@ -70,7 +70,20 @@ public class JuliaScene extends Application implements ChaosGameObserver {
 
   @Override
   public void updateAddPixel(double X0, double X1) {
-    gc.setFill(Color.BLACK);
+    // Define the start and end colors for the gradient
+    Color startColor = Color.rgb(230, 183,183); // bright red
+    Color endColor = Color.rgb(215,8,8); // dark red
+
+    // Calculate the fraction based on the y-coordinate
+    double fraction = X1 / 500; // assuming the height of the canvas is 500
+
+    // Interpolate between the start and end colors based on the fraction
+    Color gradientColor = startColor.interpolate(endColor, fraction);
+
+    // Set the fill color to the gradient color
+    gc.setFill(gradientColor);
+
+    // Draw the pixel
     gc.fillRect(X0, X1, 1, 1);
   }
 
