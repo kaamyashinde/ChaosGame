@@ -110,6 +110,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           game.getCanvas().clear();
           System.out.println("Julia");
           displayConstantC();
+          displayMinMaxCoords();
           break;
         case "Barnsley":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
@@ -117,6 +118,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           displayTransformationMatrices();
           game.getCanvas().clear();
           System.out.println("Barnsley");
+          displayMinMaxCoords();
           break;
         case "Sierpinski":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
@@ -124,6 +126,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           displayTransformationMatrices();
           game.getCanvas().clear();
           System.out.println("Sierpinski");
+          displayMinMaxCoords();
+
           break;
         default:
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");
@@ -192,6 +196,12 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     //initialise the different text fields
     startGameMenu();
 
+    //to allow the user to edit the text fields
+    Button editGameConfigButton = new Button("Edit Game Config");
+    editGameConfigButton.setOnAction(e -> editGameConfig());
+    Button registerCoordsButton = new Button("Register Coordinates");
+    registerCoordsButton.setOnAction(e -> registerCoordinates());
+
     //to traverse between the different transformations
     previousTransformation = new Button("Previous Transformation");
     nextTransformation = new Button("Next Transformation");
@@ -200,7 +210,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     transformationNumber.setEditable(false);
 
 
-    rightBodyRow.getChildren().addAll(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
+    rightBodyRow.getChildren().addAll(editGameConfigButton, minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, registerCoordsButton);
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
@@ -283,19 +293,71 @@ public class JuliaScene extends Application implements ChaosGameObserver {
    * Method to initiate the user adjustments for the chaos game.
    */
   private void startGameMenu() {
-    minCoordsX0 = new TextField("Min Coords");
-    minCoordsX1 = new TextField("Min Coords");
-    maxCoordsX0 = new TextField("Max Coords");
-    maxCoordsX1 = new TextField("Max Coords");
-    matrixA00 = new TextField("Matrix A00");
-    matrixA01 = new TextField("Matrix A01");
-    matrixA10 = new TextField("Matrix A10");
-    matrixA11 = new TextField("Matrix A11");
-    vectorB0 = new TextField("Vector B0");
-    vectorB1 = new TextField("Vector B1");
 
-    constantC = new TextField("Constant C");
+    minCoordsX0 = new TextField();
+    minCoordsX1 = new TextField();
+    maxCoordsX0 = new TextField();
+    maxCoordsX1 = new TextField();
+
+    matrixA00 = new TextField();
+
+    matrixA01 = new TextField();
+
+    matrixA10 = new TextField();
+    matrixA11 = new TextField();
+    vectorB0 = new TextField();
+    vectorB1 = new TextField();
+
+    constantC = new TextField();
+
+
+    List<TextField> textFields = List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, constantC);
+    textFields.forEach(textField -> textField.setEditable(false));
   }
 
+  /**
+   * Method that allows the user to edit the text fields.
+   * This method is called when the user wants to edit the text fields.
+   */
+  private void editGameConfig() {
+    List<TextField> textFields = List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, constantC);
+    textFields.forEach(textField -> textField.setEditable(true));
+  }
+
+  /**
+   * Method that displays the current chaosGameDescription Object's coordinates.
+   */
+  private void displayMinMaxCoords(){
+    ChaosGameDescription desc = chaosGameDescription;
+    minCoordsX0.setText(String.valueOf(desc.getMinCoords().getX0()));
+    minCoordsX1.setText(String.valueOf(desc.getMinCoords().getX1()));
+    maxCoordsX0.setText(String.valueOf(desc.getMaxCoords().getX0()));
+    maxCoordsX1.setText(String.valueOf(desc.getMaxCoords().getX1()));
+
+  }
+  private void registerCoordinates() {
+    double minCoordsX0 = Double.parseDouble(this.minCoordsX0.getText());
+    double minCoordsX1 = Double.parseDouble(this.minCoordsX1.getText());
+    double maxCoordsX0 = Double.parseDouble(this.maxCoordsX0.getText());
+    double maxCoordsX1 = Double.parseDouble(this.maxCoordsX1.getText());
+    System.out.println(minCoordsX0 + " " + minCoordsX1 + " | " + maxCoordsX0 + " " + maxCoordsX1);
+  }
+
+  private void setPromptText() {
+    minCoordsX0.setPromptText("Min X0");
+
+    minCoordsX1.setPromptText("Min X1");
+
+    maxCoordsX0.setPromptText("Max X0");
+
+    maxCoordsX1.setPromptText("Max X1");
+    matrixA00.setPromptText("Matrix A00");
+    matrixA01.setPromptText("Matrix A01");
+    matrixA10.setPromptText("Matrix A10");
+    vectorB1.setPromptText("Vector B1");
+    vectorB0.setPromptText("Vector B0");
+    constantC.setPromptText("Constant C");
+    matrixA11.setPromptText("Matrix A11");
+  }
 
 }
