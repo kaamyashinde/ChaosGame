@@ -1,82 +1,56 @@
 package edu.ntnu.idatt2003.model.transformations;
-
-import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.basicLinalg.Complex;
-
-import java.util.Objects;
-
+import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 
 /**
- * Class representing a 2D transformation of the form T(z) = sqrt(p * (z - c)).
- * P is a complex number and c is a complex number.
- *
- * <p> The class includes a method to transform a 2D point using the transformation.
- *
- * @author janja
- * @version 0.2.0
- * @see Transform2D
- * @see Complex
- * @see Vector2D
- * @since 0.1.0
+ * The class JuliaTransform represents a transformation in 2D space. The transformation is a square
+ * root transformation of a complex number. Responsibility: Represent a transformation in 2D space.
  */
 public class JuliaTransform extends Transform2D {
-
     private Complex point;
-    private int sign;
-    private boolean toggle = false;
+    private final int sign;
 
     /**
-     * Constructor for the JuliaTransform class
+     * Instantiates a new Julia transform.
      *
-     * @param inputPoint the complex number c
-     * @param inputSign  the sign of the transformation
+     * @param point the point
+     * @param sign the sign
      */
-    public JuliaTransform(Complex inputPoint, int inputSign) {
-        this.point = inputPoint;
-        this.sign = inputSign;
+    public JuliaTransform(Complex point, int sign) {
+        this.point = point;
+        this.sign = sign;
     }
 
     /**
-     * Returns a Complex object representing the complex number c of the transformation.
+     * Method for transforming a point using the transformation. Overrides the transform method in the
+     * Transform2D interface. The method transforms a point using the square root transformation of a
+     * complex number.
      *
-     * @return the complex number c
+     * @param point the point to be transformed
+     * @return Vector2D The resulting point.
      */
+    @Override
+    public Vector2D transform(Vector2D point) {
+        Complex z = new Complex(point.getX0(), point.getX1());
+        Complex subtracted = z.subtract(this.point);
+        Complex result = subtracted.sqrt();
+
+        if (this.sign == -1) {
+            return new Vector2D(result.getReal() * -1, result.getImaginary() * -1);
+        }
+
+        return new Vector2D(result.getReal(), result.getImaginary());
+    }
 
     public Complex getPoint() {
         return point;
     }
 
-    /**
-     * Returns an int representing the sign of the transformation.
-     *
-     * @return the sign of the transformation
-     */
-
-    public int getSign() {
+    public void setComplex(Complex complex) {
+        this.point = complex;
+    }
+    public int getSign(){
         return sign;
     }
-
-    /**
-     * Transforms a 2D point using the Julia transformation.
-     *
-     * @param point the point to transform
-     * @return the transformed point as an instance of Vector2D
-     */
-    @Override
-    public Vector2D transform(Vector2D point) {
-        Complex z = new Complex(point.getX0(), point.getX1());
-        Vector2D subtracted = z.subtract(this.point);
-        Complex subtractedComplex = new Complex(subtracted.getX0(), subtracted.getX1());
-        Complex[] sqrt = subtractedComplex.sqrt();
-
-        Complex chosenSqrt = sqrt[toggle ? 0 : 1];
-        toggle = !toggle;
-
-        if (this.sign == 1) {
-            return new Vector2D(chosenSqrt.getX0(), chosenSqrt.getX1());
-        } else {
-            return new Vector2D(-chosenSqrt.getX0(), -chosenSqrt.getX1());
-        }
-    }
-
 }
+
