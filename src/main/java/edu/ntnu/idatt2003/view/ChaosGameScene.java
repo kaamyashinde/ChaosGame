@@ -50,7 +50,7 @@ public class ChaosGameScene extends Application implements ChaosGameObserver {
     startGame();
     chaosGameCanvas.addObserver(this);
     setScene(primaryStage);
-    controller = new Controller(primaryStage);
+    controller = new Controller();
     addThousandPixelsButton.setOnAction(e -> runThousandSteps());
     clearCanvasButton.setOnAction(e -> clearCanvas());
   }

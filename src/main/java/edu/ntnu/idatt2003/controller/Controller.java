@@ -23,7 +23,6 @@ import java.util.List;
 public class Controller {
   private static final String FILE_PATH = "src/main/resources/";
   ArrayList<ChaosGameDescription> chaosGameDescriptions;
-  ChaosGameDescription currentDescription;
   List<Transform2D> affineTransforms = new ArrayList<>();
   Stage stage;
   ChaosGame chaosGame;
@@ -32,8 +31,7 @@ public class Controller {
   Vector2D minCoords;
   Vector2D maxCoords;
 
-  public Controller(Stage stage) {
-    this.stage = stage;
+  public Controller() {
     chaosGameDescriptions = new ArrayList<>();
     loadChaosGamePresets();
   }

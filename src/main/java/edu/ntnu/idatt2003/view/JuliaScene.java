@@ -38,13 +38,13 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   VBox rightBodyRow;
   int numOfTransforms;
 
-  public static void main(String[] args) {
+  /*public static void main(String[] args) {
     launch(args);
   }
-
+*/
   @Override
   public void start(Stage primaryStage) {
-    controller = new Controller(primaryStage);
+    controller = new Controller();
     layout = new AnchorPane();
     VBox root = new VBox();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
