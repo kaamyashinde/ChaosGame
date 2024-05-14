@@ -36,6 +36,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   List<TextField> maxAndMinCoordsTextFields = maxAndMinCoordsTextFieldsList();
   List<Button> affineTransformationButtons = affineTransformationButtonsList();
   VBox rightBodyRow;
+  int numOfTransforms;
 
   public static void main(String[] args) {
     launch(args);
@@ -190,6 +191,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
         handleEditGameConfigButtons().get(1),
         handleEditGameConfigButtons().get(2));
 
+    controller.setEditable(maxAndMinCoordsTextFields, false);
+    controller.setEditable(transformationTextFields, false);
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
@@ -205,16 +208,25 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     Button editGameConfigButton = new Button("Edit Game Config");
     editGameConfigButton.setOnAction(e -> {
       controller.setEditable(maxAndMinCoordsTextFields, true);
-      controller.setEditable(transformationTextFields, true);
+      transformationNumber.setEditable(true);
+      //controller.setEditable(transformationTextFields, true);
     });
     Button registerCoordsButton = new Button("Register Coordinates");
     registerCoordsButton.setOnAction(e -> controller.registerCoordinates(maxAndMinCoordsTextFields));
+
+    Button editNumOfTransformsButton = new Button("Edit Number of Transforms");
+    editNumOfTransformsButton.setOnAction(e -> {
+      numOfTransforms = Integer.parseInt(transformationNumber.getText());
+      controller.setEditable(transformationTextFields, true);
+      System.out.println("number of transformations to be registered: " + numOfTransforms);
+    });
     Button registerAffineTransformationsButton = new Button("Register Affine Transformations");
     registerAffineTransformationsButton.setOnAction(e -> {
-      controller.registerAffineTransformation(transformationTextFields);
-
+      controller.registerAffineTransformation(transformationTextFields, numOfTransforms);
+      controller.clearTextFields(transformationTextFields);
+      System.out.println("affine transformation registered.");
     });
-    return List.of(editGameConfigButton, registerCoordsButton, registerAffineTransformationsButton);
+    return List.of(editGameConfigButton, registerCoordsButton, editNumOfTransformsButton,registerAffineTransformationsButton);
   }
 
   /**
@@ -236,10 +248,17 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     addThousandPixelsButton.setOnAction(e ->
         game.runSteps(10000)
     );
+    Button runNewConfigButton = new Button("Run New Config");
+    runNewConfigButton.setOnAction(e -> {
+      game.getCanvas().clear();
+      game = new ChaosGame(controller.getNewestChaosGameDescription(), 500, 500);
+      game.getCanvas().addObserver(this);
+      game.runSteps(10000);
+    });
 
     Button clearCanvasButton = new Button("Clear Canvas");
     clearCanvasButton.setOnAction(e -> game.getCanvas().clear());
-    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
+    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton, runNewConfigButton);
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
   }
@@ -270,6 +289,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           game.getCanvas().clear();
           System.out.println("Barnsley preset button was clicked!");
           controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
+          rightBodyRow.getChildren().add(handleEditGameConfigButtons().get(3));
           break;
         case "Sierpinski":
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
@@ -278,6 +298,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           game.getCanvas().clear();
           System.out.println("Sierpinski preset button was clicked!");
           controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
+          rightBodyRow.getChildren().add(handleEditGameConfigButtons().get(3));
+
           break;
         default:
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");

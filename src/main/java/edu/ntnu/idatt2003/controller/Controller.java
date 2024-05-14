@@ -11,6 +11,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -23,11 +24,13 @@ public class Controller {
   private static final String FILE_PATH = "src/main/resources/";
   ArrayList<ChaosGameDescription> chaosGameDescriptions;
   ChaosGameDescription currentDescription;
-  List<Transform2D> affineTransforms;
+  List<Transform2D> affineTransforms = new ArrayList<>();
   Stage stage;
   ChaosGame chaosGame;
   int transformNum;
   GraphicsContext gc;
+  Vector2D minCoords;
+  Vector2D maxCoords;
 
   public Controller(Stage stage) {
     this.stage = stage;
@@ -185,8 +188,8 @@ public class Controller {
    * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
    */
   public void registerCoordinates(List<TextField> inputList) {
-    Vector2D minCoords = new Vector2D(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
-    Vector2D maxCoords = new Vector2D(Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
+    minCoords = new Vector2D(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
+    maxCoords = new Vector2D(Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
     System.out.println(minCoords.getX0() + " " + minCoords.getX1() + " | " + maxCoords.getX0() + " " + maxCoords.getX1());
   }
 
@@ -213,12 +216,37 @@ public class Controller {
     return new Vector2D(Double.parseDouble(inputTextFields.get(4).getText()), Double.parseDouble(inputTextFields.get(5).getText()));
   }
 
-  public void registerAffineTransformation(List<TextField> inputTextFields) {
+  public void registerAffineTransformation(List<TextField> inputTextFields, int numOfTransforms) {
+    if (affineTransforms.size() < numOfTransforms){
     Matrix2x2 matrix = registerAffineTransformationMatrix(inputTextFields);
     Vector2D vector = registerAffineTransformationVector(inputTextFields);
     AffineTransform2D affine = new AffineTransform2D(matrix, vector);
-    affineTransforms.add(affine);
+    affineTransforms.add(affine);}
+    else {
+      System.out.println("You have reached the maximum number of transformations");
+      System.out.println("updating the chaos game so that u can run the game.");
+      createNewChaosGameDescription();
+    }
   }
+  /**
+   * Method that clears the text fields in a list.
+   */
+  public void clearTextFields(List<TextField> inputList) {
+    inputList.forEach(TextInputControl::clear);}
 
-
+/**
+ * Method that creates a new chaos game description object from the user input.
+ */
+public void createNewChaosGameDescription(){
+  ChaosGameDescription newDescription = new ChaosGameDescription(minCoords, maxCoords, affineTransforms);
+  System.out.println(affineTransforms.size());
+  chaosGameDescriptions.add(newDescription);
+ affineTransforms.clear();
+}
+/**
+ * Method that returns the newest chaos game description object.
+ */
+public ChaosGameDescription getNewestChaosGameDescription(){
+  return chaosGameDescriptions.get(chaosGameDescriptions.size()-1);}
+//TODO; fix why the affineTransforms is empty
 }
