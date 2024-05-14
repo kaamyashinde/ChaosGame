@@ -5,7 +5,6 @@ import edu.ntnu.idatt2003.controller.Controller;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
-import edu.ntnu.idatt2003.model.transformations.Transform2D;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -31,7 +30,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   ChaosGame game;
   Button addThousandPixelsButton;
   ChaosGameDescription chaosGameDescription;
-  TextField transformationNumber;
+  TextField transformationNumber = new TextField();
   TextField constantC;
   List<TextField> transformationTextFields = affineTransformationTextFieldsList();
   List<TextField> maxAndMinCoordsTextFields = maxAndMinCoordsTextFieldsList();
@@ -98,6 +97,14 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   }
 
   /**
+   * Method that sets the constant c.
+   */
+  private void setConstantC() {
+    constantC = new TextField();
+    constantC.setPromptText("Constant C");
+  }
+
+  /**
    * Method that creates a list containing the max and min coordinates text fields.
    */
   private List<TextField> maxAndMinCoordsTextFieldsList() {
@@ -106,6 +113,12 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     TextField minCoordsX1 = new TextField();
     TextField maxCoordsX0 = new TextField();
     TextField maxCoordsX1 = new TextField();
+
+    minCoordsX0.setPromptText("Min X0");
+    minCoordsX1.setPromptText("Min X1");
+    maxCoordsX0.setPromptText("Max X0");
+    maxCoordsX1.setPromptText("Max X1");
+
     return List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
   }
 
@@ -128,22 +141,17 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     TextField matrixA11 = new TextField();
     TextField vectorB0 = new TextField();
     TextField vectorB1 = new TextField();
+    matrixA00.setPromptText("Matrix A00");
+    matrixA01.setPromptText("Matrix A01");
+    matrixA10.setPromptText("Matrix A10");
+    matrixA11.setPromptText("Matrix A11");
+    vectorB0.setPromptText("Vector B0");
+    vectorB1.setPromptText("Vector B1");
 
     constantC = new TextField();
     return List.of(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
   }
 
-  /**
-   * Method that creates a map containing the matrix and vector for a specific affine transformation.
-   *
-   * @return The map containing the matrix and vector for a specific affine transformation.
-   */
-
-  private HashMap<Integer, List<TextField>> affineTransformationTextFieldsMap() {
-    HashMap<Integer, List<TextField>> map = new HashMap<>();
-    // map.put(0, List.of(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1));
-    return map;
-  }
 
   /**
    * Method that creates the buttons for the different fractals and returns them.
@@ -246,10 +254,29 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
 
-    //initialise the different text fields
-    setPromptText();
+    setConstantC();
 
-    //to allow the user to edit the text fields
+    rightBodyRow.getChildren().addAll(
+        handleEditGameConfigButtons().get(0),
+        maxAndMinCoordsTextFields.get(0),
+        maxAndMinCoordsTextFields.get(1),
+        maxAndMinCoordsTextFields.get(2),
+        maxAndMinCoordsTextFields.get(3),
+        handleEditGameConfigButtons().get(1),
+        handleEditGameConfigButtons().get(2));
+
+    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
+    bodyRow.setAlignment(Pos.CENTER);
+    return bodyRow;
+  }
+
+  /**
+   * Method that handles the buttons for editing the game configuration.
+   * The buttons are "Edit Game Config", "Register Coordinates" and "Register Affine Transformations".
+   *
+   * @return A list containing the buttons.
+   */
+  private List<Button> handleEditGameConfigButtons() {
     Button editGameConfigButton = new Button("Edit Game Config");
     editGameConfigButton.setOnAction(e -> {
       controller.setEditable(maxAndMinCoordsTextFields, true);
@@ -258,30 +285,19 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     Button registerCoordsButton = new Button("Register Coordinates");
     registerCoordsButton.setOnAction(e -> controller.registerCoordinates(maxAndMinCoordsTextFields));
     Button registerAffineTransformationsButton = new Button("Register Affine Transformations");
-    registerAffineTransformationsButton.setOnAction(e -> registerAffineTransformations());
+    registerAffineTransformationsButton.setOnAction(e -> {
+      controller.registerAffineTransformation(transformationTextFields);
 
-
-    rightBodyRow.getChildren().addAll(
-        editGameConfigButton,
-        maxAndMinCoordsTextFields.get(0),
-        maxAndMinCoordsTextFields.get(1),
-        maxAndMinCoordsTextFields.get(2),
-        maxAndMinCoordsTextFields.get(3),
-        registerCoordsButton,
-        registerAffineTransformationsButton);
-
-    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
-    bodyRow.setAlignment(Pos.CENTER);
-    return bodyRow;
+    });
+    return List.of(editGameConfigButton, registerCoordsButton, registerAffineTransformationsButton);
   }
 
   /**
    * Method that displays the transformation matrices and the current transformation number after removing the constant C.
    */
   private void displayTransformationMatrices() {
+
     controller.switchBetweenDisplayOfAffineAndJuliaValues(1, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
-    transformationNumber.setText("1");
-    transformationNumber.setEditable(false);
     controller.displayCorrectAffineTransformation(chaosGameDescription, affineTransformationButtons, transformationTextFields, transformationNumber);
 
   }
@@ -303,32 +319,4 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     return footerRow;
   }
 
-  private void setPromptText() {
-    System.out.println("Setting prompt text");
-    maxAndMinCoordsTextFields.get(0).setPromptText("Min X0");
-    maxAndMinCoordsTextFields.get(1).setPromptText("Min X1");
-    maxAndMinCoordsTextFields.get(2).setPromptText("Max X0");
-    maxAndMinCoordsTextFields.get(3).setPromptText("Max X1");
-    transformationTextFields.get(0).setPromptText("Matrix A00");
-    transformationTextFields.get(1).setPromptText("Matrix A01");
-    transformationTextFields.get(2).setPromptText("Matrix A10");
-    transformationTextFields.get(3).setPromptText("Matrix A11");
-
-    transformationTextFields.get(4).setPromptText("Vector B1");
-    transformationTextFields.get(5).setPromptText("Vector B0");
-    constantC.setPromptText("Constant C");
-  }
-
-  /**
-   * Method that registers the transformations of the affine type.
-   */
-  private void registerAffineTransformations() {
-    double matrixA00 = Double.parseDouble(this.transformationTextFields.get(0).getText());
-    double matrixA01 = Double.parseDouble(this.transformationTextFields.get(1).getText());
-    double matrixA10 = Double.parseDouble(this.transformationTextFields.get(2).getText());
-    double matrixA11 = Double.parseDouble(this.transformationTextFields.get(3).getText());
-    double vectorB0 = Double.parseDouble(this.transformationTextFields.get(4).getText());
-    double vectorB1 = Double.parseDouble(this.transformationTextFields.get(5).getText());
-    System.out.println(matrixA00 + " " + matrixA01 + " | " + matrixA10 + " " + matrixA11 + " | " + vectorB0 + " " + vectorB1);
-  }
 }

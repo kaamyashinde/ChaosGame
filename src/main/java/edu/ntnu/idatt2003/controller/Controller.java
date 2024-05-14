@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.controller;
 
+import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
@@ -18,6 +19,7 @@ public class Controller {
   private static final String FILE_PATH = "src/main/resources/";
   ArrayList<ChaosGameDescription> chaosGameDescriptions;
   ChaosGameDescription currentDescription;
+  List<Transform2D> affineTransforms;
   Stage stage;
   ChaosGame chaosGame;
   int transformNum;
@@ -67,14 +69,7 @@ public class Controller {
     inputTextFields.get(5).setText(String.valueOf(affine.getVector().getX1()));
   }
 
-  /**
-   * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
-   */
-  public void registerCoordinates(List<TextField> inputList) {
-    Vector2D minCoords = new Vector2D(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
-    Vector2D maxCoords = new Vector2D(Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
-    System.out.println(minCoords + " " + maxCoords);
-  }
+
 
   /**
    * Method that sets the text fields in a list to be editable or not.
@@ -104,6 +99,9 @@ public class Controller {
    * @param inputConstantC            the input field for the constant c
    */
   public void switchBetweenDisplayOfAffineAndJuliaValues(int caseNum, VBox inputVBox, TextField inputTransformationNumber, List<TextField> inputTransformationList, List<Button> inputTraverseButtons, TextField inputConstantC) {
+    inputTransformationNumber.setText("1");
+    inputTransformationNumber.setEditable(false);
+
     if (caseNum == 0) {
       inputTransformationList.forEach(textField -> inputVBox.getChildren().remove(textField));
       inputTraverseButtons.forEach(button -> inputVBox.getChildren().remove(button));
@@ -153,6 +151,43 @@ public class Controller {
     });
   }
 
+  /**
+   * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
+   */
+  public void registerCoordinates(List<TextField> inputList) {
+    Vector2D minCoords = new Vector2D(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
+    Vector2D maxCoords = new Vector2D(Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
+    System.out.println(minCoords.getX0() + " " + minCoords.getX1() + " | " + maxCoords.getX0() + " " + maxCoords.getX1());
+  }
+
+  /**
+   * Method that registers the affine transformations from the user input.
+   * It then returns the matrix.
+   *
+   * @param inputTextFields the list of input fields for the affine transformations
+   * @return the matrix
+   */
+  public Matrix2x2 registerAffineTransformationMatrix(List<TextField> inputTextFields) {
+    return new Matrix2x2(Double.parseDouble(inputTextFields.get(0).getText()), Double.parseDouble(inputTextFields.get(1).getText()), Double.parseDouble(inputTextFields.get(2).getText()), Double.parseDouble(inputTextFields.get(3).getText()));
+  }
+
+  /**
+   * Method that registers the affine transformations from the user input.
+   * It then returns the vector.
+   *
+   * @param inputTextFields the list of input fields for the affine transformations
+   * @return the vector
+   */
+
+  public Vector2D registerAffineTransformationVector(List<TextField> inputTextFields) {
+    return new Vector2D(Double.parseDouble(inputTextFields.get(4).getText()), Double.parseDouble(inputTextFields.get(5).getText()));
+  }
+  public void registerAffineTransformation(List<TextField> inputTextFields){
+    Matrix2x2 matrix = registerAffineTransformationMatrix(inputTextFields);
+    Vector2D vector = registerAffineTransformationVector(inputTextFields);
+    AffineTransform2D affine = new AffineTransform2D(matrix, vector);
+    affineTransforms.add(affine);
+  }
 
 
 }
