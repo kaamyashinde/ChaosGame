@@ -105,9 +105,9 @@ public class ChaosGameFileHandler {
                     Vector2D vector = new Vector2D(Double.parseDouble(transformParts[4]), Double.parseDouble(transformParts[5]));
                     transforms.add(new AffineTransform2D(matrix, vector));
                 } else if (transformType.equals("JuliaTransform")) {
-                    //Complex point = new Complex(Double.parseDouble(transformParts[0]), Double.parseDouble(transformParts[1]));
-                    Complex point = new Complex(Double.parseDouble(transformParts[0]), Double.parseDouble(transformParts[1]));
+                    Complex point = new Complex(Double.parseDouble(transformParts[0].trim()), Double.parseDouble(transformParts[1].trim()));
                     transforms.add(new JuliaTransform(point, 1));
+                    transforms.add(new JuliaTransform(point, -1));
                 }
             }
 

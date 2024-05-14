@@ -56,9 +56,9 @@ public class ModelValidators {
      * @throws IllegalArgumentException if the complex is null
      */
     public static void validateRealPartValue(double realPart) {
-        if (realPart < -3.5 || realPart > 2) {
+       /* if (realPart < -3.5 || realPart > 2) {
             throw new IllegalArgumentException("realPart must be between -3.5 and 2");
-        }
+        }*/
     }
 
     /**

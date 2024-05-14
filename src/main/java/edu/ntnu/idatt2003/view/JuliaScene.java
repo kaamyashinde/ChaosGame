@@ -5,7 +5,6 @@ import edu.ntnu.idatt2003.controller.Controller;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
-import edu.ntnu.idatt2003.model.transformations.Transform2D;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -20,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class JuliaScene extends Application implements ChaosGameObserver {
@@ -30,22 +30,13 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   ChaosGame game;
   Button addThousandPixelsButton;
   ChaosGameDescription chaosGameDescription;
-  TextField minCoordsX0;
-  TextField minCoordsX1;
-  TextField maxCoordsX0;
-  TextField maxCoordsX1;
-  TextField transformationNumber;
+  TextField transformationNumber = new TextField();
   TextField constantC;
-  TextField matrixA00;
-  TextField matrixA01;
-  TextField matrixA10;
-  TextField matrixA11;
-  TextField vectorB0;
-  TextField vectorB1;
-  Button nextTransformation;
-  Button previousTransformation;
-  int transformNum;
+  List<TextField> transformationTextFields = affineTransformationTextFieldsList();
+  List<TextField> maxAndMinCoordsTextFields = maxAndMinCoordsTextFieldsList();
+  List<Button> affineTransformationButtons = affineTransformationButtonsList();
   VBox rightBodyRow;
+  int numOfTransforms;
 
   public static void main(String[] args) {
     launch(args);
@@ -70,88 +61,71 @@ public class JuliaScene extends Application implements ChaosGameObserver {
 
   @Override
   public void updateAddPixel(double X0, double X1) {
-    // Define the start and end colors for the gradient
-    Color startColor = Color.rgb(230, 183,183); // bright red
-    Color endColor = Color.rgb(215,8,8); // dark red
-
-    // Calculate the fraction based on the y-coordinate
-    double fraction = X1 / 500; // assuming the height of the canvas is 500
-
-    // Interpolate between the start and end colors based on the fraction
-    Color gradientColor = startColor.interpolate(endColor, fraction);
-
-    // Set the fill color to the gradient color
-    gc.setFill(gradientColor);
-
-    // Draw the pixel
-    gc.fillRect(X0, X1, 1, 1);
+    controller.addGradientColor(X0, X1);
   }
 
   @Override
   public void updateRemovePixel(double X0, double X1) {
-    gc.clearRect(X0, X1, 1, 1);
+    controller.removeGradientColor(X0, X1);
   }
 
   /**
-   * Method that uses the controller to gain access to the chaos game.
+   * Method that sets the constant c.
    */
-  private StackPane gamePaneCanvas() {
-    updateChaosGameObject(controller.readChaosGameDescriptionFromFile("Affine.txt"));
-    Canvas canvas = new Canvas(500, 500);
-    gc = canvas.getGraphicsContext2D();
-    StackPane chaosGamePane = new StackPane();
-    chaosGamePane.getChildren().add(canvas);
-
-
-    return chaosGamePane;
+  private void setConstantC() {
+    constantC = new TextField();
+    constantC.setPromptText("Constant C");
   }
 
   /**
-   * Method that creates the buttons for the different fractals and returns them.
-   *
-   * @param fractalName The name of the fractal.
-   * @return The button for the fractal.
+   * Method that creates a list containing the max and min coordinates text fields.
    */
+  private List<TextField> maxAndMinCoordsTextFieldsList() {
 
-  public Button createPresetFractalButton(String fractalName) {
-    Button button = new Button(fractalName);
-    button.setOnAction(e -> {
-      switch (fractalName) {
-        case "Julia":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Julia.txt");
-          updateChaosGameObject(chaosGameDescription);
-          game.getCanvas().clear();
-          System.out.println("Julia");
-          displayConstantC();
-          displayMinMaxCoords();
-          break;
-        case "Barnsley":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
-          updateChaosGameObject(chaosGameDescription);
-          displayTransformationMatrices();
-          game.getCanvas().clear();
-          System.out.println("Barnsley");
-          displayMinMaxCoords();
-          break;
-        case "Sierpinski":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
-          updateChaosGameObject(chaosGameDescription);
-          displayTransformationMatrices();
-          game.getCanvas().clear();
-          System.out.println("Sierpinski");
-          displayMinMaxCoords();
+    TextField minCoordsX0 = new TextField();
+    TextField minCoordsX1 = new TextField();
+    TextField maxCoordsX0 = new TextField();
+    TextField maxCoordsX1 = new TextField();
 
-          break;
-        default:
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");
-          displayConfigInfo();
-          updateChaosGameObject(chaosGameDescription);
+    minCoordsX0.setPromptText("Min X0");
+    minCoordsX1.setPromptText("Min X1");
+    maxCoordsX0.setPromptText("Max X0");
+    maxCoordsX1.setPromptText("Max X1");
 
-          break;
-      }
-    });
-    return button;
+    return List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
   }
+
+  /**
+   * Method that creates a list containing the buttons used to control the viewing of the Affine transformations.
+   */
+  private List<Button> affineTransformationButtonsList() {
+    Button previousTransformation = new Button("Previous Transformation");
+    Button nextTransformation = new Button("Next Transformation");
+    return List.of(previousTransformation, nextTransformation);
+  }
+
+  /**
+   * Method that creates a list containing the matrix and vector for a specific affine transformation.
+   */
+  private List<TextField> affineTransformationTextFieldsList() {
+    TextField matrixA00 = new TextField();
+    TextField matrixA01 = new TextField();
+    TextField matrixA10 = new TextField();
+    TextField matrixA11 = new TextField();
+    TextField vectorB0 = new TextField();
+    TextField vectorB1 = new TextField();
+    matrixA00.setPromptText("Matrix A00");
+    matrixA01.setPromptText("Matrix A01");
+    matrixA10.setPromptText("Matrix A10");
+    matrixA11.setPromptText("Matrix A11");
+    vectorB0.setPromptText("Vector B0");
+    vectorB1.setPromptText("Vector B1");
+
+    constantC = new TextField();
+    return List.of(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
+  }
+
+
 
   /**
    * Update the chaosGame object.
@@ -196,7 +170,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   private HBox bodyHBox() {
     HBox bodyRow = new HBox();
     VBox leftBodyRow = new VBox();
-    StackPane chaosGamePane = gamePaneCanvas();
+    StackPane chaosGamePane = controller.createGamePaneCanvas();
 
     rightBodyRow = new VBox();
 
@@ -206,85 +180,63 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
 
-    //initialise the different text fields
-    startGameMenu();
+    setConstantC();
 
-    //to allow the user to edit the text fields
-    Button editGameConfigButton = new Button("Edit Game Config");
-    editGameConfigButton.setOnAction(e -> editGameConfig());
-    Button registerCoordsButton = new Button("Register Coordinates");
-    registerCoordsButton.setOnAction(e -> registerCoordinates());
-    Button registerAffineTransformationsButton = new Button("Register Affine Transformations");
-    registerAffineTransformationsButton.setOnAction(e -> registerAffineTransformations());
+    rightBodyRow.getChildren().addAll(
+        handleEditGameConfigButtons().get(0),
+        maxAndMinCoordsTextFields.get(0),
+        maxAndMinCoordsTextFields.get(1),
+        maxAndMinCoordsTextFields.get(2),
+        maxAndMinCoordsTextFields.get(3),
+        handleEditGameConfigButtons().get(1),
+        handleEditGameConfigButtons().get(2));
 
-    //to traverse between the different transformations
-    previousTransformation = new Button("Previous Transformation");
-    nextTransformation = new Button("Next Transformation");
-
-    transformationNumber = new TextField("1");
-    transformationNumber.setEditable(false);
-
-
-    rightBodyRow.getChildren().addAll(editGameConfigButton, minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, registerCoordsButton, registerAffineTransformationsButton);
-
+    controller.setEditable(maxAndMinCoordsTextFields, false);
+    controller.setEditable(transformationTextFields, false);
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
   }
 
   /**
+   * Method that handles the buttons for editing the game configuration.
+   * The buttons are "Edit Game Config", "Register Coordinates" and "Register Affine Transformations".
+   *
+   * @return A list containing the buttons.
+   */
+  private List<Button> handleEditGameConfigButtons() {
+    Button editGameConfigButton = new Button("Edit Game Config");
+    editGameConfigButton.setOnAction(e -> {
+      controller.setEditable(maxAndMinCoordsTextFields, true);
+      transformationNumber.setEditable(true);
+      //controller.setEditable(transformationTextFields, true);
+    });
+    Button registerCoordsButton = new Button("Register Coordinates");
+    registerCoordsButton.setOnAction(e -> controller.registerCoordinates(maxAndMinCoordsTextFields));
+
+    Button editNumOfTransformsButton = new Button("Edit Number of Transforms");
+    editNumOfTransformsButton.setOnAction(e -> {
+      numOfTransforms = Integer.parseInt(transformationNumber.getText());
+      controller.setEditable(transformationTextFields, true);
+      System.out.println("number of transformations to be registered: " + numOfTransforms);
+    });
+    Button registerAffineTransformationsButton = new Button("Register Affine Transformations");
+    registerAffineTransformationsButton.setOnAction(e -> {
+      controller.registerAffineTransformation(transformationTextFields, numOfTransforms);
+      controller.clearTextFields(transformationTextFields);
+      System.out.println("affine transformation registered.");
+    });
+    return List.of(editGameConfigButton, registerCoordsButton, editNumOfTransformsButton,registerAffineTransformationsButton);
+  }
+
+  /**
    * Method that displays the transformation matrices and the current transformation number after removing the constant C.
    */
   private void displayTransformationMatrices() {
-    rightBodyRow.getChildren().remove(constantC);
-    if (!rightBodyRow.getChildren().contains(transformationNumber)) {
-      rightBodyRow.getChildren().addAll(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, previousTransformation, nextTransformation, transformationNumber);
-    }
-    displayConfigInfo();
-  }
 
-  /**
-   * Method that removes the transformation matrices and displays the constant C.
-   */
-  private void displayConstantC() {
-    rightBodyRow.getChildren().removeAll(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, previousTransformation, nextTransformation, transformationNumber);
-    if (!rightBodyRow.getChildren().contains(constantC)) {
-      rightBodyRow.getChildren().add(constantC);
-    }
-  }
+    controller.switchBetweenDisplayOfAffineAndJuliaValues(1, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
+    controller.displayCorrectAffineTransformation(chaosGameDescription, affineTransformationButtons, transformationTextFields, transformationNumber);
 
-  /**
-   * Method that shows the current chaos game description in the field.
-   */
-  private void displayConfigInfo() {
-    System.out.println("Displaying config info");
-    ChaosGameDescription desc = chaosGameDescription;
-    List<Transform2D> transforms = desc.getTransforms();
-    transformNum = 0;
-    controller.displayCanvasCoordinates(
-        0, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
-    previousTransformation.setOnAction(e -> {
-      transformNum--;
-      if (transformNum < 0) {
-        transformNum = transforms.size() - 1;
-      }
-      controller.displayCanvasCoordinates(
-          transformNum, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1)
-      ;
-      transformationNumber.setText(String.valueOf(transformNum + 1));
-
-    });
-    nextTransformation.setOnAction(e -> {
-      transformNum++;
-      if (transformNum == transforms.size()) {
-        transformNum = 0;
-      }
-      controller.displayCanvasCoordinates(
-          transformNum, desc, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1)
-      ;
-      transformationNumber.setText(String.valueOf(transformNum + 1));
-
-    });
   }
 
   /**
@@ -296,92 +248,66 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     addThousandPixelsButton.setOnAction(e ->
         game.runSteps(10000)
     );
+    Button runNewConfigButton = new Button("Run New Config");
+    runNewConfigButton.setOnAction(e -> {
+      game.getCanvas().clear();
+      game = new ChaosGame(controller.getNewestChaosGameDescription(), 500, 500);
+      game.getCanvas().addObserver(this);
+      game.runSteps(10000);
+    });
 
     Button clearCanvasButton = new Button("Clear Canvas");
     clearCanvasButton.setOnAction(e -> game.getCanvas().clear());
-    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
+    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton, runNewConfigButton);
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
   }
 
   /**
-   * Method to initiate the user adjustments for the chaos game.
+   * Method that creates the buttons for the different fractals and returns them.
+   *
+   * @param fractalName The name of the fractal.
+   * @return The button for the fractal.
    */
-  private void startGameMenu() {
 
-    minCoordsX0 = new TextField();
-    minCoordsX1 = new TextField();
-    maxCoordsX0 = new TextField();
-    maxCoordsX1 = new TextField();
+  public Button createPresetFractalButton(String fractalName) {
+    Button button = new Button(fractalName);
+    button.setOnAction(e -> {
+      switch (fractalName) {
+        case "Julia":
+          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Julia.txt");
+          updateChaosGameObject(chaosGameDescription);
+          game.getCanvas().clear();
+          System.out.println("Julia preset button was clicked!");
+          controller.switchBetweenDisplayOfAffineAndJuliaValues(0, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
+          break;
+        case "Barnsley":
+          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
+          updateChaosGameObject(chaosGameDescription);
+          displayTransformationMatrices();
+          game.getCanvas().clear();
+          System.out.println("Barnsley preset button was clicked!");
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
+          rightBodyRow.getChildren().add(handleEditGameConfigButtons().get(3));
+          break;
+        case "Sierpinski":
+          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
+          updateChaosGameObject(chaosGameDescription);
+          displayTransformationMatrices();
+          game.getCanvas().clear();
+          System.out.println("Sierpinski preset button was clicked!");
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
+          rightBodyRow.getChildren().add(handleEditGameConfigButtons().get(3));
 
-    matrixA00 = new TextField();
-
-    matrixA01 = new TextField();
-
-    matrixA10 = new TextField();
-    matrixA11 = new TextField();
-    vectorB0 = new TextField();
-    vectorB1 = new TextField();
-
-    constantC = new TextField();
-
-    setPromptText();
-    List<TextField> textFields = List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, constantC);
-    textFields.forEach(textField -> textField.setEditable(false));
+          break;
+        default:
+          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");
+          updateChaosGameObject(chaosGameDescription);
+          break;
+      }
+    });
+    return button;
   }
 
-  /**
-   * Method that allows the user to edit the text fields.
-   * This method is called when the user wants to edit the text fields.
-   */
-  private void editGameConfig() {
-    List<TextField> textFields = List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1, matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1, constantC);
-    textFields.forEach(textField -> textField.setEditable(true));
-  }
-
-  /**
-   * Method that displays the current chaosGameDescription Object's coordinates.
-   */
-  private void displayMinMaxCoords(){
-    ChaosGameDescription desc = chaosGameDescription;
-    minCoordsX0.setText(String.valueOf(desc.getMinCoords().getX0()));
-    minCoordsX1.setText(String.valueOf(desc.getMinCoords().getX1()));
-    maxCoordsX0.setText(String.valueOf(desc.getMaxCoords().getX0()));
-    maxCoordsX1.setText(String.valueOf(desc.getMaxCoords().getX1()));
-
-  }
-  private void registerCoordinates() {
-    double minCoordsX0 = Double.parseDouble(this.minCoordsX0.getText());
-    double minCoordsX1 = Double.parseDouble(this.minCoordsX1.getText());
-    double maxCoordsX0 = Double.parseDouble(this.maxCoordsX0.getText());
-    double maxCoordsX1 = Double.parseDouble(this.maxCoordsX1.getText());
-    System.out.println(minCoordsX0 + " " + minCoordsX1 + " | " + maxCoordsX0 + " " + maxCoordsX1);
-  }
-
-  private void setPromptText() {
-    minCoordsX0.setPromptText("Min X0");
-    minCoordsX1.setPromptText("Min X1");
-    maxCoordsX0.setPromptText("Max X0");
-    maxCoordsX1.setPromptText("Max X1");
-    matrixA00.setPromptText("Matrix A00");
-    matrixA01.setPromptText("Matrix A01");
-    matrixA10.setPromptText("Matrix A10");
-    vectorB1.setPromptText("Vector B1");
-    vectorB0.setPromptText("Vector B0");
-    constantC.setPromptText("Constant C");
-    matrixA11.setPromptText("Matrix A11");
-  }
-
-  /**
-   * Method that registers the transformations of the affine type.
-   */
-  private void registerAffineTransformations(){
-    double matrixA00 = Double.parseDouble(this.matrixA00.getText());
-    double matrixA01 = Double.parseDouble(this.matrixA01.getText());
-    double matrixA10 = Double.parseDouble(this.matrixA10.getText());
-    double matrixA11 = Double.parseDouble(this.matrixA11.getText());
-    double vectorB0 = Double.parseDouble(this.vectorB0.getText());
-    double vectorB1 = Double.parseDouble(this.vectorB1.getText());
-    System.out.println(matrixA00 + " " + matrixA01 + " | " + matrixA10 + " " + matrixA11 + " | " + vectorB0 + " " + vectorB1);
-  }
 }

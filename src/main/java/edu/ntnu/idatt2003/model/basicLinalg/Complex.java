@@ -35,33 +35,26 @@ public class Complex extends Vector2D {
     ModelValidators.validateImaginaryPartValue(inputImaginaryPart);
     return new Complex(inputRealPart, inputImaginaryPart);
   }
-
   /**
-   * Method to find the square root of the complex number.
+   * Calculates the principal square root of the complex number. The principal square root is the
+   * one with the non-negative real part. If both square roots have a real part of zero, the one
+   * with positive imaginary part is considered principal.
    *
-   * <p>The length of the complex number is found using the Pythagorean theorem,
-   * and the angle is found using the arctan function.
-   * The square root of the length is found, and the angle is halved to find the new angle.
-   *
-   * @return the square root of the complex number as an instance of Complex class.
+   * @return Complex - The principal square root of the complex number. This is a new Complex object
+   *     whose real part is the square root of the magnitude (modulus) of the original complex
+   *     number multiplied by the cosine of half the angle, and whose imaginary part is the square
+   *     root of the magnitude of the original complex number multiplied by the sine of half the
+   *     angle.
    */
-  public Complex[] sqrt() {
-    double r = Math.sqrt(this.getX0() * this.getX0() + this.getX1() * this.getX1());
-    double theta = Math.atan2(this.getX1(), this.getX0());
-    double newR = Math.sqrt(r);
-    double newTheta = theta / 2;
+  public Complex sqrt() {
+    double magnitude = Math.sqrt(Math.sqrt(Math.pow(getX0(), 2) + Math.pow(getX1(), 2)));
+    double angle = Math.atan2(getX1(), getX0()) / 2.0;
 
-    double newRealPart1 = newR * Math.cos(newTheta);
-    double newImaginaryPart1 = newR * Math.sin(newTheta);
-
-    double newRealPart2 = -newR * Math.cos(newTheta);
-    double newImaginaryPart2 = -newR * Math.sin(newTheta);
-
-    return new Complex[] {
-            Complex.createComplex(newRealPart1, newImaginaryPart1),
-            Complex.createComplex(newRealPart2, newImaginaryPart2)
-    };
+    double real = magnitude * Math.cos(angle);
+    double imag = magnitude * Math.sin(angle);
+    return Complex.createComplex(real, imag);
   }
+
 
   /**
    * Returns a double representing the real part of the complex number.
@@ -80,4 +73,19 @@ public class Complex extends Vector2D {
   public double getImaginary() {
     return this.getX1();
   }
+  /**
+   * Method for subtracting two complex numbers.
+   *
+   * @param other the other complex number to add to this complex number
+   * @return Complex The sum of the two complex numbers.
+   */
+  public Complex subtract(Complex other) {
+    if (other == null) {
+      throw new ClassCastException("Complex number expected");
+    }
+    double real = getX0() - other.getX0();
+    double imag = getX1() - other.getX1();
+    return Complex.createComplex(real, imag);
+  }
+
 }
