@@ -33,12 +33,9 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   ChaosGameDescription chaosGameDescription;
   TextField transformationNumber;
   TextField constantC;
-
   List<TextField> transformationTextFields = affineTransformationTextFieldsList();
   List<TextField> maxAndMinCoordsTextFields = maxAndMinCoordsTextFieldsList();
-  Button nextTransformation;
-  Button previousTransformation;
-  int transformNum;
+  List<Button> affineTransformationButtons = affineTransformationButtonsList();
   VBox rightBodyRow;
 
   public static void main(String[] args) {
@@ -116,6 +113,8 @@ public class JuliaScene extends Application implements ChaosGameObserver {
    * Method that creates a list containing the buttons used to control the viewing of the Affine transformations.
    */
   private List<Button> affineTransformationButtonsList() {
+    Button previousTransformation = new Button("Previous Transformation");
+    Button nextTransformation = new Button("Next Transformation");
     return List.of(previousTransformation, nextTransformation);
   }
 
@@ -162,7 +161,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           updateChaosGameObject(chaosGameDescription);
           game.getCanvas().clear();
           System.out.println("Julia preset button was clicked!");
-          displayConstantC();
+          controller.switchBetweenDisplayOfAffineAndJuliaValues(0, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
           controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
 
           break;
@@ -186,7 +185,6 @@ public class JuliaScene extends Application implements ChaosGameObserver {
           break;
         default:
           chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");
-          displayConfigInfo();
           updateChaosGameObject(chaosGameDescription);
 
           break;
@@ -253,18 +251,14 @@ public class JuliaScene extends Application implements ChaosGameObserver {
 
     //to allow the user to edit the text fields
     Button editGameConfigButton = new Button("Edit Game Config");
-    editGameConfigButton.setOnAction(e -> editGameConfig());
+    editGameConfigButton.setOnAction(e -> {
+      controller.setEditable(maxAndMinCoordsTextFields, true);
+      controller.setEditable(transformationTextFields, true);
+    });
     Button registerCoordsButton = new Button("Register Coordinates");
     registerCoordsButton.setOnAction(e -> controller.registerCoordinates(maxAndMinCoordsTextFields));
     Button registerAffineTransformationsButton = new Button("Register Affine Transformations");
     registerAffineTransformationsButton.setOnAction(e -> registerAffineTransformations());
-
-    //to traverse between the different transformations
-    previousTransformation = new Button("Previous Transformation");
-    nextTransformation = new Button("Next Transformation");
-
-    transformationNumber = new TextField("1");
-    transformationNumber.setEditable(false);
 
 
     rightBodyRow.getChildren().addAll(
@@ -285,54 +279,11 @@ public class JuliaScene extends Application implements ChaosGameObserver {
    * Method that displays the transformation matrices and the current transformation number after removing the constant C.
    */
   private void displayTransformationMatrices() {
-    rightBodyRow.getChildren().remove(constantC);
-    if (!rightBodyRow.getChildren().contains(transformationNumber)) {
-      transformationTextFields.forEach(textField -> rightBodyRow.getChildren().add(textField));
-      rightBodyRow.getChildren().addAll(previousTransformation, nextTransformation, transformationNumber);
-    }
-    displayConfigInfo();
-  }
+    controller.switchBetweenDisplayOfAffineAndJuliaValues(1, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
+    transformationNumber.setText("1");
+    transformationNumber.setEditable(false);
+    controller.displayCorrectAffineTransformation(chaosGameDescription, affineTransformationButtons, transformationTextFields, transformationNumber);
 
-  /**
-   * Method that removes the transformation matrices and displays the constant C.
-   */
-  private void displayConstantC() {
-    List<TextField> transformationTextFields = affineTransformationTextFieldsList();
-    transformationTextFields.forEach(textField -> rightBodyRow.getChildren().remove(textField));
-    rightBodyRow.getChildren().removeAll(previousTransformation, nextTransformation, transformationNumber);
-    if (!rightBodyRow.getChildren().contains(constantC)) {
-      rightBodyRow.getChildren().add(constantC);
-    }
-  }
-
-  /**
-   * Method that shows the current chaos game description in the field.
-   */
-  private void displayConfigInfo() {
-    System.out.println("Displaying config info");
-    ChaosGameDescription desc = chaosGameDescription;
-    List<Transform2D> transforms = desc.getTransforms();
-    transformNum = 0;
-    controller.displayAffineTransformations(0, desc, transformationTextFields);
-    previousTransformation.setOnAction(e -> {
-      transformNum--;
-      if (transformNum < 0) {
-        transformNum = transforms.size() - 1;
-      }
-      controller.displayAffineTransformations(transformNum, desc, transformationTextFields);
-      transformationNumber.setText(String.valueOf(transformNum + 1));
-
-    });
-    nextTransformation.setOnAction(e -> {
-      transformNum++;
-      if (transformNum == transforms.size()) {
-        transformNum = 0;
-      }
-      controller.displayAffineTransformations(transformNum, desc, transformationTextFields);
-
-      transformationNumber.setText(String.valueOf(transformNum + 1));
-
-    });
   }
 
   /**
@@ -350,26 +301,6 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
-  }
-
-
-  /**
-   * Method that allows the user to edit the text fields.
-   * It sets the editable property of the text fields to true.
-   * There are two types of text fields: the max and min coordinates text fields and the transformation text fields.
-   * This method is called when the user wants to edit the text fields.
-   */
-  private void editGameConfig() {
-    transformationTextFields.forEach(textField -> textField.setEditable(true));
-    maxAndMinCoordsTextFields.forEach(textField -> textField.setEditable(true));
-  }
-
-  private void registerCoordinates() {
-    double minCoordsX0 = Double.parseDouble(this.maxAndMinCoordsTextFields.get(0).getText());
-    double minCoordsX1 = Double.parseDouble(this.maxAndMinCoordsTextFields.get(1).getText());
-    double maxCoordsX0 = Double.parseDouble(this.maxAndMinCoordsTextFields.get(2).getText());
-    double maxCoordsX1 = Double.parseDouble(this.maxAndMinCoordsTextFields.get(3).getText());
-    System.out.println(minCoordsX0 + " " + minCoordsX1 + " | " + maxCoordsX0 + " " + maxCoordsX1);
   }
 
   private void setPromptText() {
