@@ -1,26 +1,39 @@
 package edu.ntnu.idatt2003.model.basicLinalg;
 
+import edu.ntnu.idatt2003.model.utils.ModelValidators;
+
 /**
  * A class to represent a complex number that inherits the Vector2D class.
  * Apart from the constructor, it has a method to find the square root of the complex number.
  * The addition and subtraction methods are inherited from the Vector2D class.
  * @since 0.1.0
  * @version 0.2.0
- * @author 10041
  * @see Vector2D
  */
-
 public class Complex extends Vector2D {
-
 
   /**
    * Constructor for the Complex class.
    *
-   * @param inputRealPart      the real part of the complex number.
+   * @param inputRealPart the real part of the complex number.
    * @param inputImaginaryPart the imaginary part of the complex number.
    */
   public Complex(double inputRealPart, double inputImaginaryPart) {
     super(inputRealPart, inputImaginaryPart);
+  }
+
+  /**
+   * Static factory method for creating a Complex object with validation.
+   *
+   * @param inputRealPart the real part of the complex number.
+   * @param inputImaginaryPart the imaginary part of the complex number.
+   * @return a new Complex object
+   * @throws IllegalArgumentException if the input values are not valid
+   */
+  public static Complex createComplex(double inputRealPart, double inputImaginaryPart) throws IllegalArgumentException {
+    ModelValidators.validateRealPartValue(inputRealPart);
+    ModelValidators.validateImaginaryPartValue(inputImaginaryPart);
+    return new Complex(inputRealPart, inputImaginaryPart);
   }
 
   /**
@@ -44,7 +57,10 @@ public class Complex extends Vector2D {
     double newRealPart2 = -newR * Math.cos(newTheta);
     double newImaginaryPart2 = -newR * Math.sin(newTheta);
 
-    return new Complex[]{new Complex(newRealPart1, newImaginaryPart1), new Complex(newRealPart2, newImaginaryPart2)};
+    return new Complex[] {
+            Complex.createComplex(newRealPart1, newImaginaryPart1),
+            Complex.createComplex(newRealPart2, newImaginaryPart2)
+    };
   }
 
   /**
@@ -62,8 +78,6 @@ public class Complex extends Vector2D {
    * @return the imaginary part of the complex number
    */
   public double getImaginary() {
-        return this.getX1();
-    }
-
-
+    return this.getX1();
+  }
 }

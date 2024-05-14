@@ -25,14 +25,13 @@ import java.util.Random;
 
 public class ChaosGame {
 
-  private ChaosCanvas canvas;
+  private final ChaosCanvas canvas;
 
-  private ChaosGameDescription description;
+  private final ChaosGameDescription description;
 
   private Vector2D currentPoint;
 
-  private Random random;
-  private List<ChaosGameObserver> observers = new ArrayList<>();
+  private final Random random;
 
   /**
    * Constructor for the ChaosGame class.
@@ -76,42 +75,8 @@ public class ChaosGame {
       Vector2D newPoint = description.getTransforms().get(randomIndex).transform(currentPoint);
       canvas.putPixel(newPoint);
       currentPoint = newPoint;
-
-      //notifyObservers(currentPoint.getX0(), currentPoint.getX1());
+      System.out.println(currentPoint.getX0() + " " + currentPoint.getX1());
     }
-  }
-  public void actionToNotifyObserversAbout(){
-    canvas.getCanvasArray();
-    for (int y = 0; y < canvas.getCanvasArray().length; y++) {
-      for (int x = 0; x < canvas.getCanvasArray()[y].length; x++) {
-        if (canvas.getCanvasArray()[y][x] != 0) {
-          notifyObserverAddPixel(x, y);
-        }
-      }
-    }
-  }
-
-  /**
-   * Adds an observer to the list of observers.
-   * @param observer the observer to add
-   */
-  public void addObserver(ChaosGameObserver observer) {
-    observers.add(observer);
-  }
-
-  /**
-   * Removes an observer from the list of observers.
-   * @param observer the observer to remove
-   */
-  public void removeObserver(ChaosGameObserver observer) {
-    observers.remove(observer);
-  }
-
-  /**
-   * Notifies all observers in the list of observers.
-   */
-  public void notifyObserverAddPixel(double X0, double X1) {
-    observers.forEach(observer -> observer.updateAddPixel(X0, X1));
   }
 
 }

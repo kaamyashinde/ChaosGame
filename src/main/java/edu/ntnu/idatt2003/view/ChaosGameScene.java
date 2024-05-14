@@ -48,7 +48,6 @@ public class ChaosGameScene extends Application implements ChaosGameObserver {
   public void start(Stage primaryStage) {
     setLayout();
     startGame();
-    chaosGame.addObserver(this);
     chaosGameCanvas.addObserver(this);
     setScene(primaryStage);
     controller = new Controller(primaryStage);
@@ -73,7 +72,6 @@ public class ChaosGameScene extends Application implements ChaosGameObserver {
    */
   private void runThousandSteps() {
     chaosGame.runSteps(10000);
-    chaosGame.actionToNotifyObserversAbout();
   }
 
   /**
