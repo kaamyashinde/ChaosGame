@@ -75,6 +75,7 @@ public class ChaosGame {
       Vector2D newPoint = description.getTransforms().get(randomIndex).transform(currentPoint);
       canvas.putPixel(newPoint);
       currentPoint = newPoint;
+      System.out.println(currentPoint.getX0() + " " + currentPoint.getX1());
     }
   }
 

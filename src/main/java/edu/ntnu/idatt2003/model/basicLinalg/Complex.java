@@ -1,36 +1,40 @@
 package edu.ntnu.idatt2003.model.basicLinalg;
 
-/** The class Complex represents a complex number with a real and an imaginary part. */
+import edu.ntnu.idatt2003.model.utils.ModelValidators;
+
+/**
+ * A class to represent a complex number that inherits the Vector2D class.
+ * Apart from the constructor, it has a method to find the square root of the complex number.
+ * The addition and subtraction methods are inherited from the Vector2D class.
+ * @since 0.1.0
+ * @version 0.2.0
+ * @see Vector2D
+ */
 public class Complex extends Vector2D {
 
   /**
-   * The constructor initializes the complex number with the given real and imaginary parts.
+   * Constructor for the Complex class.
    *
-   * @param realPart the real part
-   * @param imaginaryPart the imaginary part
+   * @param inputRealPart the real part of the complex number.
+   * @param inputImaginaryPart the imaginary part of the complex number.
    */
-  public Complex(double realPart, double imaginaryPart) {
-    super(realPart, imaginaryPart);
+  public Complex(double inputRealPart, double inputImaginaryPart) {
+    super(inputRealPart, inputImaginaryPart);
   }
 
   /**
-   * Method for getting the real part of the complex number.
+   * Static factory method for creating a Complex object with validation.
    *
-   * @return double The real part of the complex number.
+   * @param inputRealPart the real part of the complex number.
+   * @param inputImaginaryPart the imaginary part of the complex number.
+   * @return a new Complex object
+   * @throws IllegalArgumentException if the input values are not valid
    */
-  public double getReal() {
-    return getX0();
+  public static Complex createComplex(double inputRealPart, double inputImaginaryPart) throws IllegalArgumentException {
+    ModelValidators.validateRealPartValue(inputRealPart);
+    ModelValidators.validateImaginaryPartValue(inputImaginaryPart);
+    return new Complex(inputRealPart, inputImaginaryPart);
   }
-
-  /**
-   * Method for getting the imaginary part of the complex number.
-   *
-   * @return double The imaginary part of the complex number.
-   */
-  public double getImaginary() {
-    return getX1();
-  }
-
   /**
    * Calculates the principal square root of the complex number. The principal square root is the
    * one with the non-negative real part. If both square roots have a real part of zero, the one
@@ -48,9 +52,27 @@ public class Complex extends Vector2D {
 
     double real = magnitude * Math.cos(angle);
     double imag = magnitude * Math.sin(angle);
-    return new Complex(real, imag);
+    return Complex.createComplex(real, imag);
   }
 
+
+  /**
+   * Returns a double representing the real part of the complex number.
+   *
+   * @return the real part of the complex number
+   */
+  public double getReal() {
+    return this.getX0();
+  }
+
+  /**
+   * Returns a double representing the imaginary part of the complex number.
+   *
+   * @return the imaginary part of the complex number
+   */
+  public double getImaginary() {
+    return this.getX1();
+  }
   /**
    * Method for subtracting two complex numbers.
    *
@@ -63,8 +85,7 @@ public class Complex extends Vector2D {
     }
     double real = getX0() - other.getX0();
     double imag = getX1() - other.getX1();
-    return new Complex(real, imag);
+    return Complex.createComplex(real, imag);
   }
 
 }
-

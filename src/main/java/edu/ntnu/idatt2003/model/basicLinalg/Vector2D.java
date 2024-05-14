@@ -1,4 +1,7 @@
 package edu.ntnu.idatt2003.model.basicLinalg;
+
+import edu.ntnu.idatt2003.model.utils.ModelValidators;
+
 /**
  * A class to represent a 2D vector.
  * The class has accessor methods for the x and y components, and methods to add and subtract vectors.
@@ -7,15 +10,8 @@ package edu.ntnu.idatt2003.model.basicLinalg;
  * @version 0.1.0
  * @since 0.1.0
  */
-
 public class Vector2D {
-    /**
-     * The x component of the vector
-     */
     private final double x0;
-    /**
-     * The y component of the vector
-     */
     private final double x1;
 
 
@@ -25,7 +21,10 @@ public class Vector2D {
      * @param inputX0 the x component of the vector
      * @param inputX1 the y component of the vector
      */
-    public Vector2D(double inputX0, double inputX1) {
+    public Vector2D(double inputX0, double inputX1)
+            throws IllegalArgumentException {
+        ModelValidators.validateVectorValue(inputX0, "x0");
+        ModelValidators.validateVectorValue(inputX1, "x1");
         this.x0 = inputX0;
         this.x1 = inputX1;
     }
