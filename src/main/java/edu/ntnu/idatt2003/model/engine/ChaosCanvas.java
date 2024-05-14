@@ -68,8 +68,8 @@ public class ChaosCanvas {
         double b1 = ((height - 1) * maxCoords.getX1()) / (maxCoords.getX1() - minCoords.getX1());
         double b2 = ((width - 1) * minCoords.getX0()) / (minCoords.getX0() - maxCoords.getX0());
 
-        Matrix2x2 a = new Matrix2x2(0, a01, a10, 0);
-        Vector2D b = new Vector2D(b1, b2);
+        Matrix2x2 a = new Matrix2x2(a10,0,0,a01);
+        Vector2D b = new Vector2D(b2, b1);
 
         return new AffineTransform2D(a, b);
 
@@ -106,10 +106,10 @@ public class ChaosCanvas {
      */
     public void putPixel(Vector2D point) throws ArrayIndexOutOfBoundsException{
         Vector2D index = coordsToIndices(point);
-        int i = (int) Math.round(index.getX0());
-        int j = (int) Math.round(index.getX1());
+        int i = (int) index.getX0();
+        int j = (int) index.getX1();
         canvas[i][j] = 1;
-        notifyObserverAddPixel(j, i);
+        notifyObserverAddPixel(i, j);
 
 
     }
