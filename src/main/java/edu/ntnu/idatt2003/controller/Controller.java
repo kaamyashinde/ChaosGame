@@ -7,9 +7,13 @@ import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ public class Controller {
   Stage stage;
   ChaosGame chaosGame;
   int transformNum;
+  GraphicsContext gc;
 
   public Controller(Stage stage) {
     this.stage = stage;
@@ -39,11 +44,37 @@ public class Controller {
     chaosGameDescriptions.add(readChaosGameDescriptionFromFile("Affine.txt"));
   }
 
+
+
   /**
-   * Method that sets the game.
+   * Method that creates an appropriate stack pane canvas to display the fractal on.
    */
-  public ChaosGame setUpGame(int descriptionIndex) {
-    return new ChaosGame(chaosGameDescriptions.get(descriptionIndex), 800, 800);
+  public StackPane createGamePaneCanvas() {
+    chaosGame = new ChaosGame(readChaosGameDescriptionFromFile("Julia.txt"), 500, 500);
+    Canvas canvas = new Canvas(500, 500);
+    gc = canvas.getGraphicsContext2D();
+    StackPane chaosGamePane = new StackPane();
+    chaosGamePane.getChildren().add(canvas);
+    return chaosGamePane;
+  }
+
+  /**
+   * Method that is responsible for adding in the gradient color to the canvas.
+   */
+  public void addGradientColor(double X0, double X1) {
+    Color startColor = Color.rgb(230, 183, 183); // bright red
+    Color endColor = Color.rgb(215, 8, 8); // dark red
+    double fraction = X1 / 500; // assuming the height of the canvas is 500
+    Color gradientColor = startColor.interpolate(endColor, fraction);
+    gc.setFill(gradientColor);
+    gc.fillRect(X0, X1, 1, 1);
+  }
+
+  /**
+   * Method that is responsible for removing the gradient color from the canvas.
+   */
+  public void removeGradientColor(double X0, double X1) {
+    gc.clearRect(X0, X1, 1, 1);
   }
 
   /**
@@ -68,7 +99,6 @@ public class Controller {
     inputTextFields.get(4).setText(String.valueOf(affine.getVector().getX0()));
     inputTextFields.get(5).setText(String.valueOf(affine.getVector().getX1()));
   }
-
 
 
   /**
@@ -182,7 +212,8 @@ public class Controller {
   public Vector2D registerAffineTransformationVector(List<TextField> inputTextFields) {
     return new Vector2D(Double.parseDouble(inputTextFields.get(4).getText()), Double.parseDouble(inputTextFields.get(5).getText()));
   }
-  public void registerAffineTransformation(List<TextField> inputTextFields){
+
+  public void registerAffineTransformation(List<TextField> inputTextFields) {
     Matrix2x2 matrix = registerAffineTransformationMatrix(inputTextFields);
     Vector2D vector = registerAffineTransformationVector(inputTextFields);
     AffineTransform2D affine = new AffineTransform2D(matrix, vector);

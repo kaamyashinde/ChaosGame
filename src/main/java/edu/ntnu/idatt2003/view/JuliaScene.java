@@ -60,40 +60,12 @@ public class JuliaScene extends Application implements ChaosGameObserver {
 
   @Override
   public void updateAddPixel(double X0, double X1) {
-    // Define the start and end colors for the gradient
-    Color startColor = Color.rgb(230, 183, 183); // bright red
-    Color endColor = Color.rgb(215, 8, 8); // dark red
-
-    // Calculate the fraction based on the y-coordinate
-    double fraction = X1 / 500; // assuming the height of the canvas is 500
-
-    // Interpolate between the start and end colors based on the fraction
-    Color gradientColor = startColor.interpolate(endColor, fraction);
-
-    // Set the fill color to the gradient color
-    gc.setFill(gradientColor);
-
-    // Draw the pixel
-    gc.fillRect(X0, X1, 1, 1);
+    controller.addGradientColor(X0, X1);
   }
 
   @Override
   public void updateRemovePixel(double X0, double X1) {
-    gc.clearRect(X0, X1, 1, 1);
-  }
-
-  /**
-   * Method that uses the controller to gain access to the chaos game.
-   */
-  private StackPane gamePaneCanvas() {
-    updateChaosGameObject(controller.readChaosGameDescriptionFromFile("Affine.txt"));
-    Canvas canvas = new Canvas(500, 500);
-    gc = canvas.getGraphicsContext2D();
-    StackPane chaosGamePane = new StackPane();
-    chaosGamePane.getChildren().add(canvas);
-
-
-    return chaosGamePane;
+    controller.removeGradientColor(X0, X1);
   }
 
   /**
@@ -153,53 +125,6 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   }
 
 
-  /**
-   * Method that creates the buttons for the different fractals and returns them.
-   *
-   * @param fractalName The name of the fractal.
-   * @return The button for the fractal.
-   */
-
-  public Button createPresetFractalButton(String fractalName) {
-    Button button = new Button(fractalName);
-    button.setOnAction(e -> {
-      switch (fractalName) {
-        case "Julia":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Julia.txt");
-          updateChaosGameObject(chaosGameDescription);
-          game.getCanvas().clear();
-          System.out.println("Julia preset button was clicked!");
-          controller.switchBetweenDisplayOfAffineAndJuliaValues(0, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
-          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
-
-          break;
-        case "Barnsley":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
-          updateChaosGameObject(chaosGameDescription);
-          displayTransformationMatrices();
-          game.getCanvas().clear();
-          System.out.println("Barnsley preset button was clicked!");
-          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
-          break;
-        case "Sierpinski":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
-          updateChaosGameObject(chaosGameDescription);
-          displayTransformationMatrices();
-          game.getCanvas().clear();
-          System.out.println("Sierpinski preset button was clicked!");
-          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
-
-
-          break;
-        default:
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");
-          updateChaosGameObject(chaosGameDescription);
-
-          break;
-      }
-    });
-    return button;
-  }
 
   /**
    * Update the chaosGame object.
@@ -244,7 +169,7 @@ public class JuliaScene extends Application implements ChaosGameObserver {
   private HBox bodyHBox() {
     HBox bodyRow = new HBox();
     VBox leftBodyRow = new VBox();
-    StackPane chaosGamePane = gamePaneCanvas();
+    StackPane chaosGamePane = controller.createGamePaneCanvas();
 
     rightBodyRow = new VBox();
 
@@ -317,6 +242,50 @@ public class JuliaScene extends Application implements ChaosGameObserver {
     footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
+  }
+
+  /**
+   * Method that creates the buttons for the different fractals and returns them.
+   *
+   * @param fractalName The name of the fractal.
+   * @return The button for the fractal.
+   */
+
+  public Button createPresetFractalButton(String fractalName) {
+    Button button = new Button(fractalName);
+    button.setOnAction(e -> {
+      switch (fractalName) {
+        case "Julia":
+          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Julia.txt");
+          updateChaosGameObject(chaosGameDescription);
+          game.getCanvas().clear();
+          System.out.println("Julia preset button was clicked!");
+          controller.switchBetweenDisplayOfAffineAndJuliaValues(0, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
+          break;
+        case "Barnsley":
+          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
+          updateChaosGameObject(chaosGameDescription);
+          displayTransformationMatrices();
+          game.getCanvas().clear();
+          System.out.println("Barnsley preset button was clicked!");
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
+          break;
+        case "Sierpinski":
+          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
+          updateChaosGameObject(chaosGameDescription);
+          displayTransformationMatrices();
+          game.getCanvas().clear();
+          System.out.println("Sierpinski preset button was clicked!");
+          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
+          break;
+        default:
+          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");
+          updateChaosGameObject(chaosGameDescription);
+          break;
+      }
+    });
+    return button;
   }
 
 }
