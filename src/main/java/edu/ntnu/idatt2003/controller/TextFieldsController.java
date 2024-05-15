@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.controller;
 
+import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -15,6 +16,8 @@ import java.util.List;
  */
 
 public class TextFieldsController {
+  Vector2D minCoords;
+  Vector2D maxCoords;
   /**
    * Method that creates a list containing the max and min coordinates text fields.
    *
@@ -67,5 +70,14 @@ public class TextFieldsController {
 
     return List.of(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
   }
+  /**
+   * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
+   */
+  public void registerCoordinates(List<TextField> inputList) {
+    minCoords = new Vector2D(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
+    maxCoords = new Vector2D(Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
+    System.out.println(minCoords.getX0() + " " + minCoords.getX1() + " | " + maxCoords.getX0() + " " + maxCoords.getX1());
+  }
+
 
 }

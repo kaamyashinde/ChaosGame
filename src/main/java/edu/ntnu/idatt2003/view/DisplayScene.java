@@ -1,10 +1,7 @@
 package edu.ntnu.idatt2003.view;
 
 
-import edu.ntnu.idatt2003.controller.EmptyFractalController;
-import edu.ntnu.idatt2003.controller.FileController;
-import edu.ntnu.idatt2003.controller.GameController;
-import edu.ntnu.idatt2003.controller.ObserverActionController;
+import edu.ntnu.idatt2003.controller.*;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.util.List;
+
 /**
  * Class that creates the scene for the Chaos Game. The scene consists of a navigation row, a title row, a body row and a footer row.
  * The body row is further divided into three columns.
@@ -28,7 +27,7 @@ import javafx.util.Pair;
  * The footer row is responsible for the actions related to running the game and clearing the canvas.
  *
  * @author Kaamya Shinde
- * @version 0.4
+ * @version 0.5
  * @since 3.0.0
  */
 public class DisplayScene implements ChaosGameObserver {
@@ -37,6 +36,7 @@ public class DisplayScene implements ChaosGameObserver {
   ObserverActionController observerActionController;
   FileController fileController;
   EmptyFractalController emptyFractalController;
+  TextFieldsController textFieldsController;
   Button addThousandPixelsButton;
   VBox leftBodyRow;
   VBox rightBodyRow;
@@ -48,6 +48,7 @@ public class DisplayScene implements ChaosGameObserver {
     observerActionController = new ObserverActionController();
     fileController = new FileController();
     emptyFractalController = new EmptyFractalController();
+    textFieldsController = new TextFieldsController();
   }
 
   /**
@@ -152,6 +153,9 @@ public class DisplayScene implements ChaosGameObserver {
       // Update the dropdown list
     });*/
     leftBodyRow.getChildren().addAll(fileDropDown);
+
+
+
     createEmptyFractals();
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500);
@@ -164,9 +168,39 @@ public class DisplayScene implements ChaosGameObserver {
     rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
 
+
+    Button editMaxAndMinButton = new Button("Edit Max and Min");
+    editMaxAndMinButton.setOnAction(e-> createEditMaxAndMinPopup());
+    rightBodyRow.getChildren().add(editMaxAndMinButton);
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
+  }
+
+  /**
+   * Method that creates a popup for editing the max and min coordinates.
+   */
+  private void createEditMaxAndMinPopup(){
+    //create a new stage for the popup
+    Stage popupStage = new Stage();
+    VBox popupLayout = new VBox();
+    popupLayout.prefWidthProperty().bind(popupStage.widthProperty());
+    popupLayout.prefHeightProperty().bind(popupStage.heightProperty());
+    popupStage.setTitle("Edit Min and Max");
+    List<TextField> textFields = textFieldsController.maxAndMinCoordsTextFieldsList();
+    textFields.forEach(textField -> popupLayout.getChildren().add(textField));
+    Button registerButton = new Button("Register");
+    popupLayout.getChildren().add(registerButton);
+
+
+    Scene popuScene = new Scene(popupLayout, 300, 300);
+    popupStage.setScene(popuScene);
+    popupStage.show();
+    registerButton.setOnAction(e-> {
+          textFieldsController.registerCoordinates(textFields);
+          popupStage.close();
+        }
+    );
   }
 
 /*
