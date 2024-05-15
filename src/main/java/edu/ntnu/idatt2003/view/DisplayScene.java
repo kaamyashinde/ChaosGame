@@ -1,7 +1,6 @@
 package edu.ntnu.idatt2003.view;
 
 
-import edu.ntnu.idatt2003.controller.Controller;
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.controller.ObserverActionController;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
@@ -26,12 +25,11 @@ import javafx.util.Pair;
  * The footer row is responsible for the actions related to running the game and clearing the canvas.
  *
  * @author Kaamya Shinde
- * @version 0.1
+ * @version 0.2
  * @since 3.0.0
  */
 public class DisplayScene implements ChaosGameObserver {
   AnchorPane layout;
-  Controller controller;
   GameController gameController;
   ObserverActionController observerActionController;
   Button addThousandPixelsButton;
@@ -39,7 +37,6 @@ public class DisplayScene implements ChaosGameObserver {
   GraphicsContext graphicsContext;
 
   public DisplayScene() {
-    controller = new Controller();
     gameController = new GameController();
     observerActionController = new ObserverActionController();
   }

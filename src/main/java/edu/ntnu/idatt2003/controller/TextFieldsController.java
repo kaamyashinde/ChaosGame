@@ -8,11 +8,16 @@ import java.util.List;
 /**
  * The controller for the text fields in the GUI.
  * It is responsible for creating different types of lists for the text fields.
+ *
+ * @author Kaamya Shinde
+ * @version 0.1
+ * @since 3.2.0
  */
 
 public class TextFieldsController {
   /**
    * Method that creates a list containing the max and min coordinates text fields.
+   *
    * @return a list containing the max and min coordinates text fields.
    */
   public List<TextField> maxAndMinCoordsTextFieldsList() {
@@ -32,6 +37,7 @@ public class TextFieldsController {
 
   /**
    * Method that creates a list containing the buttons used to control the viewing of the Affine transformations.
+   *
    * @return a list containing the buttons used to control the viewing of the Affine transformations.
    */
   public List<Button> affineTransformationButtonsList() {
@@ -39,8 +45,10 @@ public class TextFieldsController {
     Button nextTransformation = new Button("Next Transformation");
     return List.of(previousTransformation, nextTransformation);
   }
+
   /**
    * Method that creates a list containing the matrix and vector for a specific affine transformation.
+   *
    * @return a list containing the matrix and vector for a specific affine transformation.
    */
   public List<TextField> affineTransformationTextFieldsList() {
