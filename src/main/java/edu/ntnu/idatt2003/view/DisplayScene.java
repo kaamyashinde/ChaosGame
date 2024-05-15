@@ -16,8 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.util.List;
-
 /**
  * Class that creates the scene for the Chaos Game. The scene consists of a navigation row, a title row, a body row and a footer row.
  * The body row is further divided into three columns.
@@ -37,7 +35,7 @@ public class DisplayScene implements ChaosGameObserver {
   FileController fileController;
   EmptyFractalController emptyFractalController;
   TextFieldsController textFieldsController;
-  Button addThousandPixelsButton;
+  Button runIterations;
   VBox leftBodyRow;
   VBox rightBodyRow;
   GraphicsContext graphicsContext;
@@ -155,7 +153,6 @@ public class DisplayScene implements ChaosGameObserver {
     leftBodyRow.getChildren().addAll(fileDropDown);
 
 
-
     createEmptyFractals();
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500);
@@ -170,13 +167,13 @@ public class DisplayScene implements ChaosGameObserver {
 
 
     Button editMaxAndMinButton = new Button("Edit Max and Min");
-    editMaxAndMinButton.setOnAction(e-> EditValuesPopUp.createEditMaxAndMinPopup());
+    editMaxAndMinButton.setOnAction(e -> EditValuesPopUp.createEditMaxAndMinPopup());
 
     Button editCButton = new Button("Edit C");
-    editCButton.setOnAction(e-> EditValuesPopUp.createConstantCPopup());
+    editCButton.setOnAction(e -> EditValuesPopUp.createConstantCPopup());
 
     Button editAffineTransformationsButton = new Button("Edit Affine Transformations");
-    editAffineTransformationsButton.setOnAction(e-> EditValuesPopUp.displayAffine());
+    editAffineTransformationsButton.setOnAction(e -> EditValuesPopUp.displayAffine());
 
     rightBodyRow.getChildren().addAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
 
@@ -213,37 +210,42 @@ Then based on that the user wil be able to edit the file and use it to run the a
    * Method that creates the empty fractals.
    */
 
- private void createEmptyFractals(){
-   TextField fileName = new TextField();
-   fileName.setPromptText("Enter file name");
-   numberOfTransformations = new TextField();
-   numberOfTransformations.setPromptText("Enter number of transformations");
-   Button registerFileButton = new Button("Register File");
+  private void createEmptyFractals() {
+    TextField fileName = new TextField();
+    fileName.setPromptText("Enter file name");
+    numberOfTransformations = new TextField();
+    numberOfTransformations.setPromptText("Enter number of transformations");
+    Button registerFileButton = new Button("Register File");
 
-   Button switchButton = new Button("Switch to " + "Julia");
-   switchButton.setOnAction(e-> emptyFractalController.switchFractalToBeCreated(switchButton, leftBodyRow, numberOfTransformations));
-   registerFileButton.setOnAction(e->{
-    emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
-     fileController.updateFileDropDown();
+    Button switchButton = new Button("Switch to " + "Julia");
+    switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, leftBodyRow, numberOfTransformations));
+    registerFileButton.setOnAction(e -> {
+      emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
+      fileController.updateFileDropDown();
 
-   });
+    });
 
-   leftBodyRow.getChildren().addAll(fileName, registerFileButton, switchButton);
+    leftBodyRow.getChildren().addAll(fileName, registerFileButton, switchButton);
 
- }
+  }
 
   /**
    * Method that returns the footer row.
    */
   private HBox footerHBox() {
     HBox footerRow = new HBox();
-    addThousandPixelsButton = new Button("Add 10000");
-    addThousandPixelsButton.setOnAction(e -> gameController.runGame(10000)
+    TextField iterations = new TextField();
+    iterations.setPromptText("Enter number of iterations");
+    runIterations = new Button("Run iterations");
+    runIterations.setOnAction(e -> {
+          int steps = Integer.parseInt(iterations.getText());
+          gameController.runGame(steps);
+        }
     );
 
     Button clearCanvasButton = new Button("Clear Canvas");
     clearCanvasButton.setOnAction(e -> gameController.clearCanvas());
-    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
+    footerRow.getChildren().addAll(iterations, runIterations, clearCanvasButton);
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
   }
