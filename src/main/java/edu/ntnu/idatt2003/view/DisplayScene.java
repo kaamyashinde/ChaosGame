@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.view;
 
 
+import edu.ntnu.idatt2003.controller.EmptyFractalController;
 import edu.ntnu.idatt2003.controller.FileController;
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.controller.ObserverActionController;
@@ -27,7 +28,7 @@ import javafx.util.Pair;
  * The footer row is responsible for the actions related to running the game and clearing the canvas.
  *
  * @author Kaamya Shinde
- * @version 0.3
+ * @version 0.4
  * @since 3.0.0
  */
 public class DisplayScene implements ChaosGameObserver {
@@ -35,14 +36,18 @@ public class DisplayScene implements ChaosGameObserver {
   GameController gameController;
   ObserverActionController observerActionController;
   FileController fileController;
+  EmptyFractalController emptyFractalController;
   Button addThousandPixelsButton;
+  VBox leftBodyRow;
   VBox rightBodyRow;
   GraphicsContext graphicsContext;
+  TextField numberOfTransformations;
 
   public DisplayScene() {
     gameController = new GameController();
     observerActionController = new ObserverActionController();
     fileController = new FileController();
+    emptyFractalController = new EmptyFractalController();
   }
 
   /**
@@ -135,11 +140,19 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private HBox bodyHBox() {
     HBox bodyRow = new HBox();
-    VBox leftBodyRow = new VBox();
+    leftBodyRow = new VBox();
+
     ComboBox<String> fileDropDown = fileController.getFileDropDown();
-    Button registerButton = new Button("Register");
-  //registerButton.setOnAction(e-> gameController.updateGameFromFile(this));
-    leftBodyRow.getChildren().addAll(fileDropDown, registerButton);
+
+    //registerButton.setOnAction(e-> gameController.updateGameFromFile(this));
+   /* registerButton.setOnAction(e -> {
+      // Create a new file when the register button is clicked
+      gameController.createEmptyFractal(false, 0); // false for Julia, true for Affine
+
+      // Update the dropdown list
+    });*/
+    leftBodyRow.getChildren().addAll(fileDropDown);
+    createEmptyFractals();
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500);
     StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
@@ -172,6 +185,31 @@ There will be the register buttons too
 so when creating new fractal, we'll first create a file with 0s, asking the user for the number of transformations for affine there.
 Then based on that the user wil be able to edit the file and use it to run the application.
  */
+
+  /**
+   * Method that creates the empty fractals.
+   */
+
+ private void createEmptyFractals(){
+   TextField fileName = new TextField();
+   fileName.setPromptText("Enter file name");
+   numberOfTransformations = new TextField();
+   numberOfTransformations.setPromptText("Enter number of transformations");
+   Button registerFileButton = new Button("Register File");
+
+   Button switchButton = new Button("Switch to " + "Julia");
+   switchButton.setOnAction(e->{
+     emptyFractalController.switchFractalToBeCreated(switchButton, leftBodyRow, numberOfTransformations);
+   });
+   registerFileButton.setOnAction(e->{
+    emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
+     fileController.updateFileDropDown();
+
+   });
+
+   leftBodyRow.getChildren().addAll(fileName, registerFileButton, switchButton);
+
+ }
 
   /**
    * Method that returns the footer row.

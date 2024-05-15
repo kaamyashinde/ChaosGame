@@ -3,13 +3,12 @@ package edu.ntnu.idatt2003.controller;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
-import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
+import edu.ntnu.idatt2003.model.transformations.ChaosGameDescriptionFactory;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +19,9 @@ import java.util.List;
  * Thereafter, the methods are only called up on i the view package.
  *
  * @author Kaamya Shinde
- * @version 0.3
+ * @version 0.4
  * @see edu.ntnu.idatt2003.view.DisplayScene
- * @since 3.3.0
+ * @since 0.3.3
  */
 public class GameController {
   private final FileController fileController;
@@ -37,6 +36,7 @@ public class GameController {
     listOfDescriptions = new ArrayList<>();
     loadChaosGamePresets();
   }
+
   /**
    * Method that adds an observer to the Chaos game object.
    * This was a suggestion by GitHub Copilot's AI.
@@ -48,6 +48,7 @@ public class GameController {
       chaosGame.getCanvas().addObserver(observer);
     }
   }
+
   /**
    * Method that loads all the different fractal presets from the resources folder.
    * This is added to the list of descriptions.
@@ -59,9 +60,9 @@ public class GameController {
    * </ol>
    */
   private void loadChaosGamePresets() {
-    listOfDescriptions.add(fileController.readChaosGagmeDescriptionFromFile("presets/Affine.txt"));
-    listOfDescriptions.add(fileController.readChaosGagmeDescriptionFromFile("presets/Barnsley.txt"));
-    listOfDescriptions.add(fileController.readChaosGagmeDescriptionFromFile("presets/Julia.txt"));
+    listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Affine.txt"));
+    listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Barnsley.txt"));
+    listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Julia.txt"));
   }
 
   /**
@@ -91,25 +92,61 @@ public class GameController {
    *   <li>Barnsley Fern</li>
    *   <li>Julia Transformation</li>
    * </ol>
-   * @param caseNum The case number of the preset.
+   *
+   * @param caseNum  The case number of the preset.
    * @param observer The observer that is added to the canvas.
    */
   public void choosePreset(int caseNum, ChaosGameObserver observer) {
-    chaosGame = new ChaosGame(listOfDescriptions.get(caseNum), 500, 500);
-    addObserverToGame(observer);
-    chaosGame.getCanvas().clear();
+    updateChaosGame(new ChaosGame(listOfDescriptions.get(caseNum), 500, 500), observer);
     System.out.println("Preset button was clicked for case " + caseNum);
   }
+
+  /**
+   * Method that updates the game with a new chaos game and adds an observer to the canvas.
+   * @param inputGame The new chaos game that is to be updated.
+   * @param observer The observer that is added to the canvas.
+   */
+
+  public void updateChaosGame(ChaosGame inputGame, ChaosGameObserver observer) {
+    chaosGame.getCanvas().clear();
+    chaosGame = inputGame;
+    addObserverToGame(observer);
+    System.out.println("Game was updated");
+  }
+
+
   /**
    * Method that clears the canvas.
    */
   public void clearCanvas() {
     chaosGame.getCanvas().clear();
   }
+
   /**
    * Method that runs the game for a certain number of steps.
+   * @param steps The number of steps that the game is run for.
    */
   public void runGame(int steps) {
     chaosGame.runSteps(steps);
+  }
+
+  /**
+   * Create an empty fractal depending on the type of fractal.
+   * The empty fractal is just file with 0s for all values.
+   *
+   * @param isAffine           True if the fractal is affine, false if the fractal is Julia.
+   * @param numTransformations The number of transformations for the affine fractal.
+   * @param fileName           The name of the file that is to be created.
+   */
+  public void createEmptyFractal(boolean isAffine, int numTransformations, String fileName) {
+    ChaosGameDescription description;
+    if (isAffine) {
+      double[][] matrices = new double[numTransformations][4];
+      double[][] vectors = new double[numTransformations][2];
+      description = ChaosGameDescriptionFactory.createAffineChaosGameDescriptionManual(numTransformations, matrices, vectors, 0, 0, 0, 0);
+    } else {
+      description = ChaosGameDescriptionFactory.createJuliaChaosGameDescriptionManual(1, new double[][]{{0, 0}}, new int[]{0}, 0, 0, 0, 0);
+    }
+    fileController.writeChaosGameDescriptionToFile(description, fileName);
   }
 }
