@@ -9,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +20,12 @@ import java.util.List;
  * Thereafter, the methods are only called up on i the view package.
  *
  * @author Kaamya Shinde
- * @version 0.2
+ * @version 0.3
  * @see edu.ntnu.idatt2003.view.DisplayScene
  * @since 3.3.0
  */
 public class GameController {
-  private static final String FILE_PATH = "src/main/resources/";
-
+  private final FileController fileController;
   private final List<ChaosGameDescription> listOfDescriptions;
   private ChaosGame chaosGame;
 
@@ -33,6 +33,7 @@ public class GameController {
    * Constructor that initialises the array lists and adds the game presets.
    */
   public GameController() {
+    fileController = new FileController();
     listOfDescriptions = new ArrayList<>();
     loadChaosGamePresets();
   }
@@ -58,20 +59,11 @@ public class GameController {
    * </ol>
    */
   private void loadChaosGamePresets() {
-    listOfDescriptions.add(readChaosGagmeDescriptionFromFile("Affine.txt"));
-    listOfDescriptions.add(readChaosGagmeDescriptionFromFile("Barnsley.txt"));
-    listOfDescriptions.add(readChaosGagmeDescriptionFromFile("Julia.txt"));
+    listOfDescriptions.add(fileController.readChaosGagmeDescriptionFromFile("presets/Affine.txt"));
+    listOfDescriptions.add(fileController.readChaosGagmeDescriptionFromFile("presets/Barnsley.txt"));
+    listOfDescriptions.add(fileController.readChaosGagmeDescriptionFromFile("presets/Julia.txt"));
   }
 
-  /**
-   * Method that reads the chaos game description from a file.
-   *
-   * @param fileName The name of the file that is read.
-   * @return The chaos game description that is read from the file.
-   */
-  public ChaosGameDescription readChaosGagmeDescriptionFromFile(String fileName) {
-    return ChaosGameFileHandler.readFromFile(FILE_PATH + fileName);
-  }
   /**
    * Method that creates and appropriate stack pane canvas to display the fractal on.
    * The suggestion to use a Pair to store both the stack pane and the graphics context was given by GitHub Copilot's AI.

@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.view;
 
 
+import edu.ntnu.idatt2003.controller.FileController;
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.controller.ObserverActionController;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
@@ -8,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -25,13 +27,14 @@ import javafx.util.Pair;
  * The footer row is responsible for the actions related to running the game and clearing the canvas.
  *
  * @author Kaamya Shinde
- * @version 0.2
+ * @version 0.3
  * @since 3.0.0
  */
 public class DisplayScene implements ChaosGameObserver {
   AnchorPane layout;
   GameController gameController;
   ObserverActionController observerActionController;
+  FileController fileController;
   Button addThousandPixelsButton;
   VBox rightBodyRow;
   GraphicsContext graphicsContext;
@@ -39,6 +42,7 @@ public class DisplayScene implements ChaosGameObserver {
   public DisplayScene() {
     gameController = new GameController();
     observerActionController = new ObserverActionController();
+    fileController = new FileController();
   }
 
   /**
@@ -132,6 +136,10 @@ public class DisplayScene implements ChaosGameObserver {
   private HBox bodyHBox() {
     HBox bodyRow = new HBox();
     VBox leftBodyRow = new VBox();
+    ComboBox<String> fileDropDown = fileController.getFileDropDown();
+    Button registerButton = new Button("Register");
+  //registerButton.setOnAction(e-> gameController.updateGameFromFile(this));
+    leftBodyRow.getChildren().addAll(fileDropDown, registerButton);
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500);
     StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
@@ -148,6 +156,22 @@ public class DisplayScene implements ChaosGameObserver {
     return bodyRow;
   }
 
+/*
+Three different buttons for editing.
+1. Edit max and min
+2. Edit transformations affine
+  - must take into account the number of transformations
+3. Edit transformations julia
+
+There will be the register buttons too
+1. Register max and min
+2. Register transformations affine (own popup)
+3. Register transformations julia (own popup)
+
+
+so when creating new fractal, we'll first create a file with 0s, asking the user for the number of transformations for affine there.
+Then based on that the user wil be able to edit the file and use it to run the application.
+ */
 
   /**
    * Method that returns the footer row.
