@@ -2,14 +2,11 @@ package edu.ntnu.idatt2003.view;
 
 
 import edu.ntnu.idatt2003.controller.Controller;
-import edu.ntnu.idatt2003.controller.TextFieldsController;
+import edu.ntnu.idatt2003.controller.GameController;
+import edu.ntnu.idatt2003.controller.ObserverActionController;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
-import edu.ntnu.idatt2003.model.engine.ChaosGame;
-import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -17,79 +14,91 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
-import java.util.HashMap;
-import java.util.List;
-
+/**
+ * Class that creates the scene for the Chaos Game. The scene consists of a navigation row, a title row, a body row and a footer row.
+ * The body row is further divided into three columns.
+ * The left column is responsible for the actions related to saving the configurations.
+ * The middle column is where the canvas is placed.
+ * The right column is responsible for the actions related to changing values of the configurations, along with the option to choose from a predefined set of fractals.
+ * The footer row is responsible for the actions related to running the game and clearing the canvas.
+ *
+ * @author Kaamya Shinde
+ * @version 0.1
+ * @since 3.0.0
+ */
 public class DisplayScene implements ChaosGameObserver {
-  private static final String FILE_PATH = "src/main/resources/";
   AnchorPane layout;
-  GraphicsContext gc;
   Controller controller;
-  ChaosGame game;
+  GameController gameController;
+  ObserverActionController observerActionController;
   Button addThousandPixelsButton;
-  ChaosGameDescription chaosGameDescription;
-  TextField transformationNumber = new TextField();
-  TextField constantC;
-  TextFieldsController textFieldsController;
-  List<TextField> transformationTextFields;
-  List<TextField> maxAndMinCoordsTextFields;
-  List<Button> affineTransformationButtons;
   VBox rightBodyRow;
-  int numOfTransforms;
+  GraphicsContext graphicsContext;
 
-  public DisplayScene(){
-    textFieldsController = new TextFieldsController();
-    maxAndMinCoordsTextFields = textFieldsController.maxAndMinCoordsTextFieldsList();
-    affineTransformationButtons = textFieldsController.affineTransformationButtonsList();
-    transformationTextFields = textFieldsController.affineTransformationTextFieldsList();
-
+  public DisplayScene() {
+    controller = new Controller();
+    gameController = new GameController();
+    observerActionController = new ObserverActionController();
   }
 
-  //@Override
-  public Scene start(Stage primaryStage) {
-    controller = new Controller();
+  /**
+   * Method that creates the scene for the Chaos Game. The scene consists of a navigation row, a title row, a body row and a footer row.
+   * The controllers are initialized and the scene is returned.
+   * This scene is used to display the Chaos Game in the main method.
+   *
+   * @param primaryStage The stage where the scene is displayed.
+   * @return The scene for the Chaos Game.
+   */
+  public Scene getDisplay(Stage primaryStage) {
     layout = new AnchorPane();
-    VBox root = new VBox();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
+
+    VBox root = new VBox();
+    setUpLayoutAndAddComponents(root);
+
+    primaryStage.setTitle("Chaos Game");
+
+    return new Scene(layout, 1000, 700);
+  }
+
+  /**
+   * Method that sets up the layout and adds the components to the layout.
+   * The layout is bound to the width of the stage.
+   *
+   * @param root The root of the layout.
+   */
+  private void setUpLayoutAndAddComponents(VBox root) {
     root.prefWidthProperty().bind(layout.widthProperty());
     layout.getChildren().add(root);
     root.getChildren().addAll(navigationHBox(), titleHBox(), bodyHBox(), footerHBox());
     root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
-
-    primaryStage.setTitle("Chaos Game");
-
-    Scene scene = new Scene(layout, 1000, 700);
-    return scene;
   }
 
+  /**
+   * Method that updates the canvas by adding a colored pixel at the given coordinates. This method is inherited from the ChaosGameObserver interface.
+   *
+   * @param X0 The x-coordinate of the pixel.
+   * @param X1 The y-coordinate of the pixel.
+   */
   @Override
   public void updateAddPixel(double X0, double X1) {
-    controller.addGradientColor(X0, X1);
+    observerActionController.addGradientColor(X0, X1, graphicsContext);
   }
 
+  /**
+   * Method that updates the canvas by removing a colored pixel at the given coordinates. This method is inherited from the ChaosGameObserver interface.
+   *
+   * @param X0 The x-coordinate of the pixel.
+   * @param X1 The y-coordinate of the pixel.
+   */
   @Override
   public void updateRemovePixel(double X0, double X1) {
-    controller.removeGradientColor(X0, X1);
+    observerActionController.removeColor(X0, X1, graphicsContext);
   }
 
-  /**
-   * Method that sets the constant c.
-   */
-  private void setConstantC() {
-    constantC = new TextField();
-    constantC.setPromptText("Constant C");
-  }
-
-  /**
-   * Update the chaosGame object.
-   */
-  private void updateChaosGameObject(ChaosGameDescription input) {
-    game = new ChaosGame(input, 500, 500);
-    game.getCanvas().addObserver(this);
-  }
 
   /**
    * Method that creates a HBox with a button for the user manual. This HBox is returned.
@@ -126,74 +135,22 @@ public class DisplayScene implements ChaosGameObserver {
   private HBox bodyHBox() {
     HBox bodyRow = new HBox();
     VBox leftBodyRow = new VBox();
-    StackPane chaosGamePane = controller.createGamePaneCanvas();
+    graphicsContext = null;
+    Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500);
+    StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
+    graphicsContext = pairContainingPaneAndContext.getValue();
 
     rightBodyRow = new VBox();
 
-
-    //startGame();
     rightBodyRow.getChildren().add(createPresetFractalButton("Julia"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
 
-    setConstantC();
-
-    rightBodyRow.getChildren().addAll(
-        handleEditGameConfigButtons().get(0),
-        maxAndMinCoordsTextFields.get(0),
-        maxAndMinCoordsTextFields.get(1),
-        maxAndMinCoordsTextFields.get(2),
-        maxAndMinCoordsTextFields.get(3),
-        handleEditGameConfigButtons().get(1),
-        handleEditGameConfigButtons().get(2));
-
-    controller.setEditable(maxAndMinCoordsTextFields, false);
-    controller.setEditable(transformationTextFields, false);
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
   }
 
-  /**
-   * Method that handles the buttons for editing the game configuration.
-   * The buttons are "Edit Game Config", "Register Coordinates" and "Register Affine Transformations".
-   *
-   * @return A list containing the buttons.
-   */
-  private List<Button> handleEditGameConfigButtons() {
-    Button editGameConfigButton = new Button("Edit Game Config");
-    editGameConfigButton.setOnAction(e -> {
-      controller.setEditable(maxAndMinCoordsTextFields, true);
-      transformationNumber.setEditable(true);
-      //controller.setEditable(transformationTextFields, true);
-    });
-    Button registerCoordsButton = new Button("Register Coordinates");
-    registerCoordsButton.setOnAction(e -> controller.registerCoordinates(maxAndMinCoordsTextFields));
-
-    Button editNumOfTransformsButton = new Button("Edit Number of Transforms");
-    editNumOfTransformsButton.setOnAction(e -> {
-      numOfTransforms = Integer.parseInt(transformationNumber.getText());
-      controller.setEditable(transformationTextFields, true);
-      System.out.println("number of transformations to be registered: " + numOfTransforms);
-    });
-    Button registerAffineTransformationsButton = new Button("Register Affine Transformations");
-    registerAffineTransformationsButton.setOnAction(e -> {
-      controller.registerAffineTransformation(transformationTextFields, numOfTransforms);
-      controller.clearTextFields(transformationTextFields);
-      System.out.println("affine transformation registered.");
-    });
-    return List.of(editGameConfigButton, registerCoordsButton, editNumOfTransformsButton,registerAffineTransformationsButton);
-  }
-
-  /**
-   * Method that displays the transformation matrices and the current transformation number after removing the constant C.
-   */
-  private void displayTransformationMatrices() {
-
-    controller.switchBetweenDisplayOfAffineAndJuliaValues(1, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
-    controller.displayCorrectAffineTransformation(chaosGameDescription, affineTransformationButtons, transformationTextFields, transformationNumber);
-
-  }
 
   /**
    * Method that returns the footer row.
@@ -201,20 +158,12 @@ public class DisplayScene implements ChaosGameObserver {
   private HBox footerHBox() {
     HBox footerRow = new HBox();
     addThousandPixelsButton = new Button("Add 10000");
-    addThousandPixelsButton.setOnAction(e ->
-        game.runSteps(10000)
+    addThousandPixelsButton.setOnAction(e -> gameController.runGame(10000)
     );
-    Button runNewConfigButton = new Button("Run New Config");
-    runNewConfigButton.setOnAction(e -> {
-      game.getCanvas().clear();
-      game = new ChaosGame(controller.getNewestChaosGameDescription(), 500, 500);
-      game.getCanvas().addObserver(this);
-      game.runSteps(10000);
-    });
 
     Button clearCanvasButton = new Button("Clear Canvas");
-    clearCanvasButton.setOnAction(e -> game.getCanvas().clear());
-    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton, runNewConfigButton);
+    clearCanvasButton.setOnAction(e -> gameController.clearCanvas());
+    footerRow.getChildren().addAll(addThousandPixelsButton, clearCanvasButton);
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
   }
@@ -230,37 +179,9 @@ public class DisplayScene implements ChaosGameObserver {
     Button button = new Button(fractalName);
     button.setOnAction(e -> {
       switch (fractalName) {
-        case "Julia":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Julia.txt");
-          updateChaosGameObject(chaosGameDescription);
-          game.getCanvas().clear();
-          System.out.println("Julia preset button was clicked!");
-          controller.switchBetweenDisplayOfAffineAndJuliaValues(0, rightBodyRow, transformationNumber, transformationTextFields, affineTransformationButtons, constantC);
-          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
-          break;
-        case "Barnsley":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Barnsley.txt");
-          updateChaosGameObject(chaosGameDescription);
-          displayTransformationMatrices();
-          game.getCanvas().clear();
-          System.out.println("Barnsley preset button was clicked!");
-          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
-          rightBodyRow.getChildren().add(handleEditGameConfigButtons().get(3));
-          break;
-        case "Sierpinski":
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Affine.txt");
-          updateChaosGameObject(chaosGameDescription);
-          displayTransformationMatrices();
-          game.getCanvas().clear();
-          System.out.println("Sierpinski preset button was clicked!");
-          controller.displayMaxAndMinCoords(chaosGameDescription, maxAndMinCoordsTextFields);
-          rightBodyRow.getChildren().add(handleEditGameConfigButtons().get(3));
-
-          break;
-        default:
-          chaosGameDescription = controller.readChaosGameDescriptionFromFile("Default.txt");
-          updateChaosGameObject(chaosGameDescription);
-          break;
+        case "Sierpinski" -> gameController.choosePreset(0, this);
+        case "Barnsley" -> gameController.choosePreset(1, this);
+        case "Julia" -> gameController.choosePreset(2, this);
       }
     });
     return button;
