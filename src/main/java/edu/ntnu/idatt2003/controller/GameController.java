@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.controller;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
+import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.ChaosGameDescriptionFactory;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -149,5 +150,8 @@ public class GameController {
       description = ChaosGameDescriptionFactory.createJuliaChaosGameDescriptionManual(1, new double[][]{{0, 0}}, new int[]{0}, 0, 0, 0, 0);
     }
     fileController.writeChaosGameDescriptionToFile(description, fileName);
+  }
+  public boolean isAffine(){
+    return chaosGame.getDescription().getTransformType() == AffineTransform2D.class;
   }
 }

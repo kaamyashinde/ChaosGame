@@ -78,4 +78,7 @@ public class ChaosGame {
     }
   }
 
+  public ChaosGameDescription getDescription() {
+    return description;
+  }
 }

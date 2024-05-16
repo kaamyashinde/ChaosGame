@@ -190,6 +190,7 @@ public class DisplayScene implements ChaosGameObserver {
      editMaxAndMinButton = new Button("Edit Max and Min");
     editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup());
 
+
      editCButton = new Button("Edit C");
     editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup());
 
