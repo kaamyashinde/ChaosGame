@@ -20,12 +20,12 @@ import java.util.List;
  * @since 0.3.4
  */
 public class EditValuesPopUp {
-  static TextFieldsController textFieldsController = new TextFieldsController();
+  TextFieldsController textFieldsController = new TextFieldsController();
 
   /**
    * Method that creates a popup for editing the constant C.
    */
-  public static void createConstantCPopup() {
+  public void createConstantCPopup() {
     Stage popupStage = new Stage();
     VBox popupLayout = new VBox();
     HBox cValues = new HBox();
@@ -56,7 +56,7 @@ public class EditValuesPopUp {
   /**
    * Method that creates a popup for editing the max and min coordinates.
    */
-  public static void createEditMaxAndMinPopup() {
+  public void createEditMaxAndMinPopup() {
     //create a new stage for the popup
     Stage popupStage = new Stage();
     VBox popupLayout = new VBox();
@@ -91,7 +91,7 @@ public class EditValuesPopUp {
   /**
    * Method that creates a popup for editing the affine transformations.
    */
-  public static void displayAffine() {
+  public void displayAffine() {
     //create a new stage for the popup
     Stage popupStage = new Stage();
     VBox popupLayout = new VBox();

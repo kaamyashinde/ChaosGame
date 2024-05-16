@@ -40,6 +40,7 @@ public class DisplayScene implements ChaosGameObserver {
   VBox rightBodyRow;
   GraphicsContext graphicsContext;
   TextField numberOfTransformations;
+  EditValuesPopUp editValuesPopUp;
 
   public DisplayScene() {
     gameController = new GameController();
@@ -47,6 +48,7 @@ public class DisplayScene implements ChaosGameObserver {
     fileController = new FileController();
     emptyFractalController = new EmptyFractalController();
     textFieldsController = new TextFieldsController();
+    editValuesPopUp = new EditValuesPopUp();
   }
 
   /**
@@ -167,13 +169,13 @@ public class DisplayScene implements ChaosGameObserver {
 
 
     Button editMaxAndMinButton = new Button("Edit Max and Min");
-    editMaxAndMinButton.setOnAction(e -> EditValuesPopUp.createEditMaxAndMinPopup());
+    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup());
 
     Button editCButton = new Button("Edit C");
-    editCButton.setOnAction(e -> EditValuesPopUp.createConstantCPopup());
+    editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup());
 
     Button editAffineTransformationsButton = new Button("Edit Affine Transformations");
-    editAffineTransformationsButton.setOnAction(e -> EditValuesPopUp.displayAffine());
+    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine());
 
     rightBodyRow.getChildren().addAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
 
