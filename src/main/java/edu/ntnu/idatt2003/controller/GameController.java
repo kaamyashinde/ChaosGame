@@ -171,5 +171,6 @@ public class GameController {
    * Update the chaos game description with a new chaos game description.
    */
   public void setCurrentChaosGameDescription(ChaosGameDescription description) {
-    chaosGame.setDescription(description);}
+    chaosGame.setDescription(description);
+    System.out.println(description.toString());}
 }

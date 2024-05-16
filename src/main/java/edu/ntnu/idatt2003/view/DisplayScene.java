@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.*;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
+import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -166,12 +167,28 @@ public class DisplayScene implements ChaosGameObserver {
 
     saveCurrentDescToFile();
 
+    Button updateChaosGameButton = new Button("Update Chaos Game");
+    updateChaosGameButton.setOnAction(e -> updateChaosGameFromSelectedFile());
+    leftBodyRow.getChildren().add(updateChaosGameButton);
+
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
   }
 
+  /**
+   * Method that updates the Chaos Game from the selected file.
+   */
+  public void updateChaosGameFromSelectedFile() {
+    // Retrieve the selected file name from the fileDropDown ComboBox
+    String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
 
+    // Use the readChaosGameDescriptionFromFile method to read the ChaosGameDescription from the selected file
+    ChaosGameDescription description = fileController.readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
+
+    // Use the setCurrentChaosGameDescription method to update the chaosGame with the new ChaosGameDescription
+    gameController.updateChaosGame(new ChaosGame(description, 500, 500), this);
+  }
 
   /**
    * Method that creates the buttons for editing the values of the Chaos Game.

@@ -19,11 +19,12 @@ import java.util.Objects;
 public class FileController {
   private static final String FILE_PATH_PRESETS = "src/main/resources/";
   private static final String FILE_PATH_APP_FILES = "src/main/resources/appFiles/";
- // String selectedFile;
+ String selectedFile;
   File directory;
   List<File> files;
 
   ComboBox<String> fileDropDown = new ComboBox<>();
+  ChaosGameDescription description;
 
   /**
    * Constructor that initializes the directory and the list of files.
@@ -51,15 +52,15 @@ public class FileController {
 
   private void setFileDropDown() {
     files.forEach(file -> fileDropDown.getItems().add(file.getName()));
-    fileDropDown.showingProperty().addListener((observable, oldValue, newValue) -> {
-      /*if (!newValue) {
-        selectedFile = fileDropDown.getSelectionModel().getSelectedItem();
-        System.out.println("Selected file: " + selectedFile);
-        System.out.println("File neame:");
-        // You can add more actions here that should be executed when a file is selected
-        ChaosGameDescription desc = readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
-      }*/
+    fileDropDown.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+      selectedFile = newValue;
+      System.out.println(selectedFile);
+      setDescription(readChaosGameDescriptionFromFile("appFiles/" + selectedFile ));
     });
+  }
+  private void setDescription(ChaosGameDescription description){
+    this.description = description;
+    System.out.println(this.description.toString());
   }
 
   /**
