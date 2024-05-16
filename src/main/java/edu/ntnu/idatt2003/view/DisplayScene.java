@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.*;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
+import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
@@ -51,7 +52,7 @@ public class DisplayScene implements ChaosGameObserver {
     fileController = new FileController();
     emptyFractalController = new EmptyFractalController();
     descriptionValuesController = new DescriptionValuesController();
-    editValuesPopUp = new EditValuesPopUp();
+    editValuesPopUp = new EditValuesPopUp(gameController);
   }
 
   /**
@@ -170,6 +171,7 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
 
+
   /**
    * Method that creates the buttons for editing the values of the Chaos Game.
    * There are two types of buttons:
@@ -191,6 +193,8 @@ public class DisplayScene implements ChaosGameObserver {
    */
 
   private void editCurrentDescription() {
+    editValuesPopUp.setChaosGameDescription();
+
     // Check if the buttons already exist in the rightBodyRow
     rightBodyRow.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
 

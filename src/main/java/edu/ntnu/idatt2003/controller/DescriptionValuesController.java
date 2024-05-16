@@ -1,9 +1,9 @@
 package edu.ntnu.idatt2003.controller;
-import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
-
 
 import edu.ntnu.idatt2003.model.basicLinalg.Complex;
+import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
+import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
@@ -18,24 +18,32 @@ import java.util.List;
  * It is responsible for creating different types of lists for the text fields.
  *
  * @author Kaamya Shinde
- * @version 0.1
+ * @version 0.2
  * @since 0.3.3
  */
 
 public class DescriptionValuesController {
-  Vector2D minCoords;
-  Vector2D maxCoords;
   List<Transform2D> transforms;
   int transformNum;
 
   /**
    * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
+   *
    * @param inputList the list containing the text fields for the max and min coordinates
    */
-  public void registerCoordinates(List<TextField> inputList) {
-    minCoords = new Vector2D(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
-    maxCoords = new Vector2D(Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
-    System.out.println(minCoords.getX0() + " " + minCoords.getX1() + " | " + maxCoords.getX0() + " " + maxCoords.getX1());
+  public void registerCoordinates(List<TextField> inputList, GameController gameController) {
+    double minX = Double.parseDouble(inputList.get(0).getText());
+    double minY = Double.parseDouble(inputList.get(1).getText());
+    double maxX = Double.parseDouble(inputList.get(2).getText());
+    double maxY = Double.parseDouble(inputList.get(3).getText());
+
+    // Update the min and max coordinates in the current ChaosGameDescription
+    ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
+    currentDescription.setMinCoords(new Vector2D(minX, minY));
+    currentDescription.setMaxCoords(new Vector2D(maxX, maxY));
+
+    // Update the ChaosGameDescription in the GameController
+    gameController.setCurrentChaosGameDescription(currentDescription);
   }
 
   /**
@@ -44,17 +52,26 @@ public class DescriptionValuesController {
    * @param inputList the list containing the text fields for the C value.
    */
 
-  public void registerC(List<TextField> inputList) {
-    Complex c = new Complex(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
-    System.out.println(c.getX0() + " " + c.getX1());
+  public void registerC(List<TextField> inputList, GameController gameController) {
+    double c0 = Double.parseDouble(inputList.get(0).getText());
+    double c1 = Double.parseDouble(inputList.get(1).getText());
+
+    // Update the C value in the current ChaosGameDescription
+    ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
+    List<Transform2D> transform = List.of(new JuliaTransform(new Complex(c0, c1), 1));
+    currentDescription.setTransforms(transform);
+
+    // Update the ChaosGameDescription in the GameController
+    gameController.setCurrentChaosGameDescription(currentDescription);
   }
 
   /**
    * Method that displays the C value for the Julia transformation.
-   * @param input the chaos game description
+   *
+   * @param input     the chaos game description
    * @param inputList the list of text fields for the C value
    */
-  public void displayC(ChaosGameDescription input, List<TextField> inputList){
+  public void displayC(ChaosGameDescription input, List<TextField> inputList) {
     JuliaTransform transform = (JuliaTransform) input.getTransforms().get(0);
     inputList.get(0).setText(String.valueOf(transform.getPoint().getReal()));
     inputList.get(1).setText(String.valueOf(transform.getPoint().getImaginary()));
@@ -63,23 +80,30 @@ public class DescriptionValuesController {
 
   /**
    * Method that registers the affine transformations from the user input.
-   * @param inputList the list containing the text fields for the matrix and vector of the affine transformation.
+   *
+   * @param index          the index of the affine transformation
+   * @param inputList      the list containing the text fields for the matrix and vector of the affine transformation.
+   * @param gameController the game controller
    */
-  public void registerAffineTransformations(List<TextField> inputList) {
-    double[][] matrix = new double[2][2];
-    matrix[0][0] = Double.parseDouble(inputList.get(0).getText());
-    matrix[0][1] = Double.parseDouble(inputList.get(1).getText());
-    matrix[1][0] = Double.parseDouble(inputList.get(2).getText());
-    matrix[1][1] = Double.parseDouble(inputList.get(3).getText());
-    double[] vector = new double[2];
-    vector[0] = Double.parseDouble(inputList.get(4).getText());
-    vector[1] = Double.parseDouble(inputList.get(5).getText());
-    System.out.println(matrix[0][0] + " " + matrix[0][1] + " " + matrix[1][0] + " " + matrix[1][1] + " | " + vector[0] + " " + vector[1]);
+  public void registerAffineTransformations(int index, List<TextField> inputList, GameController gameController) {
 
+    Matrix2x2 matrix = new Matrix2x2(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()), Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
+    Vector2D vector = new Vector2D(Double.parseDouble(inputList.get(4).getText()), Double.parseDouble(inputList.get(5).getText()));
+
+    // Update the affine transformation in the current ChaosGameDescription
+    ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
+    AffineTransform2D updatedTransform = new AffineTransform2D(matrix, vector);
+    List<Transform2D> transforms = currentDescription.getTransforms();
+    transforms.set(index, updatedTransform);
+    currentDescription.setTransforms(transforms);
+
+    // Update the ChaosGameDescription in the GameController
+    gameController.setCurrentChaosGameDescription(currentDescription);
   }
 
   /**
    * Method that clears the text fields in a list.
+   *
    * @param inputList the list containing the text fields to be cleared.
    */
   public void clearTextFields(List<TextField> inputList) {
@@ -88,8 +112,9 @@ public class DescriptionValuesController {
 
   /**
    * Method that displays the max and min coordinates of the canvas.
+   *
    * @param inputDescription the chaos game description
-   * @param inputTextFields the list of text fields for the max and min coordinates
+   * @param inputTextFields  the list of text fields for the max and min coordinates
    */
   public void displayMaxAndMinCoords(ChaosGameDescription inputDescription, List<TextField> inputTextFields) {
     inputTextFields.get(0).setText(String.valueOf(inputDescription.getMinCoords().getX0()));
@@ -100,8 +125,9 @@ public class DescriptionValuesController {
 
   /**
    * Method that displays the affine transformations. This is done based on the index of the affine transformation.
-   * @param index the index of the affine transformation
-   * @param inputDesc the chaos game description
+   *
+   * @param index           the index of the affine transformation
+   * @param inputDesc       the chaos game description
    * @param inputTextFields the list of text fields for the affine transformations
    */
   public void displayAffineTransformations(int index, ChaosGameDescription inputDesc, List<TextField> inputTextFields) {
@@ -144,10 +170,6 @@ public class DescriptionValuesController {
       inputTransformationNumber.setText(String.valueOf(transformNum + 1));
     });
   }
-
-
-
-
 
 
 }

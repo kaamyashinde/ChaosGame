@@ -1,10 +1,7 @@
 package edu.ntnu.idatt2003.model.engine;
 
-import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -26,12 +23,9 @@ import java.util.Random;
 public class ChaosGame {
 
   private final ChaosCanvas canvas;
-
-  private final ChaosGameDescription description;
-
-  private Vector2D currentPoint;
-
   private final Random random;
+  private ChaosGameDescription description;
+  private Vector2D currentPoint;
 
   /**
    * Constructor for the ChaosGame class.
@@ -78,7 +72,21 @@ public class ChaosGame {
     }
   }
 
+  /**
+   * Returns the description of the chaos game.
+   *
+   * @return the description
+   */
   public ChaosGameDescription getDescription() {
     return description;
+  }
+
+  /**
+   * Sets the description of the chaos game.
+   *
+   * @param description the new description to be set
+   */
+  public void setDescription(ChaosGameDescription description) {
+    this.description = description;
   }
 }

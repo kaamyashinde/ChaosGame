@@ -17,13 +17,21 @@ import java.util.List;
  * This class is responsible for creating the pop-up windows for editing the values of the chaos game description.
  *
  * @author Kaamya Shinde
- * @version 0.2
+ * @version 0.3
  * @since 0.3.4
  */
 
 public class EditValuesPopUp {
   DescriptionValuesController descriptionValuesController = new DescriptionValuesController();
   ObjectListController objectListController = new ObjectListController();
+  GameController gameController;
+  ChaosGameDescription currentDescription;
+  public EditValuesPopUp(GameController gameController){
+    this.gameController = gameController;
+  }
+  public void setChaosGameDescription(){
+    currentDescription = gameController.getCurrentChaosGameDescription();
+  }
 
   /**
    * Method that initialises the pop-up stage.
@@ -79,6 +87,7 @@ public class EditValuesPopUp {
    * @param gameController The game controller.
    */
   public void createConstantCPopup(GameController gameController) {
+
     Stage popupStage = createPopupStage("Edit C");
     VBox popupLayout = createPopupLayout(popupStage);
     HBox cValues = new HBox();
@@ -93,7 +102,7 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(cValues, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
-      descriptionValuesController.registerC(textFields);
+      descriptionValuesController.registerC(textFields, gameController);
       popupStage.close();
     });
   }
@@ -121,7 +130,7 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(minValues, maxValues, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
-      descriptionValuesController.registerCoordinates(textFields);
+      descriptionValuesController.registerCoordinates(textFields, gameController);
       popupStage.close();
     });
   }
@@ -165,7 +174,7 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(values, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
-      descriptionValuesController.registerAffineTransformations(textFields);
+      descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText()), textFields, gameController);
       descriptionValuesController.clearTextFields(textFields);
     });
   }

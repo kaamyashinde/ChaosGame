@@ -167,4 +167,9 @@ public class GameController {
   public ChaosGameDescription getCurrentChaosGameDescription() {
     return chaosGame.getDescription();
   }
+  /**
+   * Update the chaos game description with a new chaos game description.
+   */
+  public void setCurrentChaosGameDescription(ChaosGameDescription description) {
+    chaosGame.setDescription(description);}
 }
