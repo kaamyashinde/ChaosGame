@@ -157,7 +157,7 @@ public class DisplayScene implements ChaosGameObserver {
 
     createEmptyFractals();
     graphicsContext = null;
-    Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500);
+    Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
     StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
     graphicsContext = pairContainingPaneAndContext.getValue();
 
@@ -168,6 +168,19 @@ public class DisplayScene implements ChaosGameObserver {
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
 
 
+    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
+    bodyRow.setAlignment(Pos.CENTER);
+    return bodyRow;
+  }
+
+
+  private void editMenuButtons() {
+    Button editCurrentDescription = new Button("Edit Current Description");
+    Button editSelectedDescription = new Button("Edit Selected Description");
+    leftBodyRow.getChildren().addAll(editCurrentDescription, editSelectedDescription);
+  }
+
+  private void editCurrentDescription() {
     Button editMaxAndMinButton = new Button("Edit Max and Min");
     editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup());
 
@@ -176,18 +189,10 @@ public class DisplayScene implements ChaosGameObserver {
 
     Button editAffineTransformationsButton = new Button("Edit Affine Transformations");
     editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine());
-
-    rightBodyRow.getChildren().addAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
-
-
-    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
-    bodyRow.setAlignment(Pos.CENTER);
-    return bodyRow;
+    if (!rightBodyRow.getChildren().contains(editMaxAndMinButton)) {
+      rightBodyRow.getChildren().addAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
+    }
   }
-
-
-
-
 
 
 
