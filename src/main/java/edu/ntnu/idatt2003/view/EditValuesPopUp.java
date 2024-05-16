@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.view;
+import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 
+import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.controller.TextFieldsController;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,7 +27,7 @@ public class EditValuesPopUp {
   /**
    * Method that creates a popup for editing the constant C.
    */
-  public void createConstantCPopup() {
+  public void createConstantCPopup(GameController gameController) {
     Stage popupStage = new Stage();
     VBox popupLayout = new VBox();
     HBox cValues = new HBox();
@@ -40,6 +42,7 @@ public class EditValuesPopUp {
     Button registerButton = new Button("Register");
     forButtons.getChildren().add(registerButton);
 
+    textFieldsController.displayC(gameController.getCurrentChaosGameDescription(), textFields);
     popupLayout.getChildren().addAll(cValues, spacer, forButtons);
 
     Scene popuScene = new Scene(popupLayout, 300, 300);
@@ -56,7 +59,7 @@ public class EditValuesPopUp {
   /**
    * Method that creates a popup for editing the max and min coordinates.
    */
-  public void createEditMaxAndMinPopup() {
+  public void createEditMaxAndMinPopup(GameController gameController) {
     //create a new stage for the popup
     Stage popupStage = new Stage();
     VBox popupLayout = new VBox();
@@ -70,6 +73,13 @@ public class EditValuesPopUp {
     popupLayout.prefHeightProperty().bind(popupStage.heightProperty());
     popupStage.setTitle("Edit Min and Max");
     List<TextField> textFields = textFieldsController.maxAndMinCoordsTextFieldsList();
+
+    // Get the current ChaosGameDescription
+    ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
+    System.out.println(currentDescription.toString());
+
+    textFieldsController.displayMaxAndMinCoords(currentDescription, textFields);
+
     minValues.getChildren().addAll(textFields.get(0), textFields.get(1));
     maxValues.getChildren().addAll(textFields.get(2), textFields.get(3));
     Button registerButton = new Button("Register");
@@ -86,12 +96,12 @@ public class EditValuesPopUp {
           popupStage.close();
         }
     );
-  }
+}
 
   /**
    * Method that creates a popup for editing the affine transformations.
    */
-  public void displayAffine() {
+  public void displayAffine(GameController gameController) {
     //create a new stage for the popup
     Stage popupStage = new Stage();
     VBox popupLayout = new VBox();
@@ -106,6 +116,20 @@ public class EditValuesPopUp {
 
     //add the textfields for the matrix values
     List<TextField> textFields = textFieldsController.affineTransformationTextFieldsList();
+
+    // Get the current ChaosGameDescription
+    ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
+
+    // Create the transformation number TextField
+    TextField transformationNumber = new TextField();
+    transformationNumber.setPromptText("Transformation Number");
+
+    // Create the previous and next buttons
+    List<Button> traverseButtons = textFieldsController.affineTransformationButtonsList();
+
+    // Display the current affine transformation values
+    textFieldsController.displayCorrectAffineTransformation(currentDescription, traverseButtons, textFields, transformationNumber);
+
     matrixRow1.getChildren().addAll(textFields.get(0), textFields.get(1));
     matrixRow2.getChildren().addAll(textFields.get(2), textFields.get(3));
 
@@ -121,22 +145,20 @@ public class EditValuesPopUp {
     vectorRow1.getChildren().addAll(textFields.get(4));
     vectorRow2.getChildren().addAll(textFields.get(5));
 
-
     //store the matrix values, spacer and vector values in a single hbox
     values.getChildren().addAll(matrixValues, spacerBetweenMatrixAndVector, vectorValues);
-
 
     HBox spacer = new HBox();
     spacer.setPrefHeight(20);
     HBox forButtons = new HBox();
     Button registerButton = new Button("Register");
     forButtons.getChildren().add(registerButton);
+    forButtons.getChildren().addAll(traverseButtons.get(0), transformationNumber, traverseButtons.get(1));
 
     popupLayout.getChildren().addAll(values, spacer, forButtons);
     popupLayout.prefWidthProperty().bind(popupStage.widthProperty());
     popupLayout.prefHeightProperty().bind(popupStage.heightProperty());
     popupStage.setTitle("Edit affine transformations");
-
 
     Scene popuScene = new Scene(popupLayout, 300, 300);
     popupStage.setScene(popuScene);
@@ -148,5 +170,5 @@ public class EditValuesPopUp {
           textFieldsController.clearTextFields(textFields);
         }
     );
-  }
+}
 }

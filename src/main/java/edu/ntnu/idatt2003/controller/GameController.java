@@ -154,4 +154,7 @@ public class GameController {
   public boolean isAffine(){
     return chaosGame.getDescription().getTransformType() == AffineTransform2D.class;
   }
+  public ChaosGameDescription getCurrentChaosGameDescription() {
+    return chaosGame.getDescription();
+  }
 }

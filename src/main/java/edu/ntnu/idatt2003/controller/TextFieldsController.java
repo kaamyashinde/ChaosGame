@@ -1,7 +1,12 @@
 package edu.ntnu.idatt2003.controller;
+import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
+
 
 import edu.ntnu.idatt2003.model.basicLinalg.Complex;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
+import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
+import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
+import edu.ntnu.idatt2003.model.transformations.Transform2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
@@ -20,6 +25,8 @@ import java.util.List;
 public class TextFieldsController {
   Vector2D minCoords;
   Vector2D maxCoords;
+  List<Transform2D> transforms;
+  int transformNum;
 
   /**
    * Method that creates a list containing the max and min coordinates text fields.
@@ -106,6 +113,12 @@ public class TextFieldsController {
     Complex c = new Complex(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
     System.out.println(c.getX0() + " " + c.getX1());
   }
+  public void displayC(ChaosGameDescription input, List<TextField> inputList){
+    JuliaTransform transform = (JuliaTransform) input.getTransforms().get(0);
+    inputList.get(0).setText(String.valueOf(transform.getPoint().getReal()));
+    inputList.get(1).setText(String.valueOf(transform.getPoint().getImaginary()));
+
+  }
 
   /**
    * Method that registers the affine transformations from the user input.
@@ -132,6 +145,61 @@ public class TextFieldsController {
   public void clearTextFields(List<TextField> inputList) {
     inputList.forEach(TextInputControl::clear);
   }
+
+  public void displayMaxAndMinCoords(ChaosGameDescription inputDescription, List<TextField> inputTextFields) {
+    inputTextFields.get(0).setText(String.valueOf(inputDescription.getMinCoords().getX0()));
+    inputTextFields.get(1).setText(String.valueOf(inputDescription.getMinCoords().getX1()));
+    inputTextFields.get(2).setText(String.valueOf(inputDescription.getMaxCoords().getX0()));
+    inputTextFields.get(3).setText(String.valueOf(inputDescription.getMaxCoords().getX1()));
+  }
+
+  /**
+   * Method that displays the current chaosGameDescriptions's Affine transformations.
+   */
+  public void displayAffineTransformations(int index, ChaosGameDescription inputDesc, List<TextField> inputTextFields) {
+    AffineTransform2D affine = (AffineTransform2D) inputDesc.getTransforms().get(index);
+    inputTextFields.get(0).setText(String.valueOf(affine.getMatrix().getA00()));
+    inputTextFields.get(1).setText(String.valueOf(affine.getMatrix().getA01()));
+    inputTextFields.get(2).setText(String.valueOf(affine.getMatrix().getA10()));
+    inputTextFields.get(3).setText(String.valueOf(affine.getMatrix().getA11()));
+    inputTextFields.get(4).setText(String.valueOf(affine.getVector().getX0()));
+    inputTextFields.get(5).setText(String.valueOf(affine.getVector().getX1()));
+  }
+
+  /**
+   * Method that is used to display the affine transformations correctly. It also handles the traversing between the different transformations.
+   *
+   * @param inputDesc                     the chaos game description
+   * @param inputTraverseButtons          the list of buttons for traversing the transformations
+   * @param inputTransformationTextFields the list of input fields for the transformations
+   * @param inputTransformationNumber     the input field for the transformation number
+   */
+  public void displayCorrectAffineTransformation(ChaosGameDescription inputDesc, List<Button> inputTraverseButtons, List<TextField> inputTransformationTextFields, TextField inputTransformationNumber) {
+    System.out.println("displaying the config info by running displayCorrectAffineTransformation");
+    transforms = inputDesc.getTransforms();
+    transformNum = 0;
+    displayAffineTransformations(transformNum, inputDesc, inputTransformationTextFields);
+    inputTraverseButtons.get(0).setOnAction(e -> {
+      transformNum--;
+      if (transformNum < 0) {
+        transformNum = transforms.size() - 1;
+      }
+      displayAffineTransformations(transformNum, inputDesc, inputTransformationTextFields);
+      inputTransformationNumber.setText(String.valueOf(transformNum + 1));
+    });
+    inputTraverseButtons.get(1).setOnAction(e -> {
+      transformNum++;
+      if (transformNum == transforms.size()) {
+        transformNum = 0;
+      }
+      displayAffineTransformations(transformNum, inputDesc, inputTransformationTextFields);
+      inputTransformationNumber.setText(String.valueOf(transformNum + 1));
+    });
+  }
+
+
+
+
 
 
 }
