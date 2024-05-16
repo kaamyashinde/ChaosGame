@@ -79,7 +79,7 @@ public class ChaosGameDescriptionFactory {
         }
         return new ChaosGameDescription(minCoords, maxCoords, transforms);
     }
-
+    /*
     public static ChaosGameDescription createBarnsleyFernChaosGameDescription() {
         Vector2D minCoords = new Vector2D(-2.65, 0);
         Vector2D maxCoords = new Vector2D(2.65, 10);
@@ -108,5 +108,41 @@ public class ChaosGameDescriptionFactory {
         transforms.add(transform4);
 
         return new ChaosGameDescription(minCoords, maxCoords, transforms);
+    }
+    */
+
+    public static ChaosGameDescription createbarnsleyferndescriptionwithstatistics() {
+        ChaosGameDescription description = new ChaosGameDescription(true, true);
+
+        // Transformation T1
+        description.addTransform(
+                new AffineTransform2D(
+                        new Matrix2x2(0.00, 0.00, 0.00, 0.16),
+                        new Vector2D(0.00, 0.00)
+                ), 0.01
+        );
+        // Transformation T2
+        description.addTransform(
+                new AffineTransform2D(
+                        new Matrix2x2(0.85, 0.04, -0.04, 0.85),
+                        new Vector2D(0.00, 1.60)
+                ), 0.85
+        );
+        // Transformation T3
+        description.addTransform(
+                new AffineTransform2D(
+                        new Matrix2x2(0.20, -0.26, 0.23, 0.22),
+                        new Vector2D(0.00, 1.60)
+                ), 0.07
+        );
+        // Transformation T4
+        description.addTransform(
+                new AffineTransform2D(
+                        new Matrix2x2(-0.15, 0.28, 0.26, 0.24),
+                        new Vector2D(0.00, 0.44)
+                ), 0.07
+        );
+
+        return description;
     }
 }

@@ -494,9 +494,20 @@ public class UserInterface {
      *
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Barnsley fern.
      */
+    /*
     private static ChaosGameDescription defaultBarnsleyFern() {
         return ChaosGameDescriptionFactory.createBarnsleyFernChaosGameDescription();
     }
+
+
+    */
+    //ny versjon med statestikk bruk
+
+    private static ChaosGameDescription defaultBarnsleyFern() {
+        return ChaosGameDescriptionFactory.createbarnsleyferndescriptionwithstatistics();
+        //return ChaosGameDescriptionFactory.createBarnsleyFernChaosGameDescription();
+    }
+
 
     /**
      * Initiates the Julia set preset.
