@@ -34,7 +34,7 @@ public class DisplayScene implements ChaosGameObserver {
   ObserverActionController observerActionController;
   FileController fileController;
   EmptyFractalController emptyFractalController;
-  TextFieldsController textFieldsController;
+  DescriptionValuesController descriptionValuesController;
   Button runIterations;
   VBox leftBodyRow;
   VBox rightBodyRow;
@@ -50,7 +50,7 @@ public class DisplayScene implements ChaosGameObserver {
     observerActionController = new ObserverActionController();
     fileController = new FileController();
     emptyFractalController = new EmptyFractalController();
-    textFieldsController = new TextFieldsController();
+    descriptionValuesController = new DescriptionValuesController();
     editValuesPopUp = new EditValuesPopUp();
   }
 
@@ -147,16 +147,7 @@ public class DisplayScene implements ChaosGameObserver {
     leftBodyRow = new VBox();
 
     ComboBox<String> fileDropDown = fileController.getFileDropDown();
-
-    //registerButton.setOnAction(e-> gameController.updateGameFromFile(this));
-   /* registerButton.setOnAction(e -> {
-      // Create a new file when the register button is clicked
-      gameController.createEmptyFractal(false, 0); // false for Julia, true for Affine
-
-      // Update the dropdown list
-    });*/
     leftBodyRow.getChildren().addAll(fileDropDown);
-
 
     createEmptyFractals();
     graphicsContext = null;
@@ -172,12 +163,21 @@ public class DisplayScene implements ChaosGameObserver {
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
 
 
+
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
   }
 
 
+  /**
+   * Method that creates the buttons for editing the values of the Chaos Game.
+   * There are two types of buttons:
+   * <ol>
+   *   <li>Edit Current Description: Targets the current description and edits it.</li>
+   *   <li>Edit Selected Description: User can choose a file from the drop down and edit it.</li>
+   * </ol>
+   */
   private void editMenuButtons() {
     Button editCurrentDescription = new Button("Edit Current Description");
     Button editSelectedDescription = new Button("Edit Selected Description");
@@ -186,47 +186,38 @@ public class DisplayScene implements ChaosGameObserver {
     editSelectedDescription.setOnAction(e -> editSelectedDescription());
   }
 
-  private void editCurrentDescription() {
-     editMaxAndMinButton = new Button("Edit Max and Min");
-    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup(gameController));
-  rightBodyRow.getChildren().add(editMaxAndMinButton);
+  /**
+   * Method that creates the buttons for editing the current description.
+   */
 
-     editCButton = new Button("Edit C");
+  private void editCurrentDescription() {
+    // Check if the buttons already exist in the rightBodyRow
+    rightBodyRow.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
+
+    editMaxAndMinButton = new Button("Edit Max and Min");
+    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup(gameController));
+    rightBodyRow.getChildren().add(editMaxAndMinButton);
+
+    editCButton = new Button("Edit C");
     editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup(gameController));
 
-
-     editAffineTransformationsButton = new Button("Edit Affine Transformations");
+    editAffineTransformationsButton = new Button("Edit Affine Transformations");
     editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine(gameController));
 
-    if (gameController.isAffine()){
-      rightBodyRow.getChildren().add(editAffineTransformationsButton);
-    } else{
-      rightBodyRow.getChildren().add(editCButton);
+    if (gameController.isAffine()) {
+        rightBodyRow.getChildren().add(editAffineTransformationsButton);
+    } else {
+        rightBodyRow.getChildren().add(editCButton);
     }
+}
 
-  }
+  /**
+   * Method that creates the buttons for editing the selected description.
+   */
+
   private void editSelectedDescription() {
     rightBodyRow.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
   }
-
-
-
-/*
-Three different buttons for editing.
-1. Edit max and min
-2. Edit transformations affine
-  - must take into account the number of transformations
-3. Edit transformations julia
-
-There will be the register buttons too
-1. Register max and min
-2. Register transformations affine (own popup)
-3. Register transformations julia (own popup)
-
-
-so when creating new fractal, we'll first create a file with 0s, asking the user for the number of transformations for affine there.
-Then based on that the user wil be able to edit the file and use it to run the application.
- */
 
   /**
    * Method that creates the empty fractals.

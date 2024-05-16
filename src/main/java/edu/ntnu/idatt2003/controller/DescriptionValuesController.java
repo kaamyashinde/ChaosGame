@@ -19,83 +19,18 @@ import java.util.List;
  *
  * @author Kaamya Shinde
  * @version 0.1
- * @since 3.2.0
+ * @since 0.3.3
  */
 
-public class TextFieldsController {
+public class DescriptionValuesController {
   Vector2D minCoords;
   Vector2D maxCoords;
   List<Transform2D> transforms;
   int transformNum;
 
   /**
-   * Method that creates a list containing the max and min coordinates text fields.
-   *
-   * @return a list containing the max and min coordinates text fields.
-   */
-  public List<TextField> maxAndMinCoordsTextFieldsList() {
-
-    TextField minCoordsX0 = new TextField();
-    TextField minCoordsX1 = new TextField();
-    TextField maxCoordsX0 = new TextField();
-    TextField maxCoordsX1 = new TextField();
-
-    minCoordsX0.setPromptText("Min X0");
-    minCoordsX1.setPromptText("Min X1");
-    maxCoordsX0.setPromptText("Max X0");
-    maxCoordsX1.setPromptText("Max X1");
-
-    return List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
-  }
-
-  /**
-   * Method that creates a list containing the buttons used to control the viewing of the Affine transformations.
-   *
-   * @return a list containing the buttons used to control the viewing of the Affine transformations.
-   */
-  public List<Button> affineTransformationButtonsList() {
-    Button previousTransformation = new Button("Previous Transformation");
-    Button nextTransformation = new Button("Next Transformation");
-    return List.of(previousTransformation, nextTransformation);
-  }
-
-  /**
-   * Method that creates a list containing the matrix and vector for a specific affine transformation.
-   *
-   * @return a list containing the matrix and vector for a specific affine transformation.
-   */
-  public List<TextField> affineTransformationTextFieldsList() {
-    TextField matrixA00 = new TextField();
-    TextField matrixA01 = new TextField();
-    TextField matrixA10 = new TextField();
-    TextField matrixA11 = new TextField();
-    TextField vectorB0 = new TextField();
-    TextField vectorB1 = new TextField();
-    matrixA00.setPromptText("Matrix A00");
-    matrixA01.setPromptText("Matrix A01");
-    matrixA10.setPromptText("Matrix A10");
-    matrixA11.setPromptText("Matrix A11");
-    vectorB0.setPromptText("Vector B0");
-    vectorB1.setPromptText("Vector B1");
-
-    return List.of(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
-  }
-
-  /**
-   * Method that creates a list containing the text fields for the C value in the Julia transformation.
-   *
-   * @return a list containing the text fields for the C value in the Julia transformation.
-   */
-  public List<TextField> constantCTextFieldsList() {
-    TextField X0 = new TextField();
-    TextField X1 = new TextField();
-    X0.setPromptText("X0");
-    X1.setPromptText("X1");
-    return List.of(X0, X1);
-  }
-
-  /**
    * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
+   * @param inputList the list containing the text fields for the max and min coordinates
    */
   public void registerCoordinates(List<TextField> inputList) {
     minCoords = new Vector2D(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
@@ -113,6 +48,12 @@ public class TextFieldsController {
     Complex c = new Complex(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()));
     System.out.println(c.getX0() + " " + c.getX1());
   }
+
+  /**
+   * Method that displays the C value for the Julia transformation.
+   * @param input the chaos game description
+   * @param inputList the list of text fields for the C value
+   */
   public void displayC(ChaosGameDescription input, List<TextField> inputList){
     JuliaTransform transform = (JuliaTransform) input.getTransforms().get(0);
     inputList.get(0).setText(String.valueOf(transform.getPoint().getReal()));
@@ -137,7 +78,6 @@ public class TextFieldsController {
 
   }
 
-
   /**
    * Method that clears the text fields in a list.
    * @param inputList the list containing the text fields to be cleared.
@@ -146,6 +86,11 @@ public class TextFieldsController {
     inputList.forEach(TextInputControl::clear);
   }
 
+  /**
+   * Method that displays the max and min coordinates of the canvas.
+   * @param inputDescription the chaos game description
+   * @param inputTextFields the list of text fields for the max and min coordinates
+   */
   public void displayMaxAndMinCoords(ChaosGameDescription inputDescription, List<TextField> inputTextFields) {
     inputTextFields.get(0).setText(String.valueOf(inputDescription.getMinCoords().getX0()));
     inputTextFields.get(1).setText(String.valueOf(inputDescription.getMinCoords().getX1()));
@@ -154,7 +99,10 @@ public class TextFieldsController {
   }
 
   /**
-   * Method that displays the current chaosGameDescriptions's Affine transformations.
+   * Method that displays the affine transformations. This is done based on the index of the affine transformation.
+   * @param index the index of the affine transformation
+   * @param inputDesc the chaos game description
+   * @param inputTextFields the list of text fields for the affine transformations
    */
   public void displayAffineTransformations(int index, ChaosGameDescription inputDesc, List<TextField> inputTextFields) {
     AffineTransform2D affine = (AffineTransform2D) inputDesc.getTransforms().get(index);

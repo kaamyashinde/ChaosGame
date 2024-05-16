@@ -20,9 +20,9 @@ import java.util.List;
  * Thereafter, the methods are only called up on i the view package.
  *
  * @author Kaamya Shinde
- * @version 0.4
+ * @version 0.5
  * @see edu.ntnu.idatt2003.view.DisplayScene
- * @since 0.3.3
+ * @since 0.3.5
  */
 public class GameController {
   private final FileController fileController;
@@ -151,9 +151,19 @@ public class GameController {
     }
     fileController.writeChaosGameDescriptionToFile(description, fileName);
   }
+
+  /**
+   * Method that checks the type of the current chaos game.
+   * @return True if the chaos game is affine, false if the chaos game is Julia.
+   */
   public boolean isAffine(){
     return chaosGame.getDescription().getTransformType() == AffineTransform2D.class;
   }
+
+  /**
+   * Method that returns the current chaos game description.
+   * @return The current chaos game description.
+   */
   public ChaosGameDescription getCurrentChaosGameDescription() {
     return chaosGame.getDescription();
   }
