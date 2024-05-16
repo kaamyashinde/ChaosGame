@@ -17,6 +17,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that creates the scene for the Chaos Game. The scene consists of a navigation row, a title row, a body row and a footer row.
@@ -40,6 +44,7 @@ public class DisplayScene implements ChaosGameObserver {
   Button runIterations;
   VBox leftBodyRow;
   VBox rightBodyRow;
+  List<Button> buttons;
   GraphicsContext graphicsContext;
   TextField numberOfTransformations;
   EditValuesPopUp editValuesPopUp;
@@ -119,8 +124,11 @@ public class DisplayScene implements ChaosGameObserver {
    * @return The HBox with the button for the user manual.
    */
   private HBox navigationHBox() {
+
     Button getHelpButton = new Button("User Manual");
     HBox navigationRow = new HBox();
+    navigationRow.getStyleClass().add("border");
+
     navigationRow.getChildren().addAll(getHelpButton);
     navigationRow.setAlignment(Pos.CENTER);
     return navigationRow;
@@ -133,7 +141,12 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private HBox titleHBox() {
     HBox titleRow = new HBox();
+    titleRow.getStyleClass().add("border");
+
     TextField sceneHeading = new TextField(("Chaos Game"));
+    sceneHeading.setText("Chaos Game");
+    sceneHeading.prefWidthProperty().bind(layout.widthProperty());
+    sceneHeading.getStyleClass().add("title");
     sceneHeading.setEditable(false);
     sceneHeading.setAlignment(Pos.CENTER);
     titleRow.getChildren().add(sceneHeading);
@@ -147,23 +160,43 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private HBox bodyHBox() {
     HBox bodyRow = new HBox();
+    bodyRow.getStyleClass().add("border");
+
     leftBodyRow = new VBox();
+    leftBodyRow.getStyleClass().add("inner-border");
+
 
     ComboBox<String> fileDropDown = fileController.getFileDropDown();
     leftBodyRow.getChildren().addAll(fileDropDown);
+    leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
 
     createEmptyFractals();
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
     StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
+    chaosGamePane.getStyleClass().add("inner-border");
+    chaosGamePane.prefWidthProperty().bind(bodyRow.widthProperty());
     graphicsContext = pairContainingPaneAndContext.getValue();
-
     rightBodyRow = new VBox();
+
+    rightBodyRow.getStyleClass().add("inner-border");
+    rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
+
     editMenuButtons();
 
-    rightBodyRow.getChildren().add(createPresetFractalButton("Julia"));
-    rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
-    rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
+    TextField presetsDisplay = new TextField("Choose a preset fractal:");
+    presetsDisplay.setEditable(false);
+    presetsDisplay.setAlignment(Pos.CENTER);
+    presetsDisplay.getStyleClass().add("section-heading");
+    rightBodyRow.getChildren().add(presetsDisplay);
+    buttons = new ArrayList<>();
+
+    buttons.add(createPresetFractalButton("Julia"));
+    buttons.get(0).getStyleClass().add("selected-button");
+    buttons.add(createPresetFractalButton("Barnsley"));
+    buttons.add(createPresetFractalButton("Sierpinski"));
+
+    buttons.forEach(button -> rightBodyRow.getChildren().add(button));
 
     saveCurrentDescToFile();
 
@@ -282,8 +315,10 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private HBox footerHBox() {
     HBox footerRow = new HBox();
+    footerRow.getStyleClass().add("border");
     TextField iterations = new TextField();
     iterations.setPromptText("Enter number of iterations");
+    iterations.setText("10000");
     runIterations = new Button("Run iterations");
     runIterations.setOnAction(e -> {
           int steps = Integer.parseInt(iterations.getText());
@@ -309,12 +344,17 @@ public class DisplayScene implements ChaosGameObserver {
     Button button = new Button(fractalName);
     button.setOnAction(e -> {
       switch (fractalName) {
-        case "Sierpinski" -> gameController.choosePreset(0, this);
-        case "Barnsley" -> gameController.choosePreset(1, this);
-        case "Julia" -> gameController.choosePreset(2, this);
+        case "Julia" -> updateBasedOnChosenPreset(0, this);
+        case "Barnsley" -> updateBasedOnChosenPreset(1, this);
+        case "Sierpinski" -> updateBasedOnChosenPreset(2, this);
       }
     });
     return button;
+  }
+
+  private void updateBasedOnChosenPreset(int caseNum, ChaosGameObserver observer){
+    gameController.choosePreset(caseNum, observer);
+    gameController.updateButtonStyle(caseNum, buttons);
   }
 
 }

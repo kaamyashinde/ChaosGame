@@ -1,0 +1,61 @@
+/**
+The root style class is applied to the root node of the scene graph.
+ */
+.root {
+    -fx-background-color: black;
+}
+
+/**
+The title style class is applied to the title label.
+ This refers to the ChaosGame title.
+ */
+.title {
+    -fx-font-size:40;
+    -fx-font-weight: bold;
+    -fx-font-family: Georgia;
+    -fx-text-fill: black;
+    -fx-padding: 10;
+    -fx-focus-color: red;
+    -fx-faint-focus-color: red;
+    -fx-box-border: red;
+}
+
+/**
+Border style class that is applied to the horizontal sections of the application.
+ */
+.border {
+    -fx-border-color: pink;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+}
+
+/**
+Border style class that is applied to the vertical sections in the body row.
+ */
+.inner-border{
+    -fx-border-color: lightblue;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-padding: 10;
+}
+
+/**
+Applied to the section headings.
+ */
+.section-heading{
+    -fx-font-size: 15;
+    -fx-font-family: Georgia;
+    -fx-text-fill: grey;
+    -fx-padding: 10;
+    -fx-background-color: transparent;
+}
+
+/**
+Selected preset
+ */
+.selected-preset{
+    -fx-background-color: red;
+    }
+.unselected-preset{
+    -fx-background-color: white;
+    }

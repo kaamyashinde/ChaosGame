@@ -61,9 +61,10 @@ public class GameController {
    * </ol>
    */
   private void loadChaosGamePresets() {
-    listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Affine.txt"));
-    listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Barnsley.txt"));
     listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Julia.txt"));
+    listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Barnsley.txt"));
+    listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Affine.txt"));
+
   }
 
   /**
@@ -101,6 +102,21 @@ public class GameController {
   public void choosePreset(int caseNum, ChaosGameObserver observer) {
     updateChaosGame(new ChaosGame(listOfDescriptions.get(caseNum), 500, 500), observer);
     System.out.println("Preset button was clicked for case " + caseNum);
+  }
+
+  /**
+   * Method that updates the style of the buttons.
+   * @param caseNum The case number of the preset.
+   * @param buttons The list of buttons that are to be updated.
+   */
+  public void updateButtonStyle(int caseNum, List<javafx.scene.control.Button> buttons) {
+    for (int i = 0; i < buttons.size(); i++) {
+      if (i == caseNum) {
+        buttons.get(i).setStyle("-fx-background-color: #ff0000");
+      } else {
+        buttons.get(i).setStyle("-fx-background-color: #ffffff");
+      }
+    }
   }
 
   /**
