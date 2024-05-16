@@ -41,6 +41,9 @@ public class DisplayScene implements ChaosGameObserver {
   GraphicsContext graphicsContext;
   TextField numberOfTransformations;
   EditValuesPopUp editValuesPopUp;
+  Button editCButton;
+  Button editMaxAndMinButton;
+  Button editAffineTransformationsButton;
 
   public DisplayScene() {
     gameController = new GameController();
@@ -162,6 +165,7 @@ public class DisplayScene implements ChaosGameObserver {
     graphicsContext = pairContainingPaneAndContext.getValue();
 
     rightBodyRow = new VBox();
+    editMenuButtons();
 
     rightBodyRow.getChildren().add(createPresetFractalButton("Julia"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
@@ -178,20 +182,25 @@ public class DisplayScene implements ChaosGameObserver {
     Button editCurrentDescription = new Button("Edit Current Description");
     Button editSelectedDescription = new Button("Edit Selected Description");
     leftBodyRow.getChildren().addAll(editCurrentDescription, editSelectedDescription);
+    editCurrentDescription.setOnAction(e -> editCurrentDescription());
+    editSelectedDescription.setOnAction(e -> editSelectedDescription());
   }
 
   private void editCurrentDescription() {
-    Button editMaxAndMinButton = new Button("Edit Max and Min");
+     editMaxAndMinButton = new Button("Edit Max and Min");
     editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup());
 
-    Button editCButton = new Button("Edit C");
+     editCButton = new Button("Edit C");
     editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup());
 
-    Button editAffineTransformationsButton = new Button("Edit Affine Transformations");
+     editAffineTransformationsButton = new Button("Edit Affine Transformations");
     editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine());
     if (!rightBodyRow.getChildren().contains(editMaxAndMinButton)) {
       rightBodyRow.getChildren().addAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
     }
+  }
+  private void editSelectedDescription() {
+    rightBodyRow.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
   }
 
 

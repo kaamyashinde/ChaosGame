@@ -74,8 +74,9 @@ public class GameController {
    * @param height The height of the canvas.
    * @return A pair of the stack pane and the graphics context.
    */
-  public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height) {
+  public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer){
     chaosGame = new ChaosGame(listOfDescriptions.get(0), width, height);
+    addObserverToGame(observer);
     Canvas canvas = new Canvas(width, height);
     GraphicsContext gc = canvas.getGraphicsContext2D();
     StackPane chaosGamePane = new StackPane();
