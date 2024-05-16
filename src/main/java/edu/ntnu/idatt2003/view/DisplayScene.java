@@ -45,6 +45,7 @@ public class DisplayScene implements ChaosGameObserver {
   Button editCButton;
   Button editMaxAndMinButton;
   Button editAffineTransformationsButton;
+  TextField fileName;
 
   public DisplayScene() {
     gameController = new GameController();
@@ -163,7 +164,7 @@ public class DisplayScene implements ChaosGameObserver {
     rightBodyRow.getChildren().add(createPresetFractalButton("Barnsley"));
     rightBodyRow.getChildren().add(createPresetFractalButton("Sierpinski"));
 
-
+    saveCurrentDescToFile();
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
@@ -228,11 +229,11 @@ public class DisplayScene implements ChaosGameObserver {
    */
 
   private void createEmptyFractals() {
-    TextField fileName = new TextField();
+    fileName= new TextField();
     fileName.setPromptText("Enter file name");
     numberOfTransformations = new TextField();
-    numberOfTransformations.setPromptText("Enter number of transformations");
-    Button registerFileButton = new Button("Register File");
+    numberOfTransformations.setPromptText("Enter number of transformations for empty fractal");
+    Button registerFileButton = new Button("Create empty File");
 
     Button switchButton = new Button("Switch to " + "Julia");
     switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, leftBodyRow, numberOfTransformations));
@@ -244,6 +245,19 @@ public class DisplayScene implements ChaosGameObserver {
 
     leftBodyRow.getChildren().addAll(fileName, registerFileButton, switchButton);
 
+  }
+  /**
+   * Method that saves the current description to a file.
+   */
+  private void saveCurrentDescToFile(){
+    Button saveCurrentDescToFile = new Button("Save Current Description to File");
+    saveCurrentDescToFile.setOnAction(e -> {
+      ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
+      System.out.println(fileName.getText());
+      fileController.writeChaosGameDescriptionToFile(chaosGameDescription, fileName.getText());
+      fileController.updateFileDropDown();
+    });
+    leftBodyRow.getChildren().add(saveCurrentDescToFile);
   }
 
   /**
