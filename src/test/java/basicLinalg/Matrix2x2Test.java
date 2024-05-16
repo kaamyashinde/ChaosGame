@@ -7,13 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-/**
- * JUnit tests for the Matrix2x2 class.
- */
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class Matrix2x2Test {
-
     private Matrix2x2 matrix;
     private Vector2D vector;
 
@@ -23,6 +19,7 @@ class Matrix2x2Test {
         vector = new Vector2D(5, 6);
     }
 
+    //positive test
     /**
      * Testing the multiply method.
      */
@@ -34,4 +31,12 @@ class Matrix2x2Test {
         assertEquals(39, result.getX1());
     }
 
+    //negative test
+    @Test
+    @DisplayName("Invalid matrix values")
+    void invalidMatrixValuesTest(){
+        assertThrows(IllegalArgumentException.class, () -> {
+            Matrix2x2 invalidMatrix = new Matrix2x2(-600, 2, 3, 4); // a00 value is out of range
+        });
+    }
 }
