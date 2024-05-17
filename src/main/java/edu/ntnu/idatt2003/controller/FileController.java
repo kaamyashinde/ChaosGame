@@ -60,7 +60,14 @@ public class FileController {
   }
   private void setDescription(ChaosGameDescription description){
     this.description = description;
-    System.out.println(this.description.toString());
+    if (this.description != null){
+        System.out.println(this.description.toString());
+    }
+    else {
+        System.out.println("Description is null");
+    }
+
+
   }
 
   /**
@@ -94,4 +101,14 @@ public class FileController {
     files = Arrays.asList(Objects.requireNonNull(directory.listFiles()));
     files.forEach(file -> fileDropDown.getItems().add(file.getName()));
   }
+
+  //persistance tingz
+  // In FileController.java
+  public void saveLastGame(ChaosGameDescription desc) {
+      writeChaosGameDescriptionToFile(desc, "persistance");
+  }
+
+    public ChaosGameDescription loadLastGame() {
+        return readChaosGameDescriptionFromFile("appFiles/" + "persistance.txt");
+    }
 }

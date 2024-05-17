@@ -37,6 +37,10 @@ public class ChaosGameFileHandler {
      * @param path the path to the file to write to
      */
     public static void writeToFile(ChaosGameDescription chaosGameDescription, String path) {
+        if (chaosGameDescription == null) {
+            System.out.println("ChaosGameDescription is null. Please initialize it before calling writeToFile().");
+            return;
+        }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             // Check if we have transformations and write the type of the first one
             if (!chaosGameDescription.getTransforms().isEmpty()) {
@@ -85,6 +89,13 @@ public class ChaosGameFileHandler {
     public static ChaosGameDescription readFromFile(String path) {
         File file = new File(path);
         try (Scanner scanner = new Scanner(file)) {
+            // Check if the file is empty
+            if (!scanner.hasNextLine()) {
+                // The file is empty
+                // Return a default ChaosGameDescription or null
+                return null;
+            }
+
             // Read the type of transformation
             String transformType = scanner.nextLine().split("#")[0].trim();
 
