@@ -192,7 +192,7 @@ public class DisplayScene implements ChaosGameObserver {
     buttons = new ArrayList<>();
 
     buttons.add(createPresetFractalButton("Julia"));
-    buttons.get(0).getStyleClass().add("selected-button");
+    buttons.get(0).getStyleClass().add("selected-preset");
     buttons.add(createPresetFractalButton("Barnsley"));
     buttons.add(createPresetFractalButton("Sierpinski"));
 
