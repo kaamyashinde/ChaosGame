@@ -38,18 +38,18 @@ public class EmptyFractalController {
    * Method that switches the fractal to be created.
    *
    * @param switchButton            The button that switches the fractal type.
-   * @param leftBodyRow             The left body row of the scene where the button is added to or removed from.
+   * @param container             The left body row of the scene where the button is added to or removed from.
    * @param numberOfTransformations The text field that takes the number of transformations for the affine transformation.
    */
-  public void switchFractalToBeCreated(Button switchButton, VBox leftBodyRow, TextField numberOfTransformations) {
+  public void switchFractalToBeCreated(Button switchButton, VBox container, TextField numberOfTransformations) {
     isAffine = switchFractalType();
     System.out.println("Switched to " + (isAffine ? "Affine" : "Julia"));
     System.out.println("So it should display if " + isAffine + " + isAffine");
     switchButton.setText("Switch to " + (isAffine ? "Julia" : "Affine"));
     if (!isAffine) {
-      leftBodyRow.getChildren().remove(numberOfTransformations);
+      container.getChildren().remove(numberOfTransformations);
     } else {
-      leftBodyRow.getChildren().add(numberOfTransformations);
+      container.getChildren().add(numberOfTransformations);
 
     }
   }

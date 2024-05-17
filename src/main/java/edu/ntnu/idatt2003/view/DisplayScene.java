@@ -17,7 +17,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,13 +163,9 @@ public class DisplayScene implements ChaosGameObserver {
 
     leftBodyRow = new VBox();
     leftBodyRow.getStyleClass().add("inner-border");
-
-
-    ComboBox<String> fileDropDown = fileController.getFileDropDown();
-    leftBodyRow.getChildren().addAll(fileDropDown);
+    leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), editMenuButtons(), saveCurrentDescToFile());
     leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
 
-    createEmptyFractals();
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
     StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
@@ -181,8 +176,6 @@ public class DisplayScene implements ChaosGameObserver {
 
     rightBodyRow.getStyleClass().add("inner-border");
     rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
-
-    editMenuButtons();
 
     TextField presetsDisplay = new TextField("Choose a preset fractal:");
     presetsDisplay.setEditable(false);
@@ -198,15 +191,31 @@ public class DisplayScene implements ChaosGameObserver {
 
     buttons.forEach(button -> rightBodyRow.getChildren().add(button));
 
-    saveCurrentDescToFile();
 
-    Button updateChaosGameButton = new Button("Update Chaos Game");
-    updateChaosGameButton.setOnAction(e -> updateChaosGameFromSelectedFile());
-    leftBodyRow.getChildren().add(updateChaosGameButton);
+
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
+  }
+
+  /**
+   * Method that creates the drop down menu for the files.
+   * @return The VBox with the drop down menu.
+   */
+  private VBox dropDownMenu(){
+    TextField dropDownMenuDisplay = new TextField("Read description from a file:");
+    dropDownMenuDisplay.setEditable(false);
+    dropDownMenuDisplay.setAlignment(Pos.CENTER);
+    dropDownMenuDisplay.getStyleClass().add("section-heading");
+
+    VBox dropDownMenu = new VBox();
+    ComboBox<String> fileDropDown = fileController.getFileDropDown();
+
+    Button updateChaosGameButton = new Button("Update Chaos Game");
+    updateChaosGameButton.setOnAction(e -> updateChaosGameFromSelectedFile());
+    dropDownMenu.getChildren().addAll(dropDownMenuDisplay, fileDropDown, updateChaosGameButton);
+    return dropDownMenu;
   }
 
   /**
@@ -231,12 +240,40 @@ public class DisplayScene implements ChaosGameObserver {
    *   <li>Edit Selected Description: User can choose a file from the drop down and edit it.</li>
    * </ol>
    */
-  private void editMenuButtons() {
+  private VBox editMenuButtons() {
+    VBox editMenu = new VBox();
     Button editCurrentDescription = new Button("Edit Current Description");
     Button editSelectedDescription = new Button("Edit Selected Description");
-    leftBodyRow.getChildren().addAll(editCurrentDescription, editSelectedDescription);
+    editMenu.getChildren().addAll(editCurrentDescription, editSelectedDescription);
     editCurrentDescription.setOnAction(e -> editCurrentDescription());
     editSelectedDescription.setOnAction(e -> editSelectedDescription());
+
+
+    return editMenu;
+  }
+
+  /**
+   * Method that saves the current description to a file.
+   */
+  private VBox saveCurrentDescToFile() {
+    VBox saveCurrentDesc = new VBox();
+    TextField eeee = new TextField("save to file");
+    eeee.setEditable(false);
+    eeee.setAlignment(Pos.CENTER);
+    eeee.getStyleClass().add("section-heading");
+
+    TextField saveToFile = new TextField();
+    saveToFile.setPromptText("Enter file name");
+
+    Button saveCurrentDescToFile = new Button("Save Current Description to File");
+    saveCurrentDescToFile.setOnAction(e -> {
+      ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
+      System.out.println(saveToFile.getText());
+      fileController.writeChaosGameDescriptionToFile(chaosGameDescription, saveToFile.getText());
+      fileController.updateFileDropDown();
+    });
+    saveCurrentDesc.getChildren().addAll(eeee, saveToFile,saveCurrentDescToFile);
+    return saveCurrentDesc;
   }
 
   /**
@@ -260,11 +297,11 @@ public class DisplayScene implements ChaosGameObserver {
     editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine(gameController));
 
     if (gameController.isAffine()) {
-        rightBodyRow.getChildren().add(editAffineTransformationsButton);
+      rightBodyRow.getChildren().add(editAffineTransformationsButton);
     } else {
-        rightBodyRow.getChildren().add(editCButton);
+      rightBodyRow.getChildren().add(editCButton);
     }
-}
+  }
 
   /**
    * Method that creates the buttons for editing the selected description.
@@ -278,37 +315,32 @@ public class DisplayScene implements ChaosGameObserver {
    * Method that creates the empty fractals.
    */
 
-  private void createEmptyFractals() {
-    fileName= new TextField();
+  private VBox createEmptyFractals() {
+    VBox emptyFractal = new VBox();
+    VBox inputFields = new VBox();
+    fileName = new TextField();
     fileName.setPromptText("Enter file name");
     numberOfTransformations = new TextField();
     numberOfTransformations.setPromptText("Enter number of transformations for empty fractal");
     Button registerFileButton = new Button("Create empty File");
 
-    Button switchButton = new Button("Switch to " + "Julia");
-    switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, leftBodyRow, numberOfTransformations));
+    Button switchButton = new Button("Switch to Affine");
+    switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, inputFields, numberOfTransformations));
     registerFileButton.setOnAction(e -> {
       emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
       fileController.updateFileDropDown();
 
     });
-
-    leftBodyRow.getChildren().addAll(fileName, registerFileButton, switchButton);
-
+    TextField emptyFractalsDisplay = new TextField("Create an empty fractal:");
+    emptyFractalsDisplay.setEditable(false);
+    emptyFractalsDisplay.setAlignment(Pos.CENTER);
+    emptyFractalsDisplay.getStyleClass().add("section-heading");
+    //leftBodyRow.getChildren().addAll(emptyFractalsDisplay,fileName, registerFileButton, switchButton);
+    inputFields.getChildren().addAll(emptyFractalsDisplay, fileName);
+    emptyFractal.getChildren().addAll(inputFields, registerFileButton, switchButton);
+    return emptyFractal;
   }
-  /**
-   * Method that saves the current description to a file.
-   */
-  private void saveCurrentDescToFile(){
-    Button saveCurrentDescToFile = new Button("Save Current Description to File");
-    saveCurrentDescToFile.setOnAction(e -> {
-      ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
-      System.out.println(fileName.getText());
-      fileController.writeChaosGameDescriptionToFile(chaosGameDescription, fileName.getText());
-      fileController.updateFileDropDown();
-    });
-    leftBodyRow.getChildren().add(saveCurrentDescToFile);
-  }
+
 
   /**
    * Method that returns the footer row.
@@ -352,7 +384,7 @@ public class DisplayScene implements ChaosGameObserver {
     return button;
   }
 
-  private void updateBasedOnChosenPreset(int caseNum, ChaosGameObserver observer){
+  private void updateBasedOnChosenPreset(int caseNum, ChaosGameObserver observer) {
     gameController.choosePreset(caseNum, observer);
     gameController.updateButtonStyle(caseNum, buttons);
   }
