@@ -10,7 +10,7 @@ The title style class is applied to the title label.
  This refers to the ChaosGame title.
  */
 .title {
-    -fx-font-size:40;
+    -fx-font-size: 40;
     -fx-font-weight: bold;
     -fx-font-family: Georgia;
     -fx-text-fill: black;
@@ -32,7 +32,7 @@ Border style class that is applied to the horizontal sections of the application
 /**
 Border style class that is applied to the vertical sections in the body row.
  */
-.inner-border{
+.inner-border {
     -fx-border-color: lightblue;
     -fx-border-width: 2;
     -fx-border-radius: 5;
@@ -42,7 +42,7 @@ Border style class that is applied to the vertical sections in the body row.
 /**
 Applied to the section headings.
  */
-.section-heading{
+.section-heading {
     -fx-font-size: 15;
     -fx-font-family: Georgia;
     -fx-text-fill: grey;
@@ -53,9 +53,11 @@ Applied to the section headings.
 /**
 Selected preset
  */
-.selected-preset{
+.selected-preset {
     -fx-background-color: red;
-    }
-.unselected-preset{
+}
+
+.unselected-preset {
     -fx-background-color: white;
-    }
+}
+

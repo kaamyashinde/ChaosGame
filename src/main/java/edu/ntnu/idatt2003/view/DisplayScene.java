@@ -275,6 +275,8 @@ public class DisplayScene implements ChaosGameObserver {
     saveCurrentDesc.getChildren().addAll(eeee, saveToFile,saveCurrentDescToFile);
     return saveCurrentDesc;
   }
+  //TODO: update the edit buttons to create a copy of the chaos game and then edit from there so that presets are not changed.
+  //the save button applies for them only.
 
   /**
    * Method that creates the buttons for editing the current description.
@@ -385,7 +387,11 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   private void updateBasedOnChosenPreset(int caseNum, ChaosGameObserver observer) {
-    gameController.choosePreset(caseNum, observer);
+    ChaosGameDescription originalPreset = gameController.returnPresetDescription(caseNum);
+    ChaosGameDescription newPreset = new ChaosGameDescription(originalPreset);
+
+    gameController.updateChaosGame(new ChaosGame(newPreset, 500, 500), observer);
+    //gameController.choosePreset(caseNum, observer);
     gameController.updateButtonStyle(caseNum, buttons);
   }
 

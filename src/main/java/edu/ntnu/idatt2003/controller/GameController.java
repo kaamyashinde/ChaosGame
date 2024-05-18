@@ -61,9 +61,20 @@ public class GameController {
    * </ol>
    */
   private void loadChaosGamePresets() {
+
     listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Julia.txt"));
     listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Barnsley.txt"));
     listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Affine.txt"));
+    //writePresetsToFile();
+  }
+  /**
+   * Create the fractals using the write to file methods
+   */
+  private void writePresetsToFile(){
+   /* ChaosGameDescription triangle = ChaosGameDescriptionFactory.createAffineChaosGameDescription(3, 0.5, 0, 0, 0.5, 0, 0, 1, 1);
+    ChaosGameDescription julia = ChaosGameDescriptionFactory.createJuliaChaosGameDescription(1, -0.74543, 0.11301, -1.6, -1.0, 1.6, 1.0);
+    ChaosGameDescription fern = ChaosGameDescriptionFactory.createbarnsleyferndescriptionwithstatistics();
+    System.out.println(fern);*/
 
   }
 
@@ -146,6 +157,12 @@ public class GameController {
    */
   public void runGame(int steps) {
     chaosGame.runSteps(steps);
+  }
+  /**
+   * Method that returns a value from the list of descriptions.
+   */
+  public ChaosGameDescription returnPresetDescription(int index){
+    return listOfDescriptions.get(index);
   }
 
   /**
