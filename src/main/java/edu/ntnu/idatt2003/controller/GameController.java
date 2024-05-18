@@ -66,7 +66,13 @@ public class GameController {
    * @return A pair of the stack pane and the graphics context.
    */
   public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
-    chaosGame = new ChaosGame(listOfDescriptions.get(0), width, height);
+    ChaosGameDescription prevDesc = fileController.loadLastGame();
+    if (prevDesc != null) {
+      chaosGame = new ChaosGame(prevDesc, width, height);
+    } else {
+      chaosGame = new ChaosGame(listOfDescriptions.get(0), width, height);
+
+    }
     addObserverToGame(observer);
     Canvas canvas = new Canvas(width, height);
     GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -83,7 +89,11 @@ public class GameController {
    * @param observer The observer that is added to the canvas.
    */
   public void choosePreset(int caseNum, ChaosGameObserver observer) {
+    System.out.println("This is the description: " + listOfDescriptions.get(caseNum));
+
     updateChaosGame(new ChaosGame(listOfDescriptions.get(caseNum), 500, 500), observer);
+    System.out.println("-----after updating chaos game in  choose pr4eset method");
+    System.out.println(chaosGame.getDescription());
     System.out.println("Preset button was clicked for case " + caseNum);
     saveCurrentGame(); // Save the state of the game after choosing a preset
   }
@@ -168,6 +178,7 @@ public class GameController {
     if (chaosGame == null) {
       return null;
     }
+    System.out.println("in getCurentchaosGamededsc method in game controller: \n" + chaosGame.getDescription());
     return chaosGame.getDescription();
   }
 
@@ -194,6 +205,8 @@ public class GameController {
     ChaosGameDescription lastGame = fileController.loadLastGame();
     if (lastGame != null) {
       chaosGame = new ChaosGame(lastGame, 500, 500);
+      System.out.println(lastGame);
+
     }
   }
 }

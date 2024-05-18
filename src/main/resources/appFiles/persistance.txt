@@ -5,7 +5,3 @@ JuliaTransform # Type of transformation
 -0.74543,0.11301 # 2st transform
 -0.74543,0.11301 # 3st transform
 -0.74543,0.11301 # 4st transform
--0.74543,0.11301 # 5st transform
--0.74543,0.11301 # 6st transform
--0.74543,0.11301 # 7st transform
--0.74543,0.11301 # 8st transform

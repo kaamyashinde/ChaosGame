@@ -14,12 +14,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        gameController.loadLastGame();
-        if (gameController.getCurrentChaosGameDescription() == null) {
-            gameController.choosePreset(0, null); // Initialiserer med et standard preset hvis ingen lagret tilstand finnes
-        }
         DisplayScene displayScene = new DisplayScene();
         Scene scene = displayScene.getDisplay(primaryStage);
+        gameController.loadLastGame();
         primaryStage.setScene(scene);
         primaryStage.setTitle("Chaos Game");
         primaryStage.show();
@@ -28,6 +25,6 @@ public class Main extends Application {
     @Override
     public void stop() {
         System.out.println("Saving current game state before exit");
-        gameController.saveCurrentGame();
+       // gameController.saveCurrentGame();
     }
 }
