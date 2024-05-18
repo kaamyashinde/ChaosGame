@@ -18,11 +18,19 @@ public class Main extends Application {
       Scene scene = displayScene.getDisplay(primaryStage);
       String css = getClass().getClassLoader().getResource("styles.css").toExternalForm();
       scene.getStylesheets().add(css);
+
       gameController.loadLastGame();
+
       primaryStage.setScene(scene);
       primaryStage.setScene(scene);
         primaryStage.setTitle("Chaos Game");
+        primaryStage.toBack();
         primaryStage.show();
+
+      if (!gameController.getPersistenceIsNull()){
+        UserFeedback userFeedback = new UserFeedback();
+        userFeedback.startMessage();
+      }
     }
 
     @Override

@@ -185,13 +185,13 @@ public class DisplayScene implements ChaosGameObserver {
     buttons = new ArrayList<>();
 
     buttons.add(createPresetFractalButton("Julia"));
-    buttons.get(0).getStyleClass().add("selected-preset");
+    if (gameController.getPersistenceIsNull()) {
+      buttons.get(0).getStyleClass().add("selected-preset");
+    }
     buttons.add(createPresetFractalButton("Barnsley"));
     buttons.add(createPresetFractalButton("Sierpinski"));
 
     buttons.forEach(button -> rightBodyRow.getChildren().add(button));
-
-
 
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
@@ -201,9 +201,10 @@ public class DisplayScene implements ChaosGameObserver {
 
   /**
    * Method that creates the drop down menu for the files.
+   *
    * @return The VBox with the drop down menu.
    */
-  private VBox dropDownMenu(){
+  private VBox dropDownMenu() {
     TextField dropDownMenuDisplay = new TextField("Read description from a file:");
     dropDownMenuDisplay.setEditable(false);
     dropDownMenuDisplay.setAlignment(Pos.CENTER);
@@ -272,7 +273,7 @@ public class DisplayScene implements ChaosGameObserver {
       fileController.writeChaosGameDescriptionToFile(chaosGameDescription, saveToFile.getText());
       fileController.updateFileDropDown();
     });
-    saveCurrentDesc.getChildren().addAll(eeee, saveToFile,saveCurrentDescToFile);
+    saveCurrentDesc.getChildren().addAll(eeee, saveToFile, saveCurrentDescToFile);
     return saveCurrentDesc;
   }
 

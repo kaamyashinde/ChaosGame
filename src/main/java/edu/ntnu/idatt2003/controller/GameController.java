@@ -27,6 +27,7 @@ public class GameController {
   private final FileController fileController;
   private final List<ChaosGameDescription> listOfDescriptions;
   private ChaosGame chaosGame;
+  private boolean persistenceIsNull;
 
   /**
    * Constructor that initialises the array lists and adds the game presets.
@@ -59,10 +60,11 @@ public class GameController {
     listOfDescriptions.add(fileController.readChaosGameDescriptionFromFile("presets/Affine.txt"));
     //writePresetsToFile();
   }
+
   /**
    * Create the fractals using the write to file methods
    */
-  private void writePresetsToFile(){
+  private void writePresetsToFile() {
    /* ChaosGameDescription triangle = ChaosGameDescriptionFactory.createAffineChaosGameDescription(3, 0.5, 0, 0, 0.5, 0, 0, 1, 1);
     ChaosGameDescription julia = ChaosGameDescriptionFactory.createJuliaChaosGameDescription(1, -0.74543, 0.11301, -1.6, -1.0, 1.6, 1.0);
     ChaosGameDescription fern = ChaosGameDescriptionFactory.createbarnsleyferndescriptionwithstatistics();
@@ -79,12 +81,15 @@ public class GameController {
    */
   public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
     ChaosGameDescription prevDesc = fileController.loadLastGame();
-    if (prevDesc != null) {
-      chaosGame = new ChaosGame(prevDesc, width, height);
-    } else {
+    if (prevDesc == null) {
       chaosGame = new ChaosGame(listOfDescriptions.get(0), width, height);
-
+      persistenceIsNull = true;
+    } else {
+      chaosGame = new ChaosGame(prevDesc, width, height);
+      persistenceIsNull = false;
     }
+
+
     addObserverToGame(observer);
     Canvas canvas = new Canvas(width, height);
     GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -92,6 +97,13 @@ public class GameController {
     chaosGamePane.getChildren().add(canvas);
     saveCurrentGame(); // Save the initial state of the game
     return new Pair<>(chaosGamePane, gc);
+  }
+
+  /**
+   * A getter to return whether or not the persistence is null
+   */
+  public boolean getPersistenceIsNull() {
+    return persistenceIsNull;
   }
 
   /**
@@ -121,6 +133,7 @@ public class GameController {
 
   /**
    * Method that updates the style of the buttons.
+   *
    * @param caseNum The case number of the preset.
    * @param buttons The list of buttons that are to be updated.
    */
@@ -136,8 +149,9 @@ public class GameController {
 
   /**
    * Method that updates the game with a new chaos game and adds an observer to the canvas.
+   *
    * @param inputGame The new chaos game that is to be updated.
-   * @param observer The observer that is added to the canvas.
+   * @param observer  The observer that is added to the canvas.
    */
   public void updateChaosGame(ChaosGame inputGame, ChaosGameObserver observer) {
     if (chaosGame != null) {
@@ -161,6 +175,7 @@ public class GameController {
 
   /**
    * Method that runs the game for a certain number of steps.
+   *
    * @param steps The number of steps that the game is run for.
    */
   public void runGame(int steps) {
@@ -169,18 +184,20 @@ public class GameController {
       saveCurrentGame(); // Save the state of the game after running steps
     }
   }
+
   /**
    * Method that returns a value from the list of descriptions.
    */
-  public ChaosGameDescription returnPresetDescription(int index){
+  public ChaosGameDescription returnPresetDescription(int index) {
     return listOfDescriptions.get(index);
   }
 
   /**
    * Create an empty fractal depending on the type of fractal.
-   * @param isAffine True if the fractal is affine, false if the fractal is Julia.
+   *
+   * @param isAffine           True if the fractal is affine, false if the fractal is Julia.
    * @param numTransformations The number of transformations for the affine fractal.
-   * @param fileName The name of the file that is to be created.
+   * @param fileName           The name of the file that is to be created.
    */
   public void createEmptyFractal(boolean isAffine, int numTransformations, String fileName) {
     ChaosGameDescription description;
@@ -197,6 +214,7 @@ public class GameController {
 
   /**
    * Method that checks the type of the current chaos game.
+   *
    * @return True if the chaos game is affine, false if the chaos game is Julia.
    */
   public boolean isAffine() {
@@ -205,6 +223,7 @@ public class GameController {
 
   /**
    * Method that returns the current chaos game description.
+   *
    * @return The current chaos game description.
    */
   public ChaosGameDescription getCurrentChaosGameDescription() {
