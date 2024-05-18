@@ -17,9 +17,8 @@ import java.util.List;
  * This class is the controller for the game.
  * It is responsible for handling all of the game logic.
  * This means that the model classes are used only in this controller to perform the game functions.
- * Thereafter, the methods are only called up on i the view package.
+ * Thereafter, the methods are only called up on in the view package.
  *
- * @author Kaamya Shinde
  * @version 0.5
  * @see edu.ntnu.idatt2003.view.DisplayScene
  * @since 0.3.5
@@ -40,7 +39,6 @@ public class GameController {
 
   /**
    * Method that adds an observer to the Chaos game object.
-   * This was a suggestion by GitHub Copilot's AI.
    *
    * @param observer The observer that is added to the canvas.
    */
@@ -53,12 +51,6 @@ public class GameController {
   /**
    * Method that loads all the different fractal presets from the resources folder.
    * This is added to the list of descriptions.
-   * The following is the index of the presets in the list:
-   * <ol>
-   *   <l>Sierpinski Triangle: The default config of an affine transformation.</l>
-   *   <li>Barnsley Fern: An affine transformation</li>
-   *   <li>Julia Transformation</li>
-   * </ol>
    */
   private void loadChaosGamePresets() {
 
@@ -79,40 +71,52 @@ public class GameController {
   }
 
   /**
-   * Method that creates and appropriate stack pane canvas to display the fractal on.
-   * The suggestion to use a Pair to store both the stack pane and the graphics context was given by GitHub Copilot's AI.
-   * This is so that the graphics context is not null when the observerActionController tries performing actions on the graphics context in DisplayScene.
+   * Method that creates an appropriate stack pane canvas to display the fractal on.
    *
    * @param width  The width of the canvas.
    * @param height The height of the canvas.
    * @return A pair of the stack pane and the graphics context.
    */
-  public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer){
-    chaosGame = new ChaosGame(listOfDescriptions.get(0), width, height);
+  public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
+    ChaosGameDescription prevDesc = fileController.loadLastGame();
+    if (prevDesc != null) {
+      chaosGame = new ChaosGame(prevDesc, width, height);
+    } else {
+      chaosGame = new ChaosGame(listOfDescriptions.get(0), width, height);
+
+    }
     addObserverToGame(observer);
     Canvas canvas = new Canvas(width, height);
     GraphicsContext gc = canvas.getGraphicsContext2D();
     StackPane chaosGamePane = new StackPane();
     chaosGamePane.getChildren().add(canvas);
+    saveCurrentGame(); // Save the initial state of the game
     return new Pair<>(chaosGamePane, gc);
   }
 
   /**
    * Method that initialises the game with a certain preset and adds an observer to the canvas.
-   * The observer is added to the canvas so that the observer can be notified when the game is run.
-   * These are the cases for the presets:
-   * <ol>
-   *   <li>Sierpinski Triangle</li>
-   *   <li>Barnsley Fern</li>
-   *   <li>Julia Transformation</li>
-   * </ol>
    *
    * @param caseNum  The case number of the preset.
    * @param observer The observer that is added to the canvas.
    */
   public void choosePreset(int caseNum, ChaosGameObserver observer) {
+    System.out.println("This is the description: " + listOfDescriptions.get(caseNum));
+
     updateChaosGame(new ChaosGame(listOfDescriptions.get(caseNum), 500, 500), observer);
+    System.out.println("-----after updating chaos game in  choose pr4eset method");
+    System.out.println(chaosGame.getDescription());
     System.out.println("Preset button was clicked for case " + caseNum);
+    saveCurrentGame(); // Save the state of the game after choosing a preset
+  }
+
+  /**
+   * Method to initialize the game with a default preset.
+   */
+  public void initializeDefaultGame() {
+    chaosGame = new ChaosGame(listOfDescriptions.get(0), 500, 500);
+    System.out.println("Default game initialized");
+    saveCurrentGame(); // Save the initial default state of the game
   }
 
   /**
@@ -135,20 +139,24 @@ public class GameController {
    * @param inputGame The new chaos game that is to be updated.
    * @param observer The observer that is added to the canvas.
    */
-
   public void updateChaosGame(ChaosGame inputGame, ChaosGameObserver observer) {
-    chaosGame.getCanvas().clear();
+    if (chaosGame != null) {
+      chaosGame.getCanvas().clear();
+    }
     chaosGame = inputGame;
     addObserverToGame(observer);
     System.out.println("Game was updated");
+    saveCurrentGame(); // Save the state of the game after an update
   }
-
 
   /**
    * Method that clears the canvas.
    */
   public void clearCanvas() {
-    chaosGame.getCanvas().clear();
+    if (chaosGame != null) {
+      chaosGame.getCanvas().clear();
+      saveCurrentGame(); // Save the state of the game after clearing the canvas
+    }
   }
 
   /**
@@ -156,7 +164,10 @@ public class GameController {
    * @param steps The number of steps that the game is run for.
    */
   public void runGame(int steps) {
-    chaosGame.runSteps(steps);
+    if (chaosGame != null) {
+      chaosGame.runSteps(steps);
+      saveCurrentGame(); // Save the state of the game after running steps
+    }
   }
   /**
    * Method that returns a value from the list of descriptions.
@@ -167,11 +178,9 @@ public class GameController {
 
   /**
    * Create an empty fractal depending on the type of fractal.
-   * The empty fractal is just file with 0s for all values.
-   *
-   * @param isAffine           True if the fractal is affine, false if the fractal is Julia.
+   * @param isAffine True if the fractal is affine, false if the fractal is Julia.
    * @param numTransformations The number of transformations for the affine fractal.
-   * @param fileName           The name of the file that is to be created.
+   * @param fileName The name of the file that is to be created.
    */
   public void createEmptyFractal(boolean isAffine, int numTransformations, String fileName) {
     ChaosGameDescription description;
@@ -183,14 +192,15 @@ public class GameController {
       description = ChaosGameDescriptionFactory.createJuliaChaosGameDescriptionManual(1, new double[][]{{0, 0}}, new int[]{0}, 0, 0, 0, 0);
     }
     fileController.writeChaosGameDescriptionToFile(description, fileName);
+    saveCurrentGame(); // Save the state of the game after creating an empty fractal
   }
 
   /**
    * Method that checks the type of the current chaos game.
    * @return True if the chaos game is affine, false if the chaos game is Julia.
    */
-  public boolean isAffine(){
-    return chaosGame.getDescription().getTransformType() == AffineTransform2D.class;
+  public boolean isAffine() {
+    return chaosGame != null && chaosGame.getDescription().getTransformType() == AffineTransform2D.class;
   }
 
   /**
@@ -198,12 +208,39 @@ public class GameController {
    * @return The current chaos game description.
    */
   public ChaosGameDescription getCurrentChaosGameDescription() {
+    if (chaosGame == null) {
+      return null;
+    }
+    System.out.println("in getCurentchaosGamededsc method in game controller: \n" + chaosGame.getDescription());
     return chaosGame.getDescription();
   }
+
   /**
    * Update the chaos game description with a new chaos game description.
    */
   public void setCurrentChaosGameDescription(ChaosGameDescription description) {
-    chaosGame.setDescription(description);
-    System.out.println(description.toString());}
+    if (chaosGame != null) {
+      chaosGame.setDescription(description);
+      System.out.println(description.toString());
+      saveCurrentGame(); // Save the state of the game after updating the description
+    }
+  }
+
+  // Persistence methods
+  public void saveCurrentGame() {
+    ChaosGameDescription desc = getCurrentChaosGameDescription();
+    if (desc != null) {
+      fileController.saveLastGame(desc);
+    }
+  }
+
+  public void loadLastGame() {
+    ChaosGameDescription lastGame = fileController.loadLastGame();
+    if (lastGame != null) {
+      chaosGame = new ChaosGame(lastGame, 500, 500);
+      System.out.println(lastGame);
+
+    }
+  }
 }
+

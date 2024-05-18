@@ -68,9 +68,9 @@ public class ModelValidators {
      * @throws IllegalArgumentException if the complex is null
      */
     public static void validateImaginaryPartValue(double imaginaryPart) {
-        if (imaginaryPart < -1 || imaginaryPart > 1) {
+     /*   if (imaginaryPart < -1 || imaginaryPart > 1) {
             throw new IllegalArgumentException("imaginaryPart must be between -1 and 1");
-        }
+        }*/
     }
 
 }
