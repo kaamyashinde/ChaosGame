@@ -34,11 +34,11 @@ public class ModelValidators {
      * @throws IllegalArgumentException if the value is out of range
      */
     public static void validateMatrixValue(double value, String component) {
-        if ((component.equals("a00") || component.equals("a01") || component.equals("a10") || component.equals("a11")) && (value < -500 || value > 500)) {
+       /* if ((component.equals("a00") || component.equals("a01") || component.equals("a10") || component.equals("a11")) && (value < -500 || value > 500)) {
             throw new IllegalArgumentException(component + " must be between -500 and 500");
         } else if (!component.equals("a00") && !component.equals("a01") && !component.equals("a10") && !component.equals("a11")) {
             throw new IllegalArgumentException("Component must be either a00, a01, a10, or a11");
-        }
+        }*/
     }
 
     //cOMPLEX Validation

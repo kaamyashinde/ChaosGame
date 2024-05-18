@@ -1,6 +1,0 @@
-AffineTransform2D # Type of transformation
-0.0,0.0 # Lower left
-0.0,0.0 # Upper right
-0.0,0.0,0.0,0.0,0.0,0.0 # 1st transform
-0.0,0.0,0.0,0.0,0.0,0.0 # 2st transform
-0.0,0.0,0.0,0.0,0.0,0.0 # 3st transform

@@ -17,7 +17,7 @@ import java.util.List;
  * This class is responsible for creating the pop-up windows for editing the values of the chaos game description.
  *
  * @author Kaamya Shinde
- * @version 0.3
+ * @version 0.4
  * @since 0.3.4
  */
 
@@ -33,6 +33,9 @@ public class EditValuesPopUp {
     currentDescription = gameController.getCurrentChaosGameDescription();
   }
 
+  public void setChaosGameDescriptionWithInput(ChaosGameDescription input){
+    currentDescription = input;
+  }
   /**
    * Method that initialises the pop-up stage.
    *

@@ -30,8 +30,8 @@ import java.util.List;
  * The footer row is responsible for the actions related to running the game and clearing the canvas.
  *
  * @author Kaamya Shinde
- * @version 0.5
- * @since 3.0.0
+ * @version 0.6
+ * @since 0.0.3
  */
 public class DisplayScene implements ChaosGameObserver {
   AnchorPane layout;
@@ -275,8 +275,6 @@ public class DisplayScene implements ChaosGameObserver {
     saveCurrentDesc.getChildren().addAll(eeee, saveToFile,saveCurrentDescToFile);
     return saveCurrentDesc;
   }
-  //TODO: update the edit buttons to create a copy of the chaos game and then edit from there so that presets are not changed.
-  //the save button applies for them only.
 
   /**
    * Method that creates the buttons for editing the current description.
@@ -310,7 +308,28 @@ public class DisplayScene implements ChaosGameObserver {
    */
 
   private void editSelectedDescription() {
+    String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
+    ChaosGameDescription description = fileController.readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
+    System.out.println("new description is:");
+    editValuesPopUp.setChaosGameDescriptionWithInput(description);
+
     rightBodyRow.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
+    editMaxAndMinButton = new Button("Edit Max and Min");
+    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup(gameController));
+    rightBodyRow.getChildren().add(editMaxAndMinButton);
+
+    editCButton = new Button("Edit C");
+    editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup(gameController));
+
+    editAffineTransformationsButton = new Button("Edit Affine Transformations");
+    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine(gameController));
+
+    if (gameController.isAffine()) {
+      rightBodyRow.getChildren().add(editAffineTransformationsButton);
+    } else {
+      rightBodyRow.getChildren().add(editCButton);
+    }
+
   }
 
   /**
