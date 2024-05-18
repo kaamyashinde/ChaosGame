@@ -90,7 +90,8 @@ public class DisplayScene implements ChaosGameObserver {
   private void setUpLayoutAndAddComponents(VBox root) {
     root.prefWidthProperty().bind(layout.widthProperty());
     layout.getChildren().add(root);
-    root.getChildren().addAll(navigationHBox(), titleHBox(), bodyHBox(), footerHBox());
+    //root.getChildren().addAll(navigationHBox());
+    root.getChildren().addAll( titleHBox(), bodyHBox(), footerHBox());
     root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
   }
 
