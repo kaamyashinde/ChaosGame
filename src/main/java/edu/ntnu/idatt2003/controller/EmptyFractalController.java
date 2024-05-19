@@ -43,8 +43,6 @@ public class EmptyFractalController {
    */
   public void switchFractalToBeCreated(Button switchButton, VBox container, TextField numberOfTransformations) {
     isAffine = switchFractalType();
-    System.out.println("Switched to " + (isAffine ? "Affine" : "Julia"));
-    System.out.println("So it should display if " + isAffine + " + isAffine");
     switchButton.setText("Switch to " + (isAffine ? "Julia" : "Affine"));
     if (!isAffine) {
       container.getChildren().remove(numberOfTransformations);
@@ -62,7 +60,6 @@ public class EmptyFractalController {
    */
   public void toggleBetweenTheCreationOfTransformations(TextField fileName, TextField numberOfTransformations) {
     String nameOfFile = fileName.getText();
-    System.out.println("This is the file name: " + nameOfFile);
     if (isAffine) {
       affineCreation(nameOfFile, numberOfTransformations);
     } else {
@@ -78,9 +75,7 @@ public class EmptyFractalController {
    */
   private void affineCreation(String inputFileName, TextField numberOfTransformations) {
     int num = Integer.parseInt(numberOfTransformations.getText());
-    System.out.println("Number of transformations: " + num);
     gameController.createEmptyFractal(true, num, inputFileName);
-    System.out.println("Affine transformation created!");
 
   }
 
@@ -91,7 +86,6 @@ public class EmptyFractalController {
    */
   private void juliaCreation(String inputFileName) {
     gameController.createEmptyFractal(false, 0, inputFileName);
-    System.out.println("Julia transformation created!");
 
   }
 }

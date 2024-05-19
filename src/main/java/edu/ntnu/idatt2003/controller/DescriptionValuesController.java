@@ -152,7 +152,6 @@ public class DescriptionValuesController {
    * @param inputTransformationNumber     the input field for the transformation number
    */
   public void displayCorrectAffineTransformation(ChaosGameDescription inputDesc, List<Button> inputTraverseButtons, List<TextField> inputTransformationTextFields, TextField inputTransformationNumber) {
-    System.out.println("displaying the config info by running displayCorrectAffineTransformation");
     transforms = inputDesc.getTransforms();
     transformNum = 0;
     displayAffineTransformations(transformNum, inputDesc, inputTransformationTextFields);

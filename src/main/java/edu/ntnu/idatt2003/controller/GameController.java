@@ -75,7 +75,7 @@ public class GameController {
    /* ChaosGameDescription triangle = ChaosGameDescriptionFactory.createAffineChaosGameDescription(3, 0.5, 0, 0, 0.5, 0, 0, 1, 1);
     ChaosGameDescription julia = ChaosGameDescriptionFactory.createJuliaChaosGameDescription(1, -0.74543, 0.11301, -1.6, -1.0, 1.6, 1.0);
     ChaosGameDescription fern = ChaosGameDescriptionFactory.createbarnsleyferndescriptionwithstatistics();
-    System.out.println(fern);*/
+    */
 
   }
 
@@ -120,12 +120,8 @@ public class GameController {
    * @param observer The observer that is added to the canvas.
    */
   public void choosePreset(int caseNum, ChaosGameObserver observer) {
-    System.out.println("This is the description: " + listOfDescriptions.get(caseNum));
 
     updateChaosGame(new ChaosGame(listOfDescriptions.get(caseNum), 500, 500), observer);
-    System.out.println("-----after updating chaos game in  choose pr4eset method");
-    System.out.println(chaosGame.getDescription());
-    System.out.println("Preset button was clicked for case " + caseNum);
     saveCurrentGame(); // Save the state of the game after choosing a preset
   }
 
@@ -134,7 +130,6 @@ public class GameController {
    */
   public void initializeDefaultGame() {
     chaosGame = new ChaosGame(listOfDescriptions.get(0), 500, 500);
-    System.out.println("Default game initialized");
     saveCurrentGame(); // Save the initial default state of the game
   }
 
@@ -169,7 +164,6 @@ public class GameController {
     }
     chaosGame = inputGame;
     addObserverToGame(observer);
-    System.out.println("Game was updated");
     saveCurrentGame(); // Save the state of the game after an update
   }
 
@@ -240,7 +234,6 @@ public class GameController {
     if (chaosGame == null) {
       return null;
     }
-    System.out.println("in getCurentchaosGamededsc method in game controller: \n" + chaosGame.getDescription());
     return chaosGame.getDescription();
   }
 
@@ -250,7 +243,6 @@ public class GameController {
   public void setCurrentChaosGameDescription(ChaosGameDescription description) {
     if (chaosGame != null) {
       chaosGame.setDescription(description);
-      System.out.println(description.toString());
       saveCurrentGame(); // Save the state of the game after updating the description
     }
   }
@@ -267,7 +259,6 @@ public class GameController {
     ChaosGameDescription lastGame = fileController.loadLastGame();
     if (lastGame != null) {
       chaosGame = new ChaosGame(lastGame, 500, 500);
-      System.out.println(lastGame);
 
     }
   }
