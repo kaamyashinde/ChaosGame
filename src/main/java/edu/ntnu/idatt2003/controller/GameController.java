@@ -19,7 +19,7 @@ import java.util.List;
  * This means that the model classes are used only in this controller to perform the game functions.
  * Thereafter, the methods are only called up on in the view package.
  *
- * @version 0.5
+ * @version 0.6
  * @see edu.ntnu.idatt2003.view.DisplayScene
  * @since 0.3.5
  */
@@ -139,10 +139,13 @@ public class GameController {
    */
   public void updateButtonStyle(int caseNum, List<javafx.scene.control.Button> buttons) {
     for (int i = 0; i < buttons.size(); i++) {
+
       if (i == caseNum) {
-        buttons.get(i).setStyle("-fx-background-color: #ff0000");
+        buttons.get(i).getStyleClass().remove("button-not-selected");
+        buttons.get(i).getStyleClass().add("button-selected");
       } else {
-        buttons.get(i).setStyle("-fx-background-color: #ffffff");
+        buttons.get(i).getStyleClass().remove("button-selected");
+        buttons.get(i).getStyleClass().add("button-not-selected");
       }
     }
   }

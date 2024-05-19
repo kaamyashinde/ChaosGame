@@ -1,63 +1,72 @@
-/**
-The root style class is applied to the root node of the scene graph.
- */
-.root {
-    -fx-background-color: black;
+.root{
+    -fx-background-color: #262335;
 }
+.button{
+    -fx-background-color: #f2e6e3;
+    -fx-font-size: 1.5em;
+   /* -fx-border-insets: 10 20 10 20;*/
+    -fx-padding: 10 20;
 
-/**
-The title style class is applied to the title label.
- This refers to the ChaosGame title.
- */
-.title {
-    -fx-font-size: 40;
-    -fx-font-weight: bold;
-    -fx-font-family: Georgia;
-    -fx-text-fill: black;
-    -fx-padding: 10;
-    -fx-focus-color: red;
-    -fx-faint-focus-color: red;
-    -fx-box-border: red;
 }
+.button:hover{
+    -fx-text-fill: #f2e6e3;
+    -fx-background-color: #ffbb6c;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 
-/**
-Border style class that is applied to the horizontal sections of the application.
- */
-.border {
-    -fx-border-color: pink;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
 }
-
-/**
-Border style class that is applied to the vertical sections in the body row.
- */
-.inner-border {
-    -fx-border-color: lightblue;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-padding: 10;
+.button-selected{
+    -fx-text-fill: #f2e6e3;
+    -fx-background-color: #ffbb6c;
 }
-
-/**
-Applied to the section headings.
- */
-.section-heading {
-    -fx-font-size: 15;
-    -fx-font-family: Georgia;
-    -fx-text-fill: grey;
-    -fx-padding: 10;
-    -fx-background-color: transparent;
-}
-
-/**
-Selected preset
- */
-.selected-preset {
-    -fx-background-color: red;
-}
-
-.unselected-preset {
+StackPane {
     -fx-background-color: white;
+    -fx-border-color: #CEA4A0FF;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+.title{
+    -fx-font-size: 4em;
+    -fx-font-family: Georgia;
+    -fx-font-weight: bold;
+    -fx-background-color: transparent;
+    -fx-text-fill: #d4896a;
+}
+.vbox{
+    -fx-spacing: 10;
+    -fx-alignment: center;
+    -fx-background-color: green;
+}
+.section-heading{
+    -fx-background-color: #b97d6d;
+    -fx-text-fill: #f4f0eb;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-border-radius: 0;
+    -fx-background-radius: 5px;
+    -fx-border-color: white;
+
+    -fx-font-family: "Arial", sans-serif;
 }
 
+/*
+.button {
+    -fx-background-color: #b97d6d;
+    -fx-text-fill: #f4f0eb;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent;
+    -fx-font-family: "Arial", sans-serif;
+}
+
+.button:hover {
+    -fx-background-color: #a76b5e;
+}
+
+.button:pressed {
+    -fx-background-color: #8c5c50;
+}
+ */
