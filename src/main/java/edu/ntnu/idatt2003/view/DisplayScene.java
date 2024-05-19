@@ -235,7 +235,11 @@ public class DisplayScene implements ChaosGameObserver {
     dropDownMenu.setAlignment(Pos.CENTER);
 
     Button updateChaosGameButton = new Button("Update Chaos Game");
-    updateChaosGameButton.setOnAction(e -> updateChaosGameFromSelectedFile());
+    updateChaosGameButton.setOnAction(e -> {
+      buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
+
+      updateChaosGameFromSelectedFile();
+    });
     dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, fileDropDown, updateChaosGameButton);
     VBox.setMargin(dropDownMenu, new Insets(20));
     return dropDownMenu;
