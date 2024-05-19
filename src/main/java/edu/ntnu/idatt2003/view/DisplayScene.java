@@ -167,7 +167,7 @@ public class DisplayScene implements ChaosGameObserver {
     leftBodyRow = new VBox();
     leftBodyRow.getStyleClass().add("inner-border");
 
-    leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), editMenuButtons(), saveCurrentDescToFile());
+    leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), saveCurrentDescToFile());
     leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
 
     graphicsContext = null;
@@ -182,7 +182,7 @@ public class DisplayScene implements ChaosGameObserver {
     displayEditOptions = new VBox();
 
 
-    rightBodyRow.getChildren().addAll(displayPresetsOptions(), displayEditOptions);
+    rightBodyRow.getChildren().addAll(displayPresetsOptions(), editMenuButtons(), displayEditOptions);
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
@@ -251,6 +251,8 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private VBox editMenuButtons() {
     VBox editMenu = new VBox();
+    HBox sectionHeadingEdit = styleTextFields(new TextField("Edit the values of the Chaos Game:"));
+    editMenu.getChildren().add(sectionHeadingEdit);
     Button editCurrentDescription = new Button("Edit Current Description");
     Button editSelectedDescription = new Button("Edit Selected Description");
     editMenu.getChildren().addAll(editCurrentDescription, editSelectedDescription);
