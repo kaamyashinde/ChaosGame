@@ -60,7 +60,7 @@ public class DisplayScene implements ChaosGameObserver {
     fileController = new FileController();
     emptyFractalController = new EmptyFractalController();
     descriptionValuesController = new DescriptionValuesController();
-    editValuesPopUp = new EditValuesPopUp(gameController);
+    editValuesPopUp = new EditValuesPopUp();
   }
 
   /**

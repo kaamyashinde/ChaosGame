@@ -26,17 +26,20 @@ public class EditValuesPopUp {
   ObjectListController objectListController = new ObjectListController();
   GameController gameController;
   ChaosGameDescription currentDescription;
-  public EditValuesPopUp(GameController gameController){
-    this.gameController = gameController;
+
+  public EditValuesPopUp() {
+    this.gameController = GameController.getInstance();
   }
-  public void setChaosGameDescription(){
+
+  public void setChaosGameDescription() {
     currentDescription = gameController.getCurrentChaosGameDescription();
   }
 
-  public void setChaosGameDescriptionWithInput(ChaosGameDescription input){
+  public void setChaosGameDescriptionWithInput(ChaosGameDescription input) {
     currentDescription = input;
     gameController = GameController.getInstance();
   }
+
   /**
    * Method that initialises the pop-up stage.
    *
@@ -87,8 +90,6 @@ public class EditValuesPopUp {
 
   /**
    * Method that creates the pop-up window for editing the C value.
-   *
-   * @param gameController The game controller.
    */
   public void createConstantCPopup() {
 
@@ -106,15 +107,13 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(cValues, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
-      descriptionValuesController.registerC(textFields, gameController);
+      descriptionValuesController.registerC(textFields);
       popupStage.close();
     });
   }
 
   /**
    * Method that creates the pop-up window for editing the min and max coordinates.
-   *
-   * @param gameController The game controller.
    */
   public void createEditMaxAndMinPopup() {
     Stage popupStage = createPopupStage("Edit Min and Max");
@@ -134,15 +133,13 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(minValues, maxValues, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
-      descriptionValuesController.registerCoordinates(textFields, gameController);
+      descriptionValuesController.registerCoordinates(textFields);
       popupStage.close();
     });
   }
 
   /**
    * Method that creates the pop-up window for editing the affine transformations.
-   *
-   * @param gameController The game controller.
    */
   public void displayAffine() {
     Stage popupStage = createPopupStage("Edit affine transformations");
@@ -178,7 +175,7 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(values, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
-      descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText()), textFields, gameController);
+      descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText()), textFields);
       descriptionValuesController.clearTextFields(textFields);
     });
   }
