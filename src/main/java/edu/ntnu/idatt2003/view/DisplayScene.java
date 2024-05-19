@@ -55,7 +55,7 @@ public class DisplayScene implements ChaosGameObserver {
   TextField fileName;
 
   public DisplayScene() {
-    gameController = new GameController();
+    gameController = GameController.getInstance();
     observerActionController = new ObserverActionController();
     fileController = new FileController();
     emptyFractalController = new EmptyFractalController();

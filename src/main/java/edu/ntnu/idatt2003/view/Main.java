@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private GameController gameController = new GameController();
+  private GameController gameController = GameController.getInstance();
 
     public static void main(String[] args) {
         launch(args);
@@ -29,7 +29,7 @@ public class Main extends Application {
 
       if (!gameController.getPersistenceIsNull()){
         UserFeedback userFeedback = new UserFeedback();
-       // userFeedback.startMessage();
+       userFeedback.startMessage();
       }
     }
 
