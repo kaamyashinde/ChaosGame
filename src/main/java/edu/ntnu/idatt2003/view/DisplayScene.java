@@ -74,11 +74,12 @@ public class DisplayScene implements ChaosGameObserver {
   public Scene getDisplay(Stage primaryStage) {
     layout = new AnchorPane();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
-
+    layout.prefHeightProperty().bind(primaryStage.heightProperty());
     VBox root = new VBox();
     setUpLayoutAndAddComponents(root);
 
     primaryStage.setTitle("Chaos Game");
+    root.prefHeightProperty().bind(layout.heightProperty());
 
     return new Scene(layout, 1000, 700);
   }
@@ -91,10 +92,23 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private void setUpLayoutAndAddComponents(VBox root) {
     root.prefWidthProperty().bind(layout.widthProperty());
-    layout.getChildren().add(root);
+    root.prefHeightProperty().bind(layout.widthProperty());
+
     //root.getChildren().addAll(navigationHBox());
     root.getChildren().addAll(titleHBox(), bodyHBox(), footerHBox());
-    root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
+    root.getChildren().get(2).getStyleClass().add("border");
+    //titleHBox().prefHeightProperty().bind(root.heightProperty().multiply(0.1));
+    titleHBox().setPrefHeight(200);
+    titleHBox().setMinHeight(100);
+    titleHBox().setMaxHeight(300);
+    bodyHBox().prefHeightProperty().bind(root.heightProperty().multiply(0.6));
+    //footerHBox().prefHeightProperty().bind(root.heightProperty().multiply(0.2));
+    footerHBox().setPrefHeight(200);
+    footerHBox().setMinHeight(100);
+    footerHBox().setMaxHeight(300);
+    layout.getChildren().add(root);
+
+    //root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
   }
 
   /**
@@ -147,7 +161,8 @@ public class DisplayScene implements ChaosGameObserver {
 
     TextField sceneHeading = new TextField(("Chaos Game"));
     sceneHeading.setText("Chaos Game");
-    sceneHeading.prefWidthProperty().bind(layout.widthProperty());
+    sceneHeading.prefWidthProperty().bind(titleRow.widthProperty());
+    sceneHeading.prefHeightProperty().bind(titleRow.heightProperty());
     sceneHeading.getStyleClass().add("title");
     sceneHeading.setEditable(false);
     sceneHeading.setAlignment(Pos.CENTER);
@@ -168,23 +183,35 @@ public class DisplayScene implements ChaosGameObserver {
     leftBodyRow.getStyleClass().add("inner-border");
 
     leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), saveCurrentDescToFile());
-    leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
+    //leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
+    leftBodyRow.setPrefWidth(400);
+    leftBodyRow.setMinWidth(200);
+    leftBodyRow.setMaxWidth(600);
+    leftBodyRow.prefHeightProperty().bind(bodyRow.heightProperty());
 
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
     StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
+    HBox chaosGamePaneContainer = new HBox();
+    chaosGamePaneContainer.getChildren().add(chaosGamePane);
+    HBox.setMargin(chaosGamePane, new Insets(20));
     chaosGamePane.getStyleClass().add("inner-border");
     chaosGamePane.prefWidthProperty().bind(bodyRow.widthProperty());
+    chaosGamePane.prefHeightProperty().bind(bodyRow.heightProperty());
     graphicsContext = pairContainingPaneAndContext.getValue();
     rightBodyRow = new VBox();
     rightBodyRow.getStyleClass().add("inner-border");
-    rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
+    rightBodyRow.setPrefWidth(400);
+    rightBodyRow.setMinWidth(200);
+    rightBodyRow.setMaxWidth(600);
+   // rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
+    rightBodyRow.prefHeightProperty().bind(bodyRow.heightProperty());
     displayEditOptions = new VBox();
 
 
     rightBodyRow.getChildren().addAll(displayPresetsOptions(), editMenuButtons(), displayEditOptions);
 
-    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
+    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePaneContainer, rightBodyRow);
 
     bodyRow.getChildren().forEach(child -> child.prefWidth(bodyRow.widthProperty().getValue()));
 
@@ -307,6 +334,7 @@ public class DisplayScene implements ChaosGameObserver {
     styledTextFiled.setPadding(new Insets(10));
     styledTextFiled.setStyle("-fx-background-color: #b97d6d");
     inputTextField.prefWidthProperty().bind(styledTextFiled.widthProperty());
+    inputTextField.prefHeightProperty().bind(styledTextFiled.heightProperty());
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.getStyleClass().add("section-heading");
@@ -318,6 +346,7 @@ public class DisplayScene implements ChaosGameObserver {
     styledButton.getChildren().add(inputButton);
     styledButton.setPadding(new Insets(10));
     inputButton.prefWidthProperty().bind(styledButton.widthProperty());
+    inputButton.prefHeightProperty().bind(styledButton.heightProperty());
     inputButton.setAlignment(Pos.CENTER);
     return styledButton;
   }
