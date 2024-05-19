@@ -5,6 +5,14 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The main class that starts the application.
+ * It is responsible for starting the application and loading the last game state.
+ * It also displays a message if the game is loaded from a previous state.
+ *
+ * @version 0.4
+ * @since 0.3.5
+ */
 public class Main extends Application {
   private GameController gameController = GameController.getInstance();
 

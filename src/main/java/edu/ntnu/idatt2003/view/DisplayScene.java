@@ -31,7 +31,7 @@ import java.util.List;
  * The footer row is responsible for the actions related to running the game and clearing the canvas.
  *
  * @author Kaamya Shinde
- * @version 0.7
+ * @version 0.8
  * @since 0.0.3
  */
 public class DisplayScene implements ChaosGameObserver {

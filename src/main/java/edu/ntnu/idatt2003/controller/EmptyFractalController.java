@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
  * This class is responsible for handling the file selection for creation of empty fractals.
  *
  * @author Kaamya Shinde
- * @version 0.1
+ * @version 0.2
  * @since 0.3.4
  */
 
