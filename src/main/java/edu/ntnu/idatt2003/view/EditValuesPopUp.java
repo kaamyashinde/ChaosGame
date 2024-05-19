@@ -35,6 +35,7 @@ public class EditValuesPopUp {
 
   public void setChaosGameDescriptionWithInput(ChaosGameDescription input){
     currentDescription = input;
+    gameController = GameController.getInstance();
   }
   /**
    * Method that initialises the pop-up stage.
@@ -89,7 +90,7 @@ public class EditValuesPopUp {
    *
    * @param gameController The game controller.
    */
-  public void createConstantCPopup(GameController gameController) {
+  public void createConstantCPopup() {
 
     Stage popupStage = createPopupStage("Edit C");
     VBox popupLayout = createPopupLayout(popupStage);
@@ -115,7 +116,7 @@ public class EditValuesPopUp {
    *
    * @param gameController The game controller.
    */
-  public void createEditMaxAndMinPopup(GameController gameController) {
+  public void createEditMaxAndMinPopup() {
     Stage popupStage = createPopupStage("Edit Min and Max");
     VBox popupLayout = createPopupLayout(popupStage);
     HBox minValues = new HBox();
@@ -143,7 +144,7 @@ public class EditValuesPopUp {
    *
    * @param gameController The game controller.
    */
-  public void displayAffine(GameController gameController) {
+  public void displayAffine() {
     Stage popupStage = createPopupStage("Edit affine transformations");
     VBox popupLayout = createPopupLayout(popupStage);
     HBox values = new HBox();

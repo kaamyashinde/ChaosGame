@@ -349,15 +349,14 @@ public class DisplayScene implements ChaosGameObserver {
     displayEditOptions.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
 
     editMaxAndMinButton = new Button("Edit Max and Min");
-    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup(gameController));
+    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup());
     displayEditOptions.getChildren().add(editMaxAndMinButton);
 
     editCButton = new Button("Edit C");
-    editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup(gameController));
+    editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup());
 
     editAffineTransformationsButton = new Button("Edit Affine Transformations");
-    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine(gameController));
-    Button updateButton = new Button("Update");
+    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine());
 
   }
 
