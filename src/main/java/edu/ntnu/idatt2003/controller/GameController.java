@@ -82,6 +82,7 @@ public class GameController {
   public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
     ChaosGameDescription prevDesc = fileController.loadLastGame();
     if (prevDesc == null) {
+
       chaosGame = new ChaosGame(listOfDescriptions.get(0), width, height);
       persistenceIsNull = true;
     } else {
