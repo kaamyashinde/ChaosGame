@@ -17,7 +17,6 @@ import java.util.List;
  * This is the opposite of the usual mathematical convention where the index for the rows goes upwards.
  * In order to convert this, we shall use Affine transformation.
  * <p>
- * //TODO: figure out how the version number works. coz are we talking about the version of the product or the class?
  *
  * @author 10041
  * @version 0.2.0
@@ -147,6 +146,9 @@ public class ChaosCanvas {
      */
     public void notifyObserverAddPixel(double X0, double X1) {
         observers.forEach(observer -> observer.updateAddPixel(X0, X1));
+    }
+    public void removeObserver(ChaosGameObserver observer) {
+        observers.remove(observer);
     }
 
 }

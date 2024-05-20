@@ -84,17 +84,27 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
+   * Method that returns the list of the buttons that are used to manage the presets.
+   * @return The list of buttons.
+   */
+  public List<Button> getButtons() {
+    return buttons;}
+  /**
    * Method that sets up the layout and adds the components to the layout.
    * The layout is bound to the width of the stage.
    *
    * @param root The root of the layout.
    */
   private void setUpLayoutAndAddComponents(VBox root) {
-    root.prefWidthProperty().bind(layout.widthProperty());
-    layout.getChildren().add(root);
-    //root.getChildren().addAll(navigationHBox());
-    root.getChildren().addAll(titleHBox(), bodyHBox(), footerHBox());
-    root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
+    try {
+      root.prefWidthProperty().bind(layout.widthProperty());
+      layout.getChildren().add(root);
+      //root.getChildren().addAll(navigationHBox());
+      root.getChildren().addAll(titleHBox(), bodyHBox(), footerHBox());
+      root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
+    } catch (Exception e) {
+      System.out.println("Exception of type: " + e.getClass().getName());
+    }
   }
 
   /**
@@ -161,6 +171,7 @@ public class DisplayScene implements ChaosGameObserver {
    * The StackPane is where the canvas is placed and is at the centre of the body row.
    */
   private HBox bodyHBox() {
+
     HBox bodyRow = new HBox();
     bodyRow.getStyleClass().add("border");
 
@@ -208,8 +219,14 @@ public class DisplayScene implements ChaosGameObserver {
     Button switchButton = new Button("Switch to Affine");
     switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, inputFields, numberOfTransformations));
     registerFileButton.setOnAction(e -> {
-      emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
-      fileController.updateFileDropDown();
+      try {
+        emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
+        fileController.updateFileDropDown();
+      } catch (Exception exception) {
+        UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
+        //java.lang.IllegalArgumentException
+        //TODO handle this exception with file name
+      }
 
     });
     HBox emptyFractalsDisplayHBox = styleTextFields(new TextField("Create an empty fractal:"));
@@ -240,9 +257,14 @@ public class DisplayScene implements ChaosGameObserver {
     Button updateChaosGameButton = new Button("Update Chaos Game");
     updateChaosGameButton.setOnAction(e -> {
       buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
-
+    try {
       updateChaosGameFromSelectedFile();
-    });
+
+    } catch (Exception exception) {
+      UserFeedback.displayError("No file was chosen.", "Please choose a file from the drop down and try again.");
+      //java.lang.IllegalArgumentException
+      //TODO handle this exception with file name
+    }});
     dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, fileDropDown, updateChaosGameButton);
     VBox.setMargin(dropDownMenu, new Insets(20));
     return dropDownMenu;
@@ -274,6 +296,7 @@ public class DisplayScene implements ChaosGameObserver {
    * Method that saves the current description to a file.
    */
   private VBox saveCurrentDescToFile() {
+
     VBox saveCurrentDesc = new VBox();
 
 
@@ -284,10 +307,17 @@ public class DisplayScene implements ChaosGameObserver {
     Button saveCurrentDescToFile = new Button("Save Current Description to File");
     saveCurrentDescToFile.setAlignment(Pos.CENTER);
     saveCurrentDescToFile.setOnAction(e -> {
-      ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
-      System.out.println(saveToFile.getText());
-      fileController.writeChaosGameDescriptionToFile(chaosGameDescription, saveToFile.getText());
-      fileController.updateFileDropDown();
+     try {
+        ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
+        System.out.println(saveToFile.getText());
+        ValidationController.validateFileName(saveToFile.getText());
+        fileController.writeChaosGameDescriptionToFile(chaosGameDescription, saveToFile.getText());
+        fileController.updateFileDropDown();
+      } catch (Exception exception) {
+       UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
+        //java.lang.IllegalArgumentException
+        //TODO handle this exception with file name
+      }
     });
     saveCurrentDesc.getChildren().addAll(saveToFileDisplayHBox, saveToFile, saveCurrentDescToFile);
     saveCurrentDesc.setAlignment(Pos.CENTER);
@@ -340,14 +370,15 @@ public class DisplayScene implements ChaosGameObserver {
   /**
    * Method that updates the Chaos Game from the selected file.
    */
-  public void updateChaosGameFromSelectedFile() {
+  private void updateChaosGameFromSelectedFile() {
+
     // Retrieve the selected file name from the fileDropDown ComboBox
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
     buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
 
     // Use the readChaosGameDescriptionFromFile method to read the ChaosGameDescription from the selected file
     ChaosGameDescription description = fileController.readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
-
+ValidationController.validateFileName(selectedFile);
     // Use the setCurrentChaosGameDescription method to update the chaosGame with the new ChaosGameDescription
     gameController.updateChaosGame(new ChaosGame(description, 500, 500), this);
   }
@@ -426,6 +457,7 @@ public class DisplayScene implements ChaosGameObserver {
    * Method that returns the footer row.
    */
   private HBox footerHBox() {
+
     HBox footerRow = new HBox();
     footerRow.getStyleClass().add("border");
     TextField iterations = new TextField();
@@ -433,8 +465,16 @@ public class DisplayScene implements ChaosGameObserver {
     iterations.setText("10000");
     runIterations = new Button("Run iterations");
     runIterations.setOnAction(e -> {
-          int steps = Integer.parseInt(iterations.getText());
-          gameController.runGame(steps);
+      try{
+        ValidationController.validateInteger(iterations.getText());
+        int steps = Integer.parseInt(iterations.getText());
+        gameController.runGame(steps);
+      } catch (Exception exception) {
+        UserFeedback.displayError("Number of iterations has to be a positive integer.", "Please enter a positive integer to run the application.");
+        //java.lang.IllegalArgumentException
+        //TODO handle this exception with number of iterations
+
+      }
         }
     );
 
@@ -452,7 +492,7 @@ public class DisplayScene implements ChaosGameObserver {
    * @return The button for the fractal.
    */
 
-  public Button createPresetFractalButton(String fractalName) {
+  private Button createPresetFractalButton(String fractalName) {
     Button button = new Button(fractalName);
     button.setOnAction(e -> {
       switch (fractalName) {
