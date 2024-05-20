@@ -31,7 +31,7 @@ public class JuliaTransform extends Transform2D {
      */
     @Override
     public Vector2D transform(Vector2D point) {
-        Complex z = new Complex(point.getX0(), point.getX1());
+        Complex z = Complex.createComplex(point.getX0(), point.getX1());
         Complex subtracted = z.subtract(this.point);
         Complex result = subtracted.sqrt();
 
