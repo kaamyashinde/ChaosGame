@@ -157,6 +157,7 @@ public class DisplayScene implements ChaosGameObserver {
     titleRow.getStyleClass().add("border");
 
     TextField sceneHeading = new TextField(("Chaos Game"));
+    sceneHeading.setFocusTraversable(false);
     sceneHeading.setText("Chaos Game");
     sceneHeading.prefWidthProperty().bind(layout.widthProperty());
     sceneHeading.getStyleClass().add("title");
@@ -225,12 +226,11 @@ public class DisplayScene implements ChaosGameObserver {
         fileController.updateFileDropDown();
       } catch (Exception exception) {
         UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
-        //java.lang.IllegalArgumentException
-        //TODO handle this exception with file name
       }
 
     });
     HBox emptyFractalsDisplayHBox = styleTextFields(new TextField("Create an empty fractal:"));
+
     //leftBodyRow.getChildren().addAll(emptyFractalsDisplay,fileName, registerFileButton, switchButton);
     inputFields.getChildren().addAll(emptyFractalsDisplayHBox, fileName);
     emptyFractal.getChildren().addAll(inputFields, registerFileButton, switchButton);
@@ -263,8 +263,6 @@ public class DisplayScene implements ChaosGameObserver {
 
     } catch (Exception exception) {
       UserFeedback.displayError("No file was chosen.", "Please choose a file from the drop down and try again.");
-      //java.lang.IllegalArgumentException
-      //TODO handle this exception with file name
     }});
     dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, fileDropDown, updateChaosGameButton);
     VBox.setMargin(dropDownMenu, new Insets(20));
@@ -284,7 +282,9 @@ public class DisplayScene implements ChaosGameObserver {
     HBox sectionHeadingEdit = styleTextFields(new TextField("Edit the values of the Chaos Game:"));
     editMenu.getChildren().add(sectionHeadingEdit);
     Button editCurrentDescription = new Button("Edit Current Description");
+    editCurrentDescription.setFocusTraversable(false);
     Button editSelectedDescription = new Button("Edit Selected Description");
+    editSelectedDescription.setFocusTraversable(false);
     editMenu.getChildren().addAll(editCurrentDescription, editSelectedDescription);
     editCurrentDescription.setOnAction(e -> editCurrentDescription());
     editSelectedDescription.setOnAction(e -> editSelectedDescription());
@@ -337,6 +337,7 @@ public class DisplayScene implements ChaosGameObserver {
     styledTextFiled.getChildren().add(inputTextField);
     styledTextFiled.setPadding(new Insets(10));
     styledTextFiled.setStyle("-fx-background-color: #b97d6d");
+    inputTextField.setFocusTraversable(false);
     inputTextField.prefWidthProperty().bind(styledTextFiled.widthProperty());
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.setAlignment(Pos.CENTER);
