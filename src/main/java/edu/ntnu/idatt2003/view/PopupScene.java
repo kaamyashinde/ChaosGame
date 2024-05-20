@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.GameController;
+import edu.ntnu.idatt2003.controller.KeyActionPolicyController;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -54,7 +55,7 @@ public class PopupScene {
 
   protected static void showPopupStage(Stage popupStage, VBox popupLayout, int width, int height) {
     Scene popuScene = new Scene(popupLayout, width, height);
-    gameController.applyEnterKeyActionPolicy(popupStage);
+    KeyActionPolicyController.applyEnterKeyActionPolicy(popupStage);
 
     String css = UserFeedback.class.getResource("/stylesheets/userFeedback.css").toExternalForm();
     popuScene.getStylesheets().add(css);

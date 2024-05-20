@@ -316,7 +316,7 @@ exception.printStackTrace();      }
         ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
         System.out.println(saveToFile.getText());
         ValidationController.validateFileName(saveToFile.getText());
-        fileController.writeChaosGameDescriptionToFile(chaosGameDescription, saveToFile.getText());
+        fileController.writeChaosGameDescriptionToAppFiles(chaosGameDescription, saveToFile.getText());
         fileController.updateFileDropDown();
       } catch (Exception exception) {
        UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
