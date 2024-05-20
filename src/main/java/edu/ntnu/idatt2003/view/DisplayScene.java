@@ -226,7 +226,7 @@ public class DisplayScene implements ChaosGameObserver {
         fileController.updateFileDropDown();
       } catch (Exception exception) {
         UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
-      }
+exception.printStackTrace();      }
 
     });
     HBox emptyFractalsDisplayHBox = styleTextFields(new TextField("Create an empty fractal:"));

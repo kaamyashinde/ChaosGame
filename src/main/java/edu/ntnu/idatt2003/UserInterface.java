@@ -1,11 +1,12 @@
 package edu.ntnu.idatt2003;
 
-import edu.ntnu.idatt2003.model.basicLinalg.Complex;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.engine.ChaosGameFileHandler;
+import edu.ntnu.idatt2003.model.engine.ChaosGameDescriptionCreator;
+import edu.ntnu.idatt2003.model.factory.ChaosGameDescriptionFactory;
 import edu.ntnu.idatt2003.model.transformations.*;
 
 import java.util.Objects;
@@ -65,7 +66,7 @@ public class UserInterface {
      * This is to ensure that the iterations can be run without the user being forced to manually run the readFromFile method.
      */
     private static void init() {
-        chaosGameDescription = defaultSierpinskiTriangle();
+        chaosGameDescription = ChaosGameDescriptionFactory.defaultSierpinskiTriangle();
     }
 
     /**
@@ -254,7 +255,7 @@ public class UserInterface {
                 vectors[i][1] = input.nextDouble();
             }
 
-            return ChaosGameDescriptionFactory.createAffineChaosGameDescriptionManual(numberOfTransformations, matrices, vectors, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+            return ChaosGameDescriptionCreator.createAffineChaosGameDescriptionManual(numberOfTransformations, matrices, vectors, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else if (choice == 2) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();
@@ -263,7 +264,7 @@ public class UserInterface {
             double matrix01 = input.nextDouble();
             double matrix10 = input.nextDouble();
             double matrix11 = input.nextDouble();
-            return ChaosGameDescriptionFactory.createAffineChaosGameDescription(numberOfTransformations, matrix00, matrix01, matrix10, matrix11, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+            return ChaosGameDescriptionCreator.createAffineChaosGameDescription(numberOfTransformations, matrix00, matrix01, matrix10, matrix11, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else {
             System.out.println(INVALID_INPUT);
             return null;
@@ -306,11 +307,11 @@ public class UserInterface {
                 System.out.println("What is the sign of the complex number? 1: Positive, -1: Negative");
                 signs[i] = input.nextInt();
             }
-            return ChaosGameDescriptionFactory.createJuliaChaosGameDescriptionManual(numberOfTransformations, complexNumbers, signs, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+            return ChaosGameDescriptionCreator.createJuliaChaosGameDescriptionManual(numberOfTransformations, complexNumbers, signs, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else if (choice == 2) {
             System.out.println("How many transformations do you want to generate?");
             int numberOfTransformations = input.nextInt();
-            return ChaosGameDescriptionFactory.createJuliaChaosGameDescription(numberOfTransformations, -.74543, .11301, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+            return ChaosGameDescriptionCreator.createJuliaChaosGameDescription(numberOfTransformations, -.74543, .11301, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
         } else {
             System.out.println(INVALID_INPUT);
             return null;
@@ -330,7 +331,7 @@ public class UserInterface {
         System.out.println("What are the maximum coordinates for the canvas? Separate the x and y values with a space. For example: 1 1");
         double maxCoordsX0 = input.nextDouble();
         double maxCoordsX1 = input.nextDouble();
-        return ChaosGameDescriptionFactory.coordsForTransformation(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
+        return ChaosGameDescriptionCreator.coordsForTransformation(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
     }
 
     /**
@@ -450,9 +451,9 @@ public class UserInterface {
     private static void runPreset() {
         int choice = initiatePreset();
         switch (choice) {
-            case 1 -> chaosGameDescription = defaultSierpinskiTriangle();
-            case 2 -> chaosGameDescription = defaultBarnsleyFern();
-            case 3 -> chaosGameDescription = defaultJuliaSet();
+            case 1 -> chaosGameDescription = ChaosGameDescriptionFactory.defaultSierpinskiTriangle();
+            case 2 -> chaosGameDescription = ChaosGameDescriptionFactory.defaultBarnsleyFern();
+            case 3 -> chaosGameDescription = ChaosGameDescriptionFactory.defaultJuliaSet();
             default -> System.out.println(INVALID_INPUT);
         }
     }
@@ -479,43 +480,5 @@ public class UserInterface {
     }
 
 
-    /**
-     * Initiates the Sierpinski triangle preset.
-     *
-     * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Sierpinski triangle.
-     */
-    private static ChaosGameDescription defaultSierpinskiTriangle() {
-        Vector2D[] coords = ChaosGameDescriptionFactory.coordsForTransformation(0, 0, 1, 1);
-        return ChaosGameDescriptionFactory.createAffineChaosGameDescription(3, 0.5, 0, 0, 0.5, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
-    }
 
-    /**
-     * Initiates the Barnsley fern preset.
-     *
-     * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Barnsley fern.
-     */
-    /*
-    private static ChaosGameDescription defaultBarnsleyFern() {
-        return ChaosGameDescriptionFactory.createBarnsleyFernChaosGameDescription();
-    }
-
-
-    */
-    //ny versjon med statestikk bruk
-
-    private static ChaosGameDescription defaultBarnsleyFern() {
-        return ChaosGameDescriptionFactory.createbarnsleyferndescriptionwithstatistics();
-        //return ChaosGameDescriptionFactory.createBarnsleyFernChaosGameDescription();
-    }
-
-
-    /**
-     * Initiates the Julia set preset.
-     *
-     * @return an object of the ChaosGameDescription class containing the coordinates and transformations for the Julia set.
-     */
-    private static ChaosGameDescription defaultJuliaSet() {
-        Vector2D[] coords = ChaosGameDescriptionFactory.coordsForTransformation(-1.6, -1.0, 1.6, 1.0);
-        return ChaosGameDescriptionFactory.createJuliaChaosGameDescription(10, -.74543, .11301, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
-    }
 }

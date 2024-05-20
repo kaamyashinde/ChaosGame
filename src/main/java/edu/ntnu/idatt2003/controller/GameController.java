@@ -1,10 +1,11 @@
 package edu.ntnu.idatt2003.controller;
 
+import edu.ntnu.idatt2003.model.factory.ChaosGameDescriptionFactory;
 import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
-import edu.ntnu.idatt2003.model.transformations.ChaosGameDescriptionFactory;
+import edu.ntnu.idatt2003.model.engine.ChaosGameDescriptionCreator;
 import edu.ntnu.idatt2003.view.UserFeedback;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -109,9 +110,9 @@ public class GameController {
    * Create the fractals using the write to file methods
    */
   private void writePresetsToFile() {
-   /* ChaosGameDescription triangle = ChaosGameDescriptionFactory.createAffineChaosGameDescription(3, 0.5, 0, 0, 0.5, 0, 0, 1, 1);
-    ChaosGameDescription julia = ChaosGameDescriptionFactory.createJuliaChaosGameDescription(1, -0.74543, 0.11301, -1.6, -1.0, 1.6, 1.0);
-    ChaosGameDescription fern = ChaosGameDescriptionFactory.createbarnsleyferndescriptionwithstatistics();
+   /* ChaosGameDescription triangle = ChaosGameDescriptionCreator.createAffineChaosGameDescription(3, 0.5, 0, 0, 0.5, 0, 0, 1, 1);
+    ChaosGameDescription julia = ChaosGameDescriptionCreator.createJuliaChaosGameDescription(1, -0.74543, 0.11301, -1.6, -1.0, 1.6, 1.0);
+    ChaosGameDescription fern = ChaosGameDescriptionCreator.createbarnsleyferndescriptionwithstatistics();
     */
 
   }
@@ -254,11 +255,9 @@ public class GameController {
   public void createEmptyFractal(boolean isAffine, int numTransformations, String fileName) {
     ChaosGameDescription description;
     if (isAffine) {
-      double[][] matrices = new double[numTransformations][4];
-      double[][] vectors = new double[numTransformations][2];
-      description = ChaosGameDescriptionFactory.createAffineChaosGameDescriptionManual(numTransformations, matrices, vectors, 0, 0, 0, 0);
+      description = ChaosGameDescriptionFactory.emptyAffineSet(numTransformations);
     } else {
-      description = ChaosGameDescriptionFactory.createJuliaChaosGameDescriptionManual(1, new double[][]{{0, 0}}, new int[]{0}, 0, 0, 0, 0);
+      description = ChaosGameDescriptionFactory.emptyJuliaSet();
     }
     fileController.writeChaosGameDescriptionToFile(description, fileName);
     saveCurrentGame(); // Save the state of the game after creating an empty fractal
