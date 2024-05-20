@@ -24,7 +24,8 @@ import java.util.List;
  * @since 0.3.5
  */
 public class GameController {
-  private static GameController instance = null;
+
+  private static final GameController instance = new GameController();
   private final FileController fileController;
   private final List<ChaosGameDescription> listOfDescriptions;
   private ChaosGame chaosGame;
@@ -38,10 +39,12 @@ public class GameController {
     listOfDescriptions = new ArrayList<>();
     loadChaosGamePresets();
   }
-  public static GameController getInstance(){
-    if (instance == null){
-      instance = new GameController();
-    }
+
+  /**
+   * A static method that always returns the same object of the GameController class.
+   */
+  public static synchronized GameController getInstance() {
+
     return instance;
   }
 
@@ -89,6 +92,7 @@ public class GameController {
   public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
     ChaosGameDescription prevDesc = fileController.loadLastGame();
     if (prevDesc == null) {
+
       chaosGame = new ChaosGame(listOfDescriptions.get(0), width, height);
       persistenceIsNull = true;
     } else {
@@ -255,10 +259,13 @@ public class GameController {
     }
   }
 
-  public void loadLastGame() {
+  public void loadLastGame(ChaosGameObserver observer) {
     ChaosGameDescription lastGame = fileController.loadLastGame();
     if (lastGame != null) {
       chaosGame = new ChaosGame(lastGame, 500, 500);
+
+      addObserverToGame(observer);
+      System.out.println(lastGame);
 
     }
   }

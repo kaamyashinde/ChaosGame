@@ -24,14 +24,11 @@ import java.util.List;
 public class EditValuesPopUp {
   DescriptionValuesController descriptionValuesController = new DescriptionValuesController();
   ObjectListController objectListController = new ObjectListController();
-  GameController gameController;
+  GameController gameController = GameController.getInstance();
   ChaosGameDescription currentDescription;
 
-  public EditValuesPopUp() {
-    this.gameController = GameController.getInstance();
-  }
 
-  public void setChaosGameDescription() {
+  public void setChaosGameDescription(){
     currentDescription = gameController.getCurrentChaosGameDescription();
   }
 
@@ -90,6 +87,10 @@ public class EditValuesPopUp {
 
   /**
    * Method that creates the pop-up window for editing the C value.
+<<<<<<< HEAD
+=======
+   *
+>>>>>>> implement-singleton
    */
   public void createConstantCPopup() {
 
@@ -114,6 +115,10 @@ public class EditValuesPopUp {
 
   /**
    * Method that creates the pop-up window for editing the min and max coordinates.
+<<<<<<< HEAD
+=======
+   *
+>>>>>>> implement-singleton
    */
   public void createEditMaxAndMinPopup() {
     Stage popupStage = createPopupStage("Edit Min and Max");
@@ -140,6 +145,10 @@ public class EditValuesPopUp {
 
   /**
    * Method that creates the pop-up window for editing the affine transformations.
+<<<<<<< HEAD
+=======
+   *
+>>>>>>> implement-singleton
    */
   public void displayAffine() {
     Stage popupStage = createPopupStage("Edit affine transformations");

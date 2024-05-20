@@ -31,7 +31,7 @@ import java.util.List;
  * The footer row is responsible for the actions related to running the game and clearing the canvas.
  *
  * @author Kaamya Shinde
- * @version 0.8
+ * @version 0.7
  * @since 0.0.3
  */
 public class DisplayScene implements ChaosGameObserver {
@@ -74,12 +74,11 @@ public class DisplayScene implements ChaosGameObserver {
   public Scene getDisplay(Stage primaryStage) {
     layout = new AnchorPane();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
-    layout.prefHeightProperty().bind(primaryStage.heightProperty());
+
     VBox root = new VBox();
     setUpLayoutAndAddComponents(root);
 
     primaryStage.setTitle("Chaos Game");
-    root.prefHeightProperty().bind(layout.heightProperty());
 
     return new Scene(layout, 1000, 700);
   }
@@ -92,23 +91,10 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private void setUpLayoutAndAddComponents(VBox root) {
     root.prefWidthProperty().bind(layout.widthProperty());
-    root.prefHeightProperty().bind(layout.widthProperty());
-
+    layout.getChildren().add(root);
     //root.getChildren().addAll(navigationHBox());
     root.getChildren().addAll(titleHBox(), bodyHBox(), footerHBox());
-    root.getChildren().get(2).getStyleClass().add("border");
-    //titleHBox().prefHeightProperty().bind(root.heightProperty().multiply(0.1));
-    titleHBox().setPrefHeight(200);
-    titleHBox().setMinHeight(100);
-    titleHBox().setMaxHeight(300);
-    bodyHBox().prefHeightProperty().bind(root.heightProperty().multiply(0.6));
-    //footerHBox().prefHeightProperty().bind(root.heightProperty().multiply(0.2));
-    footerHBox().setPrefHeight(200);
-    footerHBox().setMinHeight(100);
-    footerHBox().setMaxHeight(300);
-    layout.getChildren().add(root);
-
-    //root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
+    root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
   }
 
   /**
@@ -161,8 +147,7 @@ public class DisplayScene implements ChaosGameObserver {
 
     TextField sceneHeading = new TextField(("Chaos Game"));
     sceneHeading.setText("Chaos Game");
-    sceneHeading.prefWidthProperty().bind(titleRow.widthProperty());
-    sceneHeading.prefHeightProperty().bind(titleRow.heightProperty());
+    sceneHeading.prefWidthProperty().bind(layout.widthProperty());
     sceneHeading.getStyleClass().add("title");
     sceneHeading.setEditable(false);
     sceneHeading.setAlignment(Pos.CENTER);
@@ -182,39 +167,24 @@ public class DisplayScene implements ChaosGameObserver {
     leftBodyRow = new VBox();
     leftBodyRow.getStyleClass().add("inner-border");
 
-    leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), saveCurrentDescToFile());
-    //leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
-    leftBodyRow.setPrefWidth(400);
-    leftBodyRow.setMinWidth(200);
-    leftBodyRow.setMaxWidth(600);
-    leftBodyRow.prefHeightProperty().bind(bodyRow.heightProperty());
+    leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), editMenuButtons(), saveCurrentDescToFile());
+    leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
 
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
     StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
-    HBox chaosGamePaneContainer = new HBox();
-    chaosGamePaneContainer.getChildren().add(chaosGamePane);
-    HBox.setMargin(chaosGamePane, new Insets(20));
     chaosGamePane.getStyleClass().add("inner-border");
     chaosGamePane.prefWidthProperty().bind(bodyRow.widthProperty());
-    chaosGamePane.prefHeightProperty().bind(bodyRow.heightProperty());
     graphicsContext = pairContainingPaneAndContext.getValue();
     rightBodyRow = new VBox();
     rightBodyRow.getStyleClass().add("inner-border");
-    rightBodyRow.setPrefWidth(400);
-    rightBodyRow.setMinWidth(200);
-    rightBodyRow.setMaxWidth(600);
-   // rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
-    rightBodyRow.prefHeightProperty().bind(bodyRow.heightProperty());
+    rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
     displayEditOptions = new VBox();
 
 
-    rightBodyRow.getChildren().addAll(displayPresetsOptions(), editMenuButtons(), displayEditOptions);
+    rightBodyRow.getChildren().addAll(displayPresetsOptions(), displayEditOptions);
 
-    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePaneContainer, rightBodyRow);
-
-    bodyRow.getChildren().forEach(child -> child.prefWidth(bodyRow.widthProperty().getValue()));
-
+    bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
   }
@@ -231,7 +201,6 @@ public class DisplayScene implements ChaosGameObserver {
     numberOfTransformations = new TextField();
     numberOfTransformations.setPromptText("Enter number of transformations for empty fractal");
     Button registerFileButton = new Button("Create empty File");
-    HBox registerFileButtonContainer = styleButton(new Button("Create empty File"));
 
     Button switchButton = new Button("Switch to Affine");
     switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, inputFields, numberOfTransformations));
@@ -243,7 +212,7 @@ public class DisplayScene implements ChaosGameObserver {
     HBox emptyFractalsDisplayHBox = styleTextFields(new TextField("Create an empty fractal:"));
     //leftBodyRow.getChildren().addAll(emptyFractalsDisplay,fileName, registerFileButton, switchButton);
     inputFields.getChildren().addAll(emptyFractalsDisplayHBox, fileName);
-    emptyFractal.getChildren().addAll(inputFields, registerFileButtonContainer, switchButton);
+    emptyFractal.getChildren().addAll(inputFields, registerFileButton, switchButton);
     emptyFractal.setAlignment(Pos.CENTER);
     VBox.setMargin(emptyFractal, new Insets(20));
 
@@ -266,9 +235,12 @@ public class DisplayScene implements ChaosGameObserver {
     dropDownMenu.setAlignment(Pos.CENTER);
 
     Button updateChaosGameButton = new Button("Update Chaos Game");
-    HBox updateChaosGameButtonContainer = styleButton(updateChaosGameButton);
-    updateChaosGameButton.setOnAction(e -> updateChaosGameFromSelectedFile());
-    dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, fileDropDown, updateChaosGameButtonContainer);
+    updateChaosGameButton.setOnAction(e -> {
+      buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
+
+      updateChaosGameFromSelectedFile();
+    });
+    dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, fileDropDown, updateChaosGameButton);
     VBox.setMargin(dropDownMenu, new Insets(20));
     return dropDownMenu;
   }
@@ -283,13 +255,9 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private VBox editMenuButtons() {
     VBox editMenu = new VBox();
-    HBox sectionHeadingEdit = styleTextFields(new TextField("Edit the values of the Chaos Game:"));
-    editMenu.getChildren().add(sectionHeadingEdit);
     Button editCurrentDescription = new Button("Edit Current Description");
-    HBox editCurrentDescContainer = styleButton(editCurrentDescription);
     Button editSelectedDescription = new Button("Edit Selected Description");
-    HBox editSelectedDescContainer = styleButton(editSelectedDescription);
-    editMenu.getChildren().addAll(editCurrentDescContainer, editSelectedDescContainer);
+    editMenu.getChildren().addAll(editCurrentDescription, editSelectedDescription);
     editCurrentDescription.setOnAction(e -> editCurrentDescription());
     editSelectedDescription.setOnAction(e -> editSelectedDescription());
     editMenu.setAlignment(Pos.CENTER);
@@ -309,14 +277,14 @@ public class DisplayScene implements ChaosGameObserver {
     saveToFile.setPromptText("Enter file name");
 
     Button saveCurrentDescToFile = new Button("Save Current Description to File");
-    HBox saveCurrentDescToFileContainer = styleButton(saveCurrentDescToFile);
     saveCurrentDescToFile.setAlignment(Pos.CENTER);
     saveCurrentDescToFile.setOnAction(e -> {
       ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
+      System.out.println(saveToFile.getText());
       fileController.writeChaosGameDescriptionToFile(chaosGameDescription, saveToFile.getText());
       fileController.updateFileDropDown();
     });
-    saveCurrentDesc.getChildren().addAll(saveToFileDisplayHBox, saveToFile, saveCurrentDescToFileContainer);
+    saveCurrentDesc.getChildren().addAll(saveToFileDisplayHBox, saveToFile, saveCurrentDescToFile);
     saveCurrentDesc.setAlignment(Pos.CENTER);
     VBox.setMargin(saveCurrentDesc, new Insets(20));
     return saveCurrentDesc;
@@ -334,21 +302,10 @@ public class DisplayScene implements ChaosGameObserver {
     styledTextFiled.setPadding(new Insets(10));
     styledTextFiled.setStyle("-fx-background-color: #b97d6d");
     inputTextField.prefWidthProperty().bind(styledTextFiled.widthProperty());
-    inputTextField.prefHeightProperty().bind(styledTextFiled.heightProperty());
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.getStyleClass().add("section-heading");
     return styledTextFiled;
-  }
-
-  private HBox styleButton(Button inputButton) {
-    HBox styledButton = new HBox();
-    styledButton.getChildren().add(inputButton);
-    styledButton.setPadding(new Insets(10));
-    inputButton.prefWidthProperty().bind(styledButton.widthProperty());
-    inputButton.prefHeightProperty().bind(styledButton.heightProperty());
-    inputButton.setAlignment(Pos.CENTER);
-    return styledButton;
   }
 
   private VBox displayPresetsOptions() {
@@ -360,10 +317,13 @@ public class DisplayScene implements ChaosGameObserver {
 
     buttons.add(createPresetFractalButton("Julia"));
     if (gameController.getPersistenceIsNull()) {
-      buttons.get(0).getStyleClass().add("selected-preset");
+      buttons.get(0).getStyleClass().add("button-selected");
     }
     buttons.add(createPresetFractalButton("Barnsley"));
     buttons.add(createPresetFractalButton("Sierpinski"));
+    if (gameController.getPersistenceIsNull()){
+      buttons.get(0).getStyleClass().add("button-selected");
+    }
 
     buttons.forEach(button -> presetsButtons.getChildren().add(button));
     displayPresetsOptions.getChildren().addAll(presetsDisplayHBox, presetsButtons);
@@ -378,6 +338,7 @@ public class DisplayScene implements ChaosGameObserver {
   public void updateChaosGameFromSelectedFile() {
     // Retrieve the selected file name from the fileDropDown ComboBox
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
+    buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
 
     // Use the readChaosGameDescriptionFromFile method to read the ChaosGameDescription from the selected file
     ChaosGameDescription description = fileController.readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
@@ -396,18 +357,16 @@ public class DisplayScene implements ChaosGameObserver {
     displayEditOptions.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
 
     editMaxAndMinButton = new Button("Edit Max and Min");
-    HBox editMaxAndMinButtonContainer = styleButton(editMaxAndMinButton);
     editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup());
-    displayEditOptions.getChildren().add(editMaxAndMinButtonContainer);
+    displayEditOptions.getChildren().add(editMaxAndMinButton);
 
     editCButton = new Button("Edit C");
-    HBox editCButtonContainer = styleButton(editCButton);
-    //TODO
     editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup());
 
     editAffineTransformationsButton = new Button("Edit Affine Transformations");
     editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine());
-    //TODO
+    Button updateButton = new Button("Update");
+
   }
 
   /**
@@ -427,6 +386,7 @@ public class DisplayScene implements ChaosGameObserver {
   private void editSelectedDescription() {
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
     ChaosGameDescription description = fileController.readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
+    System.out.println("new description is:");
     editValuesPopUp.setChaosGameDescriptionWithInput(description);
 
     handleEditOption(0);
@@ -461,14 +421,12 @@ public class DisplayScene implements ChaosGameObserver {
    * Method that returns the footer row.
    */
   private HBox footerHBox() {
-    HBox footerContainer = new HBox();
     HBox footerRow = new HBox();
     footerRow.getStyleClass().add("border");
     TextField iterations = new TextField();
     iterations.setPromptText("Enter number of iterations");
     iterations.setText("10000");
     runIterations = new Button("Run iterations");
-    HBox runIterationsContainer = styleButton(runIterations);
     runIterations.setOnAction(e -> {
           int steps = Integer.parseInt(iterations.getText());
           gameController.runGame(steps);
@@ -476,19 +434,10 @@ public class DisplayScene implements ChaosGameObserver {
     );
 
     Button clearCanvasButton = new Button("Clear Canvas");
-    HBox clearCanvasButtonContainer = styleButton(clearCanvasButton);
-
     clearCanvasButton.setOnAction(e -> gameController.clearCanvas());
-    footerRow.getChildren().addAll(iterations, runIterationsContainer, clearCanvasButtonContainer);
-    runIterations.prefWidthProperty().unbind(); // Unbind the property
-    runIterations.setPrefWidth(300);
-    clearCanvasButton.prefWidthProperty().unbind();
-    clearCanvasButton.setPrefWidth(300);
-    footerContainer.getChildren().add(footerRow);
-    footerContainer.setAlignment(Pos.CENTER);
-    //footerRow.prefWidthProperty().bind(footerContainer.widthProperty());
-    HBox.setMargin(footerRow, new Insets(10));
-    return footerContainer;
+    footerRow.getChildren().addAll(iterations, runIterations, clearCanvasButton);
+    footerRow.setAlignment(Pos.CENTER);
+    return footerRow;
   }
 
   /**

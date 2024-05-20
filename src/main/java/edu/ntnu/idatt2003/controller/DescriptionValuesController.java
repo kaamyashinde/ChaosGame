@@ -25,10 +25,8 @@ import java.util.List;
 public class DescriptionValuesController {
   List<Transform2D> transforms;
   int transformNum;
-  private GameController gameController;
-  public DescriptionValuesController(){
-    gameController = GameController.getInstance();
-  }
+
+  GameController gameController = GameController.getInstance();
 
   /**
    * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
