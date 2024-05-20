@@ -3,20 +3,12 @@ package edu.ntnu.idatt2003.view;
 import edu.ntnu.idatt2003.controller.FileController;
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.w3c.dom.Text;
 
 import static edu.ntnu.idatt2003.view.PopupScene.*;
 
@@ -64,11 +56,11 @@ public class UserFeedback {
   }
 
   /**
-   * Method that displays a welcome message to the user.
+   * Method that displays a welcome back message to the user.
    * This one is displayed when the user restarts the game.
    * The user is provided with the option to start where they left off.
    */
-  public static void startMessage(Stage primaryStage, ChaosGameObserver observer){
+  public static void welcomeBackMessage(Stage primaryStage, ChaosGameObserver observer){
 
 
     Stage popupStage = createPopupStage("Welcome back!", primaryStage);
@@ -112,7 +104,48 @@ public class UserFeedback {
     popupStage.toFront();
   }
 
+  /**
+   * Method that displays a welcome message to the user.
+   * This one is displayed when the user starts the game for the first time.
+   * The user is provided with the option to start a new game.
+   * The user is also informed about how the chaos game works, and how to play it.
+   */
+  public static void welcomeMessage(Stage primaryStage, ChaosGameObserver observer){
+    Stage popupStage = createPopupStage("Welcome to the Chaos Game!", primaryStage);
+    VBox popupLayout = createPopupLayout(popupStage);
+    TextField headingOne = new TextField("Welcome to the ");
+    headingOne.setFocusTraversable(false);
+    headingOne.getStyleClass().add("heading");
+    headingOne.setAlignment(javafx.geometry.Pos.CENTER);
+    TextField headingTwo = new TextField("Chaos Game!");
+    headingTwo.setFocusTraversable(false);
+    headingTwo.getStyleClass().add("heading");
+    headingTwo.setAlignment(javafx.geometry.Pos.CENTER);
+    TextArea TextArea1 = getStyledTextArea("The Chaos Game is a mathematical game that creates fractals using a set of rules. The game is played by selecting a point on the canvas and then clicking on the run iterations button. The game will then run the iterations and create a fractal. ");
+    Button startNewGame = new Button("Start a new game");
+    startNewGame.setAlignment(javafx.geometry.Pos.CENTER);
+    startNewGame.setOnAction(e -> {
+      popupStage.close();
+    });
+  Button whatCanIDo = new Button("What can I do?");
+  whatCanIDo.setAlignment(javafx.geometry.Pos.CENTER);
+    HBox buttons = new HBox();
+    buttons.setAlignment(javafx.geometry.Pos.CENTER);
+    buttons.getChildren().addAll(startNewGame, whatCanIDo);
+    VBox container = new VBox();
+    container.getChildren().addAll(headingOne,headingTwo, TextArea1,buttons);
+    popupLayout.getChildren().add(container);
+    dimBackground(gameController.getPrimaryStage(), popupStage);
 
+    showPopupStage(popupStage, popupLayout, 500, 400);
+    popupStage.toFront();
+  }
+
+  /**
+   * Method that informs the user about continuing the game.
+   * This method is called when the user chooses to continue the game.
+   * The user is informed about how to continue the game.
+   */
   private static void informUserAboutContinuingGame(){
     Stage popupStage = createPopupStage("Continuing the game", gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
