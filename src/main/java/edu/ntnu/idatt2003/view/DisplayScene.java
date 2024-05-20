@@ -268,6 +268,7 @@ exception.printStackTrace();      }
 
     } catch (Exception exception) {
       UserFeedback.displayError("No file was chosen.", "Please choose a file from the drop down and try again.");
+      exception.printStackTrace();
     }});
     dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, fileDropDownHBox, updateChaosGameButton);
     VBox.setMargin(dropDownMenu, new Insets(20));
@@ -478,6 +479,7 @@ ValidationController.validateFileName(selectedFile);
         UserFeedback.displayError("Number of iterations has to be a positive integer.", "Please enter a positive integer to run the application.");
         //java.lang.IllegalArgumentException
         //TODO handle this exception with number of iterations
+        exception.printStackTrace();
 
       }
         }

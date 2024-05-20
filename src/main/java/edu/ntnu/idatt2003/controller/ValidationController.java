@@ -7,7 +7,7 @@ public class ValidationController {
       if (value < 0) {
         throw new IllegalArgumentException("Input must be a positive integer");
       }
-      System.out.println("valid integer");
+      //System.out.println("valid integer");
     } catch (NumberFormatException e) {
       throw new IllegalArgumentException("Input must be an integer");
     }
@@ -20,7 +20,7 @@ public class ValidationController {
   public static void validateDouble(String input) throws IllegalArgumentException {
     try {
       Double.parseDouble(input);
-      System.out.println("valid double");
+      //System.out.println("valid double");
     } catch (NumberFormatException e) {
       throw new IllegalArgumentException("Input must be a double");
     }

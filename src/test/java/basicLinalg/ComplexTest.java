@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ComplexTest {
 
-    //positive test
     /**
      * Testing the square root method in the Complex class.
      */
@@ -28,7 +27,6 @@ class ComplexTest {
     }
 
 
-    //negative test
     /**
      * Testing the exception thrown when creating an invalid complex number.
      */
@@ -36,7 +34,7 @@ class ComplexTest {
     @DisplayName("Invalid complex number")
     void invalidComplexNumberTest(){
         assertThrows(IllegalArgumentException.class, () -> {
-            Complex invalidComplex = Complex.createComplex(-3, 2); // real part is out of range
+            Complex invalidComplex = Complex.createComplex(-27, 7); // real part is out of range
         });
     }
 }

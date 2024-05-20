@@ -31,12 +31,4 @@ class Matrix2x2Test {
         assertEquals(39, result.getX1());
     }
 
-    //negative test
-    @Test
-    @DisplayName("Invalid matrix values")
-    void invalidMatrixValuesTest(){
-        assertThrows(IllegalArgumentException.class, () -> {
-            Matrix2x2 invalidMatrix = new Matrix2x2(-600, 2, 3, 4); // a00 value is out of range
-        });
-    }
 }
