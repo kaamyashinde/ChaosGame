@@ -26,12 +26,15 @@ public class DescriptionValuesController {
   List<Transform2D> transforms;
   int transformNum;
 
+  GameController gameController = GameController.getInstance();
+
   /**
    * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
    *
    * @param inputList the list containing the text fields for the max and min coordinates
    */
-  public void registerCoordinates(List<TextField> inputList, GameController gameController) {
+  public void registerCoordinates(List<TextField> inputList) {
+    inputList.forEach(textField -> ValidationController.validateDouble(textField.getText()));
     double minX = Double.parseDouble(inputList.get(0).getText());
     double minY = Double.parseDouble(inputList.get(1).getText());
     double maxX = Double.parseDouble(inputList.get(2).getText());
@@ -52,13 +55,15 @@ public class DescriptionValuesController {
    * @param inputList the list containing the text fields for the C value.
    */
 
-  public void registerC(List<TextField> inputList, GameController gameController) {
+  public void registerC(List<TextField> inputList) {
+    inputList.forEach(textField -> ValidationController.validateDouble(textField.getText()));
+
     double c0 = Double.parseDouble(inputList.get(0).getText());
     double c1 = Double.parseDouble(inputList.get(1).getText());
 
     // Update the C value in the current ChaosGameDescription
     ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
-    List<Transform2D> transform = List.of(new JuliaTransform(new Complex(c0, c1), 1));
+    List<Transform2D> transform = List.of(new JuliaTransform(Complex.createComplex(c0, c1), 1));
     currentDescription.setTransforms(transform);
 
     // Update the ChaosGameDescription in the GameController
@@ -72,6 +77,8 @@ public class DescriptionValuesController {
    * @param inputList the list of text fields for the C value
    */
   public void displayC(ChaosGameDescription input, List<TextField> inputList) {
+    // inputList.forEach(textField -> ValidationController.validateDouble(textField.getText()));
+
     JuliaTransform transform = (JuliaTransform) input.getTransforms().get(0);
     inputList.get(0).setText(String.valueOf(transform.getPoint().getReal()));
     inputList.get(1).setText(String.valueOf(transform.getPoint().getImaginary()));
@@ -83,9 +90,9 @@ public class DescriptionValuesController {
    *
    * @param index          the index of the affine transformation
    * @param inputList      the list containing the text fields for the matrix and vector of the affine transformation.
-   * @param gameController the game controller
    */
-  public void registerAffineTransformations(int index, List<TextField> inputList, GameController gameController) {
+  public void registerAffineTransformations(int index, List<TextField> inputList) {
+    inputList.forEach(textField -> ValidationController.validateDouble(textField.getText()));
 
     Matrix2x2 matrix = new Matrix2x2(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()), Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
     Vector2D vector = new Vector2D(Double.parseDouble(inputList.get(4).getText()), Double.parseDouble(inputList.get(5).getText()));
@@ -117,6 +124,8 @@ public class DescriptionValuesController {
    * @param inputTextFields  the list of text fields for the max and min coordinates
    */
   public void displayMaxAndMinCoords(ChaosGameDescription inputDescription, List<TextField> inputTextFields) {
+    //inputTextFields.forEach(textField -> ValidationController.validateDouble(textField.getText()));
+
     inputTextFields.get(0).setText(String.valueOf(inputDescription.getMinCoords().getX0()));
     inputTextFields.get(1).setText(String.valueOf(inputDescription.getMinCoords().getX1()));
     inputTextFields.get(2).setText(String.valueOf(inputDescription.getMaxCoords().getX0()));
@@ -131,6 +140,8 @@ public class DescriptionValuesController {
    * @param inputTextFields the list of text fields for the affine transformations
    */
   public void displayAffineTransformations(int index, ChaosGameDescription inputDesc, List<TextField> inputTextFields) {
+   // inputTextFields.forEach(textField -> ValidationController.validateDouble(textField.getText()));
+
     AffineTransform2D affine = (AffineTransform2D) inputDesc.getTransforms().get(index);
     inputTextFields.get(0).setText(String.valueOf(affine.getMatrix().getA00()));
     inputTextFields.get(1).setText(String.valueOf(affine.getMatrix().getA01()));
@@ -149,7 +160,6 @@ public class DescriptionValuesController {
    * @param inputTransformationNumber     the input field for the transformation number
    */
   public void displayCorrectAffineTransformation(ChaosGameDescription inputDesc, List<Button> inputTraverseButtons, List<TextField> inputTransformationTextFields, TextField inputTransformationNumber) {
-    System.out.println("displaying the config info by running displayCorrectAffineTransformation");
     transforms = inputDesc.getTransforms();
     transformNum = 0;
     displayAffineTransformations(transformNum, inputDesc, inputTransformationTextFields);

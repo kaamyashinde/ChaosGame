@@ -15,13 +15,13 @@ public class ModelValidators {
      * @throws IllegalArgumentException if the value is out of range
      */
     public static void validateVectorValue(double value, String component) {
-        if (component.equals("x0") && (value < -500 || value > 500)) {
+       /* if (component.equals("x0") && (value < -500 || value > 500)) {
             throw new IllegalArgumentException("x0 must be between -500 and 500");
         } else if (component.equals("x1") && (value < -500 || value > 500)) {
             throw new IllegalArgumentException("x1 must be between -500 and 500");
         } else if (!component.equals("x0") && !component.equals("x1")) {
             throw new IllegalArgumentException("Component must be either x0 or x1");
-        }
+        }*/
     }
 
     //Matrix2x2 tingz
@@ -34,11 +34,11 @@ public class ModelValidators {
      * @throws IllegalArgumentException if the value is out of range
      */
     public static void validateMatrixValue(double value, String component) {
-        if ((component.equals("a00") || component.equals("a01") || component.equals("a10") || component.equals("a11")) && (value < -500 || value > 500)) {
+      /* if ((component.equals("a00") || component.equals("a01") || component.equals("a10") || component.equals("a11")) && (value < -500 || value > 500)) {
             throw new IllegalArgumentException(component + " must be between -500 and 500");
         } else if (!component.equals("a00") && !component.equals("a01") && !component.equals("a10") && !component.equals("a11")) {
             throw new IllegalArgumentException("Component must be either a00, a01, a10, or a11");
-        }
+        }*/
     }
 
     //cOMPLEX Validation
@@ -56,9 +56,9 @@ public class ModelValidators {
      * @throws IllegalArgumentException if the complex is null
      */
     public static void validateRealPartValue(double realPart) {
-       /* if (realPart < -3.5 || realPart > 2) {
+       if (realPart < -10|| realPart > 5) {
             throw new IllegalArgumentException("realPart must be between -3.5 and 2");
-        }*/
+        }
     }
 
     /**
@@ -68,9 +68,9 @@ public class ModelValidators {
      * @throws IllegalArgumentException if the complex is null
      */
     public static void validateImaginaryPartValue(double imaginaryPart) {
-        if (imaginaryPart < -1 || imaginaryPart > 1) {
+      /* if (imaginaryPart < -1 || imaginaryPart > 1) {
             throw new IllegalArgumentException("imaginaryPart must be between -1 and 1");
-        }
+        }*/
     }
 
 }

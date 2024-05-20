@@ -15,7 +15,7 @@ class ComplexTest {
     @Test
     @DisplayName("Square root of a complex number")
     void sqrtPositiveTest(){
-        Complex c1 = new Complex(4, 4);
+        Complex c1 = Complex.createComplex(4, 4);
         Complex c2 = c1.sqrt();
 
         double expectedR = Math.sqrt(32);

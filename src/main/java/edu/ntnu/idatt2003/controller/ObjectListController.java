@@ -40,8 +40,8 @@ public class ObjectListController {
    * @return a list containing the buttons used to control the viewing of the Affine transformations.
    */
   public List<Button> affineTransformationButtonsList() {
-    Button previousTransformation = new Button("Previous Transformation");
-    Button nextTransformation = new Button("Next Transformation");
+    Button previousTransformation = new Button("<");
+    Button nextTransformation = new Button(">");
     return List.of(previousTransformation, nextTransformation);
   }
 
@@ -65,6 +65,14 @@ public class ObjectListController {
     vectorB1.setPromptText("Vector B1");
 
     return List.of(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
+  }
+  /**
+   * A method that sets the prefered width of the text fields.
+   */
+  public void setTextFieldWidth(List<TextField> textFields) {
+textFields.forEach(textField -> textField.setPrefWidth(70));
+textFields.forEach(textField -> textField.setMinWidth(60));
+textFields.forEach(textField -> textField.setMaxWidth(80));
   }
 
   /**

@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.view;
+package edu.ntnu.idatt2003;
 
 import edu.ntnu.idatt2003.model.basicLinalg.Complex;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;

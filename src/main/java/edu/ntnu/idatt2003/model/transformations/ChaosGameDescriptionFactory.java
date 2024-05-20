@@ -59,7 +59,7 @@ public class ChaosGameDescriptionFactory {
         for (int i = 0; i < numberOfTransformations; i++) {
             double realPart = realPartBase + i * 0.01; // Change the real part for each transformation
             double imaginaryPart = imaginaryPartBase + i * 0.01; // Change the imaginary part for each transformation
-            Complex point = new Complex(realPart, imaginaryPart);
+            Complex point = Complex.createComplex(realPart, imaginaryPart);
             JuliaTransform julia = new JuliaTransform(point, 1);
             transforms.add(julia);
         }
@@ -73,7 +73,7 @@ public class ChaosGameDescriptionFactory {
         for (int i = 0; i < numberOfTransformations; i++) {
             double realPart = complexNumbers[i][0];
             double imaginaryPart = complexNumbers[i][1];
-            Complex point = new Complex(realPart, imaginaryPart);
+            Complex point = Complex.createComplex(realPart, imaginaryPart);
             JuliaTransform julia = new JuliaTransform(point, signs[i]);
             transforms.add(julia);
         }

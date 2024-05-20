@@ -51,7 +51,6 @@ public class FileController {
         files.forEach(file -> fileDropDown.getItems().add(file.getName()));
         fileDropDown.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectedFile = newValue;
-            System.out.println("Selected file is the followinmg: " + selectedFile);
             setDescription(readChaosGameDescriptionFromFile("appFiles/" + selectedFile));
         });
     }
@@ -72,14 +71,12 @@ public class FileController {
      * @return The chaos game description that is read from the file.
      */
     public ChaosGameDescription readChaosGameDescriptionFromFile(String fileName) {
-        System.out.println("Reading from file: " + fileName);
         return ChaosGameFileHandler.readFromFile(FILE_PATH_PRESETS + fileName);
     }
 
     //method to read from appFiles
 
     public ChaosGameDescription readChaosGameDescriptionFromAppFiles(String fileName) {
-        System.out.println("Reading from file: " + fileName);
         return ChaosGameFileHandler.readFromFile(FILE_PATH_APP_FILES + fileName);
     }
 
@@ -89,7 +86,6 @@ public class FileController {
      * @param fileName The name of the file that is written.
      */
     public void writeChaosGameDescriptionToFile(ChaosGameDescription desc, String fileName) {
-        System.out.println("Writing to file: " + fileName);
         ChaosGameFileHandler.writeToFile(desc, FILE_PATH_APP_FILES + fileName + ".txt");
     }
 
@@ -105,13 +101,16 @@ public class FileController {
 
     // Persistence methods
     public void saveLastGame(ChaosGameDescription desc) {
-        System.out.println("Saving game to persistence file...");
-        System.out.println("Description: " + desc.toString());
-        writeChaosGameDescriptionToFile(desc, "persistance");
+        ChaosGameFileHandler.writeToFile(desc, "src/main/resources/persistance/persistance.txt");
     }
 
     public ChaosGameDescription loadLastGame() {
-        System.out.println("Loading game from persistence file...");
-        return readChaosGameDescriptionFromFile("appFiles/" + "persistance.txt");
+        return readChaosGameDescriptionFromFile("persistance/" + "persistance.txt");
+    }
+    /**
+     * Method that clears the contents of the persistence file.
+     */
+    public static void clearFileContent() {
+        ChaosGameFileHandler.clearFileContent("src/main/resources/persistance/persistance.txt");
     }
 }

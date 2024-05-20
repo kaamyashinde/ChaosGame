@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
  * This class is responsible for handling the file selection for creation of empty fractals.
  *
  * @author Kaamya Shinde
- * @version 0.1
+ * @version 0.2
  * @since 0.3.4
  */
 
@@ -21,7 +21,7 @@ public class EmptyFractalController {
    */
   public EmptyFractalController() {
     isAffine = false;
-    gameController = new GameController();
+    gameController = GameController.getInstance();
   }
 
   /**
@@ -38,18 +38,16 @@ public class EmptyFractalController {
    * Method that switches the fractal to be created.
    *
    * @param switchButton            The button that switches the fractal type.
-   * @param leftBodyRow             The left body row of the scene where the button is added to or removed from.
+   * @param container             The left body row of the scene where the button is added to or removed from.
    * @param numberOfTransformations The text field that takes the number of transformations for the affine transformation.
    */
-  public void switchFractalToBeCreated(Button switchButton, VBox leftBodyRow, TextField numberOfTransformations) {
+  public void switchFractalToBeCreated(Button switchButton, VBox container, TextField numberOfTransformations) {
     isAffine = switchFractalType();
-    System.out.println("Switched to " + (isAffine ? "Affine" : "Julia"));
-    System.out.println("So it should display if " + isAffine + " + isAffine");
     switchButton.setText("Switch to " + (isAffine ? "Julia" : "Affine"));
     if (!isAffine) {
-      leftBodyRow.getChildren().remove(numberOfTransformations);
+      container.getChildren().remove(numberOfTransformations);
     } else {
-      leftBodyRow.getChildren().add(numberOfTransformations);
+      container.getChildren().add(numberOfTransformations);
 
     }
   }
@@ -62,7 +60,9 @@ public class EmptyFractalController {
    */
   public void toggleBetweenTheCreationOfTransformations(TextField fileName, TextField numberOfTransformations) {
     String nameOfFile = fileName.getText();
-    System.out.println("This is the file name: " + nameOfFile);
+    ValidationController.validateFileName(nameOfFile);
+    //boolean fileIsNull = ValidationController.validateFileName(nameOfFile);
+    //System.out.println("File is null: " + fileIsNull);
     if (isAffine) {
       affineCreation(nameOfFile, numberOfTransformations);
     } else {
@@ -77,10 +77,9 @@ public class EmptyFractalController {
    * @param numberOfTransformations The text field that takes the number of transformations for the affine transformation.
    */
   private void affineCreation(String inputFileName, TextField numberOfTransformations) {
+    ValidationController.validateInteger(numberOfTransformations.getText());
     int num = Integer.parseInt(numberOfTransformations.getText());
-    System.out.println("Number of transformations: " + num);
     gameController.createEmptyFractal(true, num, inputFileName);
-    System.out.println("Affine transformation created!");
 
   }
 
@@ -91,7 +90,6 @@ public class EmptyFractalController {
    */
   private void juliaCreation(String inputFileName) {
     gameController.createEmptyFractal(false, 0, inputFileName);
-    System.out.println("Julia transformation created!");
 
   }
 }

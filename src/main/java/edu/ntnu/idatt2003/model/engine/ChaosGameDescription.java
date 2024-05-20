@@ -60,6 +60,15 @@ public class ChaosGameDescription {
   }
 
   /**
+   * A constructor to create a deep copy of the ChaosGameDescription object.
+   */
+  public ChaosGameDescription(ChaosGameDescription description) {
+    this.minCoords = description.minCoords;
+    this.maxCoords = description.maxCoords;
+    this.transforms = new ArrayList<>(description.transforms);
+  }
+
+  /**
    * Returns a Vector2D object with the coordinates of the lower left corner of the canvas.
    *
    * @return the coordinates of the lower left corner
