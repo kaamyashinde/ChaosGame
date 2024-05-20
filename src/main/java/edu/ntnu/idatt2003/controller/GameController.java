@@ -192,6 +192,9 @@ public class GameController {
       saveCurrentGame(); // Save the state of the game after running steps
     }
   }
+  public ChaosGame returnChaosGame(){
+    return chaosGame;
+  }
 
   /**
    * Method that returns a value from the list of descriptions.

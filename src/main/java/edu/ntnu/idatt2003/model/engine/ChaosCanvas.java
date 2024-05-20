@@ -148,5 +148,8 @@ public class ChaosCanvas {
     public void notifyObserverAddPixel(double X0, double X1) {
         observers.forEach(observer -> observer.updateAddPixel(X0, X1));
     }
+    public void removeObserver(ChaosGameObserver observer) {
+        observers.remove(observer);
+    }
 
 }
