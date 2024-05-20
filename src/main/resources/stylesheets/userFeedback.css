@@ -1,10 +1,11 @@
-.root{
--fx-background-color: #d4896a;
+.root {
+    -fx-background-color: #d4896a;
     -fx-padding: 20px;
     -fx-border-radius: 5px;
 }
-.content{
--fx-background-color: transparent;
+
+.content {
+    -fx-background-color: transparent;
     -fx-border-color: #503c52;
     -fx-border-width: 2px;
     -fx-text-fill: #503c52;
@@ -25,7 +26,8 @@
     -fx-border-width: 2px;
     -fx-text-fill: #503c52;
 }
-.heading{
+
+.heading {
     -fx-font-size: 3em;
     -fx-font-family: Georgia;
     -fx-font-weight: bold;
@@ -33,30 +35,39 @@
     -fx-text-fill: #503c52;
 }
 
-.button{
+.button {
     -fx-background-color: #f2e6e3;
     -fx-font-size: 1.5em;
     -fx-padding: 10 20;
 }
-.button:hover{
+
+.button:hover {
     -fx-text-fill: #f2e6e3;
     -fx-background-color: #ffbb6c;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 10, 0, 0, 0);
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 
 }
 
 /* Style for the text fields in the popup */
-.edit-popup .text-field{
+.edit-popup .text-field {
     -fx-background-color: #f2e6e3;
     -fx-border-color: #503c52;
     -fx-border-width: 2px;
     -fx-border-radius: 3;
     -fx-text-fill: #503c52;
     -fx-font-size: 1.25em;
- /* -fx-padding: 10 20;*/
+    /* -fx-padding: 10 20;*/
 }
 
-.edit-popup .button{
--fx-padding: 5 10}
+.edit-popup .button {
+    -fx-padding: 5 10
+}
+
+.user-manual-title{
+    -fx-font-size: 2em;
+    -fx-font-family: Georgia;
+    -fx-background-color: transparent;
+    -fx-text-fill: #503c52;
+}
