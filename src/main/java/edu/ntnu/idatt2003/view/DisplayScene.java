@@ -251,7 +251,12 @@ public class DisplayScene implements ChaosGameObserver {
 
 
     VBox dropDownMenu = new VBox();
+    HBox fileDropDownHBox = new HBox();
     ComboBox<String> fileDropDown = fileController.getFileDropDown();
+    fileDropDownHBox.getChildren().add(fileDropDown);
+    HBox.setMargin(fileDropDown, new Insets(10));
+    fileDropDownHBox.setAlignment(Pos.CENTER);
+    fileDropDown.getStyleClass().add("my-combo-box");
     fileDropDown.setPromptText("Select a file");
     dropDownMenu.setAlignment(Pos.CENTER);
 
@@ -264,7 +269,7 @@ public class DisplayScene implements ChaosGameObserver {
     } catch (Exception exception) {
       UserFeedback.displayError("No file was chosen.", "Please choose a file from the drop down and try again.");
     }});
-    dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, fileDropDown, updateChaosGameButton);
+    dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, fileDropDownHBox, updateChaosGameButton);
     VBox.setMargin(dropDownMenu, new Insets(20));
     return dropDownMenu;
   }
