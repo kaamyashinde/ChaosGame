@@ -340,7 +340,7 @@ public class DisplayScene implements ChaosGameObserver {
   /**
    * Method that updates the Chaos Game from the selected file.
    */
-  public void updateChaosGameFromSelectedFile() {
+  private void updateChaosGameFromSelectedFile() {
     // Retrieve the selected file name from the fileDropDown ComboBox
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
     buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
@@ -452,7 +452,7 @@ public class DisplayScene implements ChaosGameObserver {
    * @return The button for the fractal.
    */
 
-  public Button createPresetFractalButton(String fractalName) {
+  private Button createPresetFractalButton(String fractalName) {
     Button button = new Button(fractalName);
     button.setOnAction(e -> {
       switch (fractalName) {
