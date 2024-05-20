@@ -187,12 +187,17 @@ public class GameController {
    * @param steps The number of steps that the game is run for.
    */
   public void runGame(int steps) {
-    if (chaosGame != null) {
-      chaosGame.runSteps(steps);
-      saveCurrentGame(); // Save the state of the game after running steps
+    try {
+      if (chaosGame != null) {
+        chaosGame.runSteps(steps);
+        saveCurrentGame(); // Save the state of the game after running steps
+      }
+    } catch (ArrayIndexOutOfBoundsException e) {
+      //TODO array index out of bounds exceptinoi handling
     }
   }
-  public ChaosGame returnChaosGame(){
+
+  public ChaosGame returnChaosGame() {
     return chaosGame;
   }
 

@@ -109,8 +109,13 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(cValues, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
+      try {
       descriptionValuesController.registerC(textFields);
-      popupStage.close();
+      popupStage.close();} catch (Exception exception) {
+        System.out.println("Caught exception of type " + e.getClass().getName());
+        //javafx.event.ActionEvent
+        //todo handle exception
+      }
     });
   }
 
@@ -139,17 +144,20 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(minValues, maxValues, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
-      descriptionValuesController.registerCoordinates(textFields);
-      popupStage.close();
+     try {
+        descriptionValuesController.registerCoordinates(textFields);
+        popupStage.close();
+      } catch (Exception exception) {
+       System.out.println("Caught exception of type " + e.getClass().getName());
+       //javafx.event.ActionEvent
+       //todo handle exception
+     }
     });
   }
 
   /**
    * Method that creates the pop-up window for editing the affine transformations.
-<<<<<<< HEAD
-=======
-   *
->>>>>>> implement-singleton
+
    */
   public void displayAffine() {
     Stage popupStage = createPopupStage("Edit affine transformations");
@@ -161,8 +169,9 @@ public class EditValuesPopUp {
     matrixValues.getChildren().addAll(matrixRow1, matrixRow2);
     List<TextField> textFields = objectListController.affineTransformationTextFieldsList();
     ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
-    TextField transformationNumber = new TextField();
-    transformationNumber.setPromptText("Transformation Number");
+    TextField transformationNumber = new TextField("1");
+
+    //transformationNumber.setPromptText("Transformation Number");
     List<Button> traverseButtons = objectListController.affineTransformationButtonsList();
     descriptionValuesController.displayCorrectAffineTransformation(currentDescription, traverseButtons, textFields, transformationNumber);
     matrixRow1.getChildren().addAll(textFields.get(0), textFields.get(1));
@@ -185,9 +194,15 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(values, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
-      ValidationController.validateInteger(transformationNumber.getText());
-      descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText()), textFields);
-      descriptionValuesController.clearTextFields(textFields);
+       try {
+        ValidationController.validateInteger(transformationNumber.getText());
+        descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText())-1, textFields);
+        descriptionValuesController.clearTextFields(textFields);
+      } catch (Exception exception) {
+        System.out.println("Caught exception of type " + e.getClass().getName());
+        //javafx.event.ActionEvent
+        //todo handle exception
+      }
     });
   }
 }
