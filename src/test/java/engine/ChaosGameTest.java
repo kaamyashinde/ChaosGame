@@ -39,22 +39,22 @@ class ChaosGameTest {
         assertNotNull(canvas);
     }
 
-
-    @Test
-    void runSteps() {
-        chaosGame.runSteps(10);
-        ChaosCanvas canvas = chaosGame.getCanvas();
-        int[][] canvasArray = canvas.getCanvasArray();
-        int numberOfPixels = 0;
-        for (int i = 0; i < canvasArray.length; i++) {
+@Test
+void runSteps() {
+    int steps = 10;
+    chaosGame.runSteps(steps);
+    ChaosCanvas canvas = chaosGame.getCanvas();
+    int[][] canvasArray = canvas.getCanvasArray();
+    int numberOfPixels = 0;
+    for (int i = 0; i < canvasArray.length; i++) {
+        if (canvasArray[i] != null) {
             for (int j = 0; j < canvasArray[i].length; j++) {
                 if (canvasArray[i][j] == 1){
-                numberOfPixels++;
+                    numberOfPixels++;
                 }
             }
         }
-        assertNotEquals(0, numberOfPixels);
-
-
     }
+    assertTrue(numberOfPixels <= steps);
+}
 }

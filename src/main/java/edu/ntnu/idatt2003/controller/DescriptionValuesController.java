@@ -63,7 +63,7 @@ public class DescriptionValuesController {
 
     // Update the C value in the current ChaosGameDescription
     ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
-    List<Transform2D> transform = List.of(new JuliaTransform(new Complex(c0, c1), 1));
+    List<Transform2D> transform = List.of(new JuliaTransform(Complex.createComplex(c0, c1), 1));
     currentDescription.setTransforms(transform);
 
     // Update the ChaosGameDescription in the GameController

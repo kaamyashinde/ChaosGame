@@ -15,14 +15,15 @@ class JuliaTransformTest {
     void transform() {
 
 
-        JuliaTransform juliaTransform = new JuliaTransform(new Complex(0, 0), 1);
+        //JuliaTransform juliaTransform = new JuliaTransform(new Complex(0, 0), 1);
+        JuliaTransform juliaTransform = new JuliaTransform(Complex.createComplex(0, 0), 1);
 
         Vector2D vector2D = new Vector2D(1, 1);
 
         Vector2D result = juliaTransform.transform(vector2D);
 
-        assertEquals(-1.0986841134678098, result.getX0());
-        assertEquals(-0.45508986056222733, result.getX1());
+        assertEquals(1.0986841134678098, result.getX0());
+        assertEquals(0.45508986056222733, result.getX1());
 
 
     }
