@@ -17,11 +17,13 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+import static edu.ntnu.idatt2003.view.PopupScene.*;
+
 /**
  * This class is responsible for creating the pop-up windows for editing the values of the chaos game description.
  *
  * @author Kaamya Shinde
- * @version 0.4
+ * @version 0.5
  * @since 0.3.4
  */
 
@@ -42,33 +44,6 @@ public class EditValuesPopUp {
   }
 
   /**
-   * Method that initialises the pop-up stage.
-   *
-   * @param title The title of the pop-up stage.
-   * @return popupStage The stage to be used.
-   */
-
-  private Stage createPopupStage(String title) {
-    Stage popupStage = new Stage();
-    popupStage.setTitle(title);
-    return popupStage;
-  }
-
-  /**
-   * Method that creates the layout of the pop-up window.
-   *
-   * @param popupStage The stage to be used.
-   * @return popupLayout The layout of the pop-up window.
-   */
-  private VBox createPopupLayout(Stage popupStage) {
-    VBox popupLayout = new VBox();
-    popupLayout.getStyleClass().add("edit-popup");
-    popupLayout.prefWidthProperty().bind(popupStage.widthProperty());
-    popupLayout.prefHeightProperty().bind(popupStage.heightProperty());
-    return popupLayout;
-  }
-
-  /**
    * Method that creates the register button for the pop-up window.
    *
    * @return registerButton The register button.
@@ -79,19 +54,6 @@ public class EditValuesPopUp {
     return new Button("Register");
   }
 
-  /**
-   * Method that shows the pop-up stage.
-   *
-   * @param popupStage  The stage to be used.
-   * @param popupLayout The layout of the pop-up window.
-   */
-
-  private void showPopupStage(Stage popupStage, VBox popupLayout) {
-    Scene popuScene = new Scene(popupLayout, 300, 300);
-    popuScene.getStylesheets().add(getClass().getClassLoader().getResource("userFeedback.css").toExternalForm());
-    popupStage.setScene(popuScene);
-    popupStage.show();
-  }
 
   /**
    * Method that creates the pop-up window for editing the C value.
@@ -99,7 +61,7 @@ public class EditValuesPopUp {
 
 
   public void createConstantCPopup() {
-    Stage popupStage = createPopupStage("Edit C");
+    Stage popupStage = createPopupStage("Edit C", gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
     //container for the two values
     VBox displayMatrix = new VBox();
@@ -127,7 +89,8 @@ public class EditValuesPopUp {
 
     descriptionValuesController.displayC(gameController.getCurrentChaosGameDescription(), textFields);
     popupLayout.getChildren().addAll(displayMatrix, spacer, forButtons);
-    showPopupStage(popupStage, popupLayout);
+    dimBackground(gameController.getPrimaryStage(), popupStage);
+    showPopupStage(popupStage, popupLayout, 300, 300);
     registerButton.setOnAction(e -> {
       try {
         descriptionValuesController.registerC(textFields);
@@ -143,7 +106,7 @@ public class EditValuesPopUp {
    * Method that creates the pop-up window for editing the min and max coordinates.
    */
   public void createEditMaxAndMinPopup() {
-    Stage popupStage = createPopupStage("Edit Min and Max");
+    Stage popupStage = createPopupStage("Edit Min and Max", gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
     HBox minValues = new HBox();
     HBox maxValues = new HBox();
@@ -166,7 +129,8 @@ public class EditValuesPopUp {
     forButtons.getChildren().add(registerButton);
     forButtons.setAlignment(Pos.CENTER);
     popupLayout.getChildren().addAll(minContainer, maxContainer, spacer, forButtons);
-    showPopupStage(popupStage, popupLayout);
+    dimBackground(gameController.getPrimaryStage(), popupStage);
+    showPopupStage(popupStage, popupLayout, 300, 300);
     registerButton.setOnAction(e -> {
       try {
         descriptionValuesController.registerCoordinates(textFields);
@@ -181,7 +145,7 @@ public class EditValuesPopUp {
    * Method that creates the pop-up window for editing the affine transformations.
    */
   public void displayAffine() {
-    Stage popupStage = createPopupStage("Edit affine transformations");
+    Stage popupStage = createPopupStage("Edit affine transformations", gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
     HBox values = new HBox();
     values.setAlignment(Pos.CENTER);
@@ -232,7 +196,8 @@ public class EditValuesPopUp {
     forButtons.getChildren().addAll(transverseThroughTransformations, registerButtonBox);
     traverseButtons.forEach(button -> button.setPrefHeight(transformationNumber.getHeight()));
     popupLayout.getChildren().addAll(values, spacer, forButtons);
-    showPopupStage(popupStage, popupLayout);
+    dimBackground(gameController.getPrimaryStage(), popupStage);
+    showPopupStage(popupStage, popupLayout, 300, 300);
     registerButton.setOnAction(e -> {
       try {
         ValidationController.validateInteger(transformationNumber.getText());
