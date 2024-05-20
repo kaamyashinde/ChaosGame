@@ -101,16 +101,16 @@ public class FileController {
 
     // Persistence methods
     public void saveLastGame(ChaosGameDescription desc) {
-        writeChaosGameDescriptionToFile(desc, "persistance");
+        ChaosGameFileHandler.writeToFile(desc, "src/main/resources/persistance/persistance.txt");
     }
 
     public ChaosGameDescription loadLastGame() {
-        return readChaosGameDescriptionFromFile("appFiles/" + "persistance.txt");
+        return readChaosGameDescriptionFromFile("persistance/" + "persistance.txt");
     }
     /**
      * Method that clears the contents of the persistence file.
      */
     public static void clearFileContent() {
-        ChaosGameFileHandler.clearFileContent("src/main/resources/appFiles/persistance.txt");
+        ChaosGameFileHandler.clearFileContent("src/main/resources/persistance/persistance.txt");
     }
 }

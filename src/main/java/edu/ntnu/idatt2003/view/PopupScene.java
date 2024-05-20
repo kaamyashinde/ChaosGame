@@ -52,7 +52,7 @@ public class PopupScene {
 
   protected static void showPopupStage(Stage popupStage, VBox popupLayout, int width, int height) {
     Scene popuScene = new Scene(popupLayout, width, height);
-    String css = UserFeedback.class.getResource("/userFeedback.css").toExternalForm();
+    String css = UserFeedback.class.getResource("/stylesheets/userFeedback.css").toExternalForm();
     popuScene.getStylesheets().add(css);
     popupStage.setScene(popuScene);
     popupStage.show();

@@ -1,4 +1,0 @@
-JuliaTransform # Type of transformation
--2.0,-2.0 # Lower left
-2.0,2.0 # Upper right
-1.5,0.5 # Real and imaginary parts of the constant c

@@ -1,10 +1,8 @@
 package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.GameController;
-import edu.ntnu.idatt2003.model.ChaosGameObserver;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 /**
  * The main class that starts the application.
@@ -28,7 +26,7 @@ public class Main extends Application {
      try  {
         displayScene = new DisplayScene();
         Scene scene = displayScene.getDisplay(primaryStage);
-        String css = getClass().getClassLoader().getResource("styles.css").toExternalForm();
+        String css = getClass().getClassLoader().getResource("stylesheets/styles.css").toExternalForm();
         scene.getStylesheets().add(css);
 
         gameController.loadLastGame(displayScene);
