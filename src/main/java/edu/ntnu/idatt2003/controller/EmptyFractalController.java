@@ -21,7 +21,7 @@ public class EmptyFractalController {
    */
   public EmptyFractalController() {
     isAffine = false;
-    gameController = new GameController();
+    gameController = GameController.getInstance();
   }
 
   /**

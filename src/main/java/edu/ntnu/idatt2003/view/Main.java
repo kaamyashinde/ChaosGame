@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private GameController gameController = new GameController();
+    private GameController gameController = GameController.getInstance();
 
     public static void main(String[] args) {
         launch(args);
@@ -19,7 +19,7 @@ public class Main extends Application {
       String css = getClass().getClassLoader().getResource("styles.css").toExternalForm();
       scene.getStylesheets().add(css);
 
-      gameController.loadLastGame();
+      gameController.loadLastGame(displayScene);
 
       primaryStage.setScene(scene);
       primaryStage.setScene(scene);

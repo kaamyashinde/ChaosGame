@@ -55,12 +55,12 @@ public class DisplayScene implements ChaosGameObserver {
   TextField fileName;
 
   public DisplayScene() {
-    gameController = new GameController();
+    gameController = GameController.getInstance();
     observerActionController = new ObserverActionController();
     fileController = new FileController();
     emptyFractalController = new EmptyFractalController();
     descriptionValuesController = new DescriptionValuesController();
-    editValuesPopUp = new EditValuesPopUp(gameController);
+    editValuesPopUp = new EditValuesPopUp();
   }
 
   /**
@@ -338,6 +338,7 @@ public class DisplayScene implements ChaosGameObserver {
   public void updateChaosGameFromSelectedFile() {
     // Retrieve the selected file name from the fileDropDown ComboBox
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
+    buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
 
     // Use the readChaosGameDescriptionFromFile method to read the ChaosGameDescription from the selected file
     ChaosGameDescription description = fileController.readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
@@ -356,14 +357,14 @@ public class DisplayScene implements ChaosGameObserver {
     displayEditOptions.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
 
     editMaxAndMinButton = new Button("Edit Max and Min");
-    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup(gameController));
+    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup());
     displayEditOptions.getChildren().add(editMaxAndMinButton);
 
     editCButton = new Button("Edit C");
-    editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup(gameController));
+    editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup());
 
     editAffineTransformationsButton = new Button("Edit Affine Transformations");
-    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine(gameController));
+    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine());
     Button updateButton = new Button("Update");
 
   }

@@ -25,13 +25,14 @@ import java.util.List;
 public class DescriptionValuesController {
   List<Transform2D> transforms;
   int transformNum;
+  GameController gameController = GameController.getInstance();
 
   /**
    * Method that registers the coordinates of the max and min corners of the canvas from teh user input.
    *
    * @param inputList the list containing the text fields for the max and min coordinates
    */
-  public void registerCoordinates(List<TextField> inputList, GameController gameController) {
+  public void registerCoordinates(List<TextField> inputList) {
     double minX = Double.parseDouble(inputList.get(0).getText());
     double minY = Double.parseDouble(inputList.get(1).getText());
     double maxX = Double.parseDouble(inputList.get(2).getText());
@@ -52,7 +53,7 @@ public class DescriptionValuesController {
    * @param inputList the list containing the text fields for the C value.
    */
 
-  public void registerC(List<TextField> inputList, GameController gameController) {
+  public void registerC(List<TextField> inputList) {
     double c0 = Double.parseDouble(inputList.get(0).getText());
     double c1 = Double.parseDouble(inputList.get(1).getText());
 
@@ -85,7 +86,7 @@ public class DescriptionValuesController {
    * @param inputList      the list containing the text fields for the matrix and vector of the affine transformation.
    * @param gameController the game controller
    */
-  public void registerAffineTransformations(int index, List<TextField> inputList, GameController gameController) {
+  public void registerAffineTransformations(int index, List<TextField> inputList) {
 
     Matrix2x2 matrix = new Matrix2x2(Double.parseDouble(inputList.get(0).getText()), Double.parseDouble(inputList.get(1).getText()), Double.parseDouble(inputList.get(2).getText()), Double.parseDouble(inputList.get(3).getText()));
     Vector2D vector = new Vector2D(Double.parseDouble(inputList.get(4).getText()), Double.parseDouble(inputList.get(5).getText()));

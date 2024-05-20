@@ -24,6 +24,7 @@ import java.util.List;
  * @since 0.3.5
  */
 public class GameController {
+  private static final GameController instance = new GameController();
   private final FileController fileController;
   private final List<ChaosGameDescription> listOfDescriptions;
   private ChaosGame chaosGame;
@@ -32,10 +33,18 @@ public class GameController {
   /**
    * Constructor that initialises the array lists and adds the game presets.
    */
-  public GameController() {
+  private GameController() {
     fileController = new FileController();
     listOfDescriptions = new ArrayList<>();
     loadChaosGamePresets();
+  }
+
+  /**
+   * A static method that always returns the same object of the GameController class.
+   */
+  public static synchronized GameController getInstance() {
+
+    return instance;
   }
 
   /**
@@ -257,10 +266,11 @@ public class GameController {
     }
   }
 
-  public void loadLastGame() {
+  public void loadLastGame(ChaosGameObserver observer) {
     ChaosGameDescription lastGame = fileController.loadLastGame();
     if (lastGame != null) {
       chaosGame = new ChaosGame(lastGame, 500, 500);
+      addObserverToGame(observer);
       System.out.println(lastGame);
 
     }
