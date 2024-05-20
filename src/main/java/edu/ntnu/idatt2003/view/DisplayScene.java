@@ -74,7 +74,6 @@ public class DisplayScene implements ChaosGameObserver {
   public Scene getDisplay(Stage primaryStage) {
     layout = new AnchorPane();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
-    layout.prefHeightProperty().bind(primaryStage.heightProperty());
 
     VBox root = new VBox();
     setUpLayoutAndAddComponents(root);
@@ -91,21 +90,11 @@ public class DisplayScene implements ChaosGameObserver {
    * @param root The root of the layout.
    */
   private void setUpLayoutAndAddComponents(VBox root) {
-    root.prefHeightProperty().bind(layout.heightProperty());
     root.prefWidthProperty().bind(layout.widthProperty());
-    root.getChildren().addAll(titleHBox(), bodyHBox(), footerHBox());
-   // root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
-    titleHBox().setPrefHeight(200);
-    titleHBox().setMinHeight(100);
-    titleHBox().setMaxHeight(300);
-    bodyHBox().prefHeightProperty().bind(root.heightProperty().multiply(0.6));
-    footerHBox().setPrefHeight(200);
-    footerHBox().setMinHeight(100);
-    footerHBox().setMaxHeight(300);
-
     layout.getChildren().add(root);
-
-
+    //root.getChildren().addAll(navigationHBox());
+    root.getChildren().addAll(titleHBox(), bodyHBox(), footerHBox());
+    root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
   }
 
   /**
@@ -158,8 +147,7 @@ public class DisplayScene implements ChaosGameObserver {
 
     TextField sceneHeading = new TextField(("Chaos Game"));
     sceneHeading.setText("Chaos Game");
-    sceneHeading.prefWidthProperty().bind(titleRow.widthProperty());
-    sceneHeading.prefHeightProperty().bind(titleRow.heightProperty());
+    sceneHeading.prefWidthProperty().bind(layout.widthProperty());
     sceneHeading.getStyleClass().add("title");
     sceneHeading.setEditable(false);
     sceneHeading.setAlignment(Pos.CENTER);
@@ -182,30 +170,17 @@ public class DisplayScene implements ChaosGameObserver {
     //leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), editMenuButtons(), saveCurrentDescToFile());
     leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), saveCurrentDescToFile());
 
-    //leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
-    leftBodyRow.setPrefWidth(400);
-    leftBodyRow.setMinWidth(200);
-    leftBodyRow.setMaxWidth(600);
-    leftBodyRow.prefHeightProperty().bind(bodyRow.heightProperty());
-
+    leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
 
     graphicsContext = null;
     Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
     StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
     chaosGamePane.getStyleClass().add("inner-border");
     chaosGamePane.prefWidthProperty().bind(bodyRow.widthProperty());
-    chaosGamePane.prefHeightProperty().bind(bodyRow.heightProperty());
-
     graphicsContext = pairContainingPaneAndContext.getValue();
     rightBodyRow = new VBox();
     rightBodyRow.getStyleClass().add("inner-border");
-   // rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
-    rightBodyRow.setPrefWidth(400);
-    rightBodyRow.setMinWidth(200);
-    rightBodyRow.setMaxWidth(600);
-    // rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
-    rightBodyRow.prefHeightProperty().bind(bodyRow.heightProperty());
-
+    rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
     displayEditOptions = new VBox();
 
 
@@ -213,7 +188,6 @@ public class DisplayScene implements ChaosGameObserver {
     rightBodyRow.getChildren().addAll(displayPresetsOptions(), editMenuButtons(), displayEditOptions);
 
     bodyRow.getChildren().addAll(leftBodyRow, chaosGamePane, rightBodyRow);
-
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
   }
@@ -333,7 +307,6 @@ public class DisplayScene implements ChaosGameObserver {
     styledTextFiled.setPadding(new Insets(10));
     styledTextFiled.setStyle("-fx-background-color: #b97d6d");
     inputTextField.prefWidthProperty().bind(styledTextFiled.widthProperty());
-    inputTextField.prefHeightProperty().bind(styledTextFiled.heightProperty());
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.getStyleClass().add("section-heading");
