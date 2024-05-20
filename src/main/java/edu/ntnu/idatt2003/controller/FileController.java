@@ -107,4 +107,10 @@ public class FileController {
     public ChaosGameDescription loadLastGame() {
         return readChaosGameDescriptionFromFile("appFiles/" + "persistance.txt");
     }
+    /**
+     * Method that clears the contents of the persistence file.
+     */
+    public static void clearFileContent() {
+        ChaosGameFileHandler.clearFileContent("src/main/resources/appFiles/persistance.txt");
+    }
 }

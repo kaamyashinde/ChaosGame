@@ -41,7 +41,7 @@ public class Main extends Application {
 
         if (!gameController.getPersistenceIsNull()) {
           UserFeedback userFeedback = new UserFeedback();
-          userFeedback.startMessage();
+          userFeedback.startMessage(primaryStage, displayScene);
         }
       } catch (Exception e) {
        System.out.println("cautch exception of type"  + e.getClass().getName());

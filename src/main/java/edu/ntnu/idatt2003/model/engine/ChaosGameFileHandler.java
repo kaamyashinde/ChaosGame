@@ -8,11 +8,7 @@ import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
 
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -128,4 +124,18 @@ public static void writeToFile(ChaosGameDescription chaosGameDescription, String
             return null;
         }
     }
+    /**
+     * Method that clears the contents of a file.
+     */
+    public static void clearFileContent(String filePath) {
+        try {
+            PrintWriter writer = new PrintWriter(new File(filePath));
+            writer.print("");
+            writer.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + filePath);
+            e.printStackTrace();
+        }
+    }
+
 }

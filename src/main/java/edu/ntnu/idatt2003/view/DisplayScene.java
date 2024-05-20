@@ -84,6 +84,12 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
+   * Method that returns the list of the buttons that are used to manage the presets.
+   * @return The list of buttons.
+   */
+  public List<Button> getButtons() {
+    return buttons;}
+  /**
    * Method that sets up the layout and adds the components to the layout.
    * The layout is bound to the width of the stage.
    *

@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class GameController {
 
     return instance;
   }
+
 
   /**
    * Method that adds an observer to the Chaos game object.
@@ -133,8 +135,9 @@ public class GameController {
   /**
    * Method to initialize the game with a default preset.
    */
-  public void initializeDefaultGame() {
+  public void initializeDefaultGame(ChaosGameObserver observer) {
     chaosGame = new ChaosGame(listOfDescriptions.get(0), 500, 500);
+    addObserverToGame(observer);
     saveCurrentGame(); // Save the initial default state of the game
   }
 
