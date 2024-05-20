@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2003.model.engine;
 
-import edu.ntnu.idatt2003.model.ChaosGameObserver;
+import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.basicLinalg.Matrix2x2;
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;

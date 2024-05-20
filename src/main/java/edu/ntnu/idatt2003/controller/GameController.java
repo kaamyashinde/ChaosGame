@@ -1,17 +1,15 @@
 package edu.ntnu.idatt2003.controller;
 
-import edu.ntnu.idatt2003.model.ChaosGameObserver;
+import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.ChaosGameDescriptionFactory;
 import edu.ntnu.idatt2003.view.UserFeedback;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;

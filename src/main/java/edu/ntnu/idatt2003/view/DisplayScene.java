@@ -2,7 +2,7 @@ package edu.ntnu.idatt2003.view;
 
 
 import edu.ntnu.idatt2003.controller.*;
-import edu.ntnu.idatt2003.model.ChaosGameObserver;
+import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import javafx.geometry.Insets;

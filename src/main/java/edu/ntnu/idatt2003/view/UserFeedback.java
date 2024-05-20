@@ -2,7 +2,7 @@ package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.FileController;
 import edu.ntnu.idatt2003.controller.GameController;
-import edu.ntnu.idatt2003.model.ChaosGameObserver;
+import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
