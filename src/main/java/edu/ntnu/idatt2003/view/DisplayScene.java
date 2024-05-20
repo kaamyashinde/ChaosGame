@@ -286,6 +286,7 @@ public class DisplayScene implements ChaosGameObserver {
     saveCurrentDescToFile.setOnAction(e -> {
       ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
       System.out.println(saveToFile.getText());
+      ValidationController.validateFileName(saveToFile.getText());
       fileController.writeChaosGameDescriptionToFile(chaosGameDescription, saveToFile.getText());
       fileController.updateFileDropDown();
     });
@@ -433,6 +434,7 @@ public class DisplayScene implements ChaosGameObserver {
     iterations.setText("10000");
     runIterations = new Button("Run iterations");
     runIterations.setOnAction(e -> {
+      ValidationController.validateInteger(iterations.getText());
           int steps = Integer.parseInt(iterations.getText());
           gameController.runGame(steps);
         }

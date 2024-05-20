@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.view;
 import edu.ntnu.idatt2003.controller.DescriptionValuesController;
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.controller.ObjectListController;
+import edu.ntnu.idatt2003.controller.ValidationController;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -184,6 +185,7 @@ public class EditValuesPopUp {
     popupLayout.getChildren().addAll(values, spacer, forButtons);
     showPopupStage(popupStage, popupLayout);
     registerButton.setOnAction(e -> {
+      ValidationController.validateInteger(transformationNumber.getText());
       descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText()), textFields);
       descriptionValuesController.clearTextFields(textFields);
     });
