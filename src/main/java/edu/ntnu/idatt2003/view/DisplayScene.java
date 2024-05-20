@@ -217,7 +217,7 @@ public class DisplayScene implements ChaosGameObserver {
         emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
         fileController.updateFileDropDown();
       } catch (Exception exception) {
-        System.out.println("Exception of type: " + exception.getClass().getName());
+        UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
         //java.lang.IllegalArgumentException
         //TODO handle this exception with file name
       }
@@ -255,7 +255,7 @@ public class DisplayScene implements ChaosGameObserver {
       updateChaosGameFromSelectedFile();
 
     } catch (Exception exception) {
-      System.out.println("Exception of type: " + exception.getClass().getName());
+      UserFeedback.displayError("No file was chosen.", "Please choose a file from the drop down and try again.");
       //java.lang.IllegalArgumentException
       //TODO handle this exception with file name
     }});
@@ -308,7 +308,7 @@ public class DisplayScene implements ChaosGameObserver {
         fileController.writeChaosGameDescriptionToFile(chaosGameDescription, saveToFile.getText());
         fileController.updateFileDropDown();
       } catch (Exception exception) {
-        System.out.println("Exception of type: " + exception.getClass().getName());
+       UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
         //java.lang.IllegalArgumentException
         //TODO handle this exception with file name
       }
@@ -464,7 +464,7 @@ ValidationController.validateFileName(selectedFile);
         int steps = Integer.parseInt(iterations.getText());
         gameController.runGame(steps);
       } catch (Exception exception) {
-        System.out.println("Exception of type: " + exception.getClass().getName());
+        UserFeedback.displayError("Number of iterations has to be a positive integer.", "Please enter a positive integer to run the application.");
         //java.lang.IllegalArgumentException
         //TODO handle this exception with number of iterations
 

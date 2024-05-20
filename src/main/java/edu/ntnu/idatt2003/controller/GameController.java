@@ -5,6 +5,7 @@ import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.ChaosGameDescriptionFactory;
+import edu.ntnu.idatt2003.view.UserFeedback;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -194,6 +195,7 @@ public class GameController {
       }
     } catch (ArrayIndexOutOfBoundsException e) {
       //TODO array index out of bounds exceptinoi handling
+      UserFeedback.displayError("There was an error running the game. The given configuration cannot be run." , " Please try again.");
     }
   }
 

@@ -1,0 +1,32 @@
+.root{
+-fx-background-color: #d4896a;
+    -fx-padding: 20px;
+    -fx-border-radius: 5px;
+}
+.content{
+-fx-background-color: transparent;
+    -fx-border-color: #503c52;
+    -fx-border-width: 2px;
+    -fx-text-fill: #503c52;
+}
+
+/* Style for the popup container */
+.container {
+    -fx-background-color: #d4896a;
+    -fx-padding: 20px;
+    -fx-border-radius: 5px;
+}
+
+/* Style for the text fields in the popup */
+.container .content {
+    -fx-background-color: transparent;
+    -fx-border-color: #503c52;
+    -fx-border-width: 2px;
+    -fx-text-fill: #503c52;
+}
+.heading{
+    -fx-font-size: 3em;
+    -fx-font-family: Georgia;
+    -fx-background-color: transparent;
+    -fx-text-fill: #503c52;
+}

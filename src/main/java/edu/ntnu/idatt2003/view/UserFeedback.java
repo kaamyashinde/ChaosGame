@@ -1,28 +1,51 @@
 package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.FileController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 public class UserFeedback {
-  FileController fileController;
   public UserFeedback(){
-    fileController = new FileController();
   }
-  public void displayError(String message){
+  private static TextArea getStyledTextArea(String inputMessage){
+    TextArea textArea = new TextArea(inputMessage);
+    textArea.getStyleClass().add("content");
+    textArea.setWrapText(true);
+    return textArea;
+  }
+  public static void displayError(String message, String errorDesc){
     System.out.println(message);
+    Stage popupStage = createPopupStage("Error");
+    VBox popupLayout = createPopupLayout(popupStage);
+    TextArea TextArea = getStyledTextArea(message);
+    TextArea TextArea1 = getStyledTextArea(errorDesc);
+    VBox container = new VBox();
+    container.getChildren().addAll(TextArea, TextArea1);
+    popupLayout.getChildren().add(container);
+    showPopupStage(popupStage, popupLayout, 300, 140);
+    popupStage.toFront();
   }
-  public void startMessage(){
+  public static void startMessage(){
     Stage popupStage = createPopupStage("Welcome back!");
     VBox popupLayout = createPopupLayout(popupStage);
-    TextField textField = new TextField("Welcome back to the Chaos Game!");
-    TextField textField1 = new TextField("You can start where u left off!");
+    TextField headingOne = new TextField("Welcome back to the ");
+    headingOne.getStyleClass().add("heading");
+    headingOne.setAlignment(javafx.geometry.Pos.CENTER);
+    TextField headingTwo = new TextField("Chaos Game!");
+    headingTwo.getStyleClass().add("heading");
+    headingTwo.setAlignment(javafx.geometry.Pos.CENTER);
+    TextArea TextArea1 = getStyledTextArea("You can start where u left off!");
     VBox container = new VBox();
-    container.getChildren().addAll(textField, textField1);
+    container.getChildren().addAll(headingOne,headingTwo, TextArea1);
     popupLayout.getChildren().add(container);
-    showPopupStage(popupStage, popupLayout);
+    showPopupStage(popupStage, popupLayout, 500, 300);
     popupStage.toFront();
   }
 
@@ -33,7 +56,7 @@ public class UserFeedback {
    * @return popupStage The stage to be used.
    */
 
-  private Stage createPopupStage(String title) {
+  private static Stage createPopupStage(String title) {
     Stage popupStage = new Stage();
     popupStage.setTitle(title);
     return popupStage;
@@ -45,7 +68,7 @@ public class UserFeedback {
    * @param popupStage The stage to be used.
    * @return popupLayout The layout of the pop-up window.
    */
-  private VBox createPopupLayout(Stage popupStage) {
+  private static VBox createPopupLayout(Stage popupStage) {
     VBox popupLayout = new VBox();
     popupLayout.prefWidthProperty().bind(popupStage.widthProperty());
     popupLayout.prefHeightProperty().bind(popupStage.heightProperty());
@@ -58,8 +81,10 @@ public class UserFeedback {
    * @param popupLayout The layout of the pop-up window.
    */
 
-  private void showPopupStage(Stage popupStage, VBox popupLayout) {
-    Scene popuScene = new Scene(popupLayout, 300, 300);
+  private static void showPopupStage(Stage popupStage, VBox popupLayout, int width, int height) {
+    Scene popuScene = new Scene(popupLayout, width, height);
+    String css = UserFeedback.class.getResource("/userFeedback.css").toExternalForm();
+    popuScene.getStylesheets().add(css);
     popupStage.setScene(popuScene);
     popupStage.show();
   }

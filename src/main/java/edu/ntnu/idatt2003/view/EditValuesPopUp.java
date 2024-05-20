@@ -112,7 +112,7 @@ public class EditValuesPopUp {
       try {
       descriptionValuesController.registerC(textFields);
       popupStage.close();} catch (Exception exception) {
-        System.out.println("Caught exception of type " + e.getClass().getName());
+        UserFeedback.displayError("Invalid input for the complex number value.", "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
         //javafx.event.ActionEvent
         //todo handle exception
       }
@@ -148,7 +148,7 @@ public class EditValuesPopUp {
         descriptionValuesController.registerCoordinates(textFields);
         popupStage.close();
       } catch (Exception exception) {
-       System.out.println("Caught exception of type " + e.getClass().getName());
+       UserFeedback.displayError("Invalid input for the max or min value.", "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
        //javafx.event.ActionEvent
        //todo handle exception
      }
@@ -199,7 +199,7 @@ public class EditValuesPopUp {
         descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText())-1, textFields);
         descriptionValuesController.clearTextFields(textFields);
       } catch (Exception exception) {
-        System.out.println("Caught exception of type " + e.getClass().getName());
+         UserFeedback.displayError("Invalid input for the affine transformations.", "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
         //javafx.event.ActionEvent
         //todo handle exception
       }
