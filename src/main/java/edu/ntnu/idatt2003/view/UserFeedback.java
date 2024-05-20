@@ -18,6 +18,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.w3c.dom.Text;
 
+import static edu.ntnu.idatt2003.view.PopupScene.*;
+
 /**
  * This class is responsible for creating the pop-up windows for the user feedback.
  * The class contains methods that display error messages and welcome messages.
@@ -26,6 +28,7 @@ import org.w3c.dom.Text;
  * @since 0.3.2
  */
 public class UserFeedback {
+  private static final GameController gameController = GameController.getInstance();
   /**
    * Method that styles the text area by adding the content style to it.
    * @param inputMessage The message that is to be displayed.
@@ -53,8 +56,11 @@ public class UserFeedback {
     VBox container = new VBox();
     container.getChildren().addAll(TextArea, TextArea1);
     popupLayout.getChildren().add(container);
-    showPopupStage(popupStage, popupLayout, 300, 140);
+    dimBackground(gameController.getPrimaryStage(), popupStage);
+
+    showPopupStage(popupStage, popupLayout, 400, 200);
     popupStage.toFront();
+
   }
 
   /**
@@ -63,14 +69,7 @@ public class UserFeedback {
    * The user is provided with the option to start where they left off.
    */
   public static void startMessage(Stage primaryStage, ChaosGameObserver observer){
-    Region overlay = new Region();
-    overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
-    overlay.setVisible(false);
 
-    // Add the overlay to the primary stage
-    ((Pane) primaryStage.getScene().getRoot()).getChildren().add(overlay);
-    overlay.prefWidthProperty().bind(primaryStage.widthProperty());
-    overlay.prefHeightProperty().bind(primaryStage.heightProperty());
 
     Stage popupStage = createPopupStage("Welcome back!", primaryStage);
     VBox popupLayout = createPopupLayout(popupStage);
@@ -97,6 +96,8 @@ public class UserFeedback {
     continueGame.setAlignment(javafx.geometry.Pos.CENTER);
     continueGame.setOnAction(e -> {
       popupStage.close();
+      informUserAboutContinuingGame();
+
     });
     HBox buttons = new HBox();
     buttons.setAlignment(javafx.geometry.Pos.CENTER);
@@ -104,53 +105,37 @@ public class UserFeedback {
     VBox container = new VBox();
     container.getChildren().addAll(headingOne,headingTwo, TextArea1,buttons);
     popupLayout.getChildren().add(container);
+    dimBackground(gameController.getPrimaryStage(), popupStage);
 
-    popupStage.showingProperty().addListener((observable, oldValue, newValue) -> {
-      overlay.setVisible(newValue);
-    });
+
     showPopupStage(popupStage, popupLayout, 500, 300);
     popupStage.toFront();
   }
 
-  /**
-   * Method that initialises the pop-up stage.
-   *
-   * @param title The title of the pop-up stage.
-   * @return popupStage The stage to be used.
-   */
 
-  private static Stage createPopupStage(String title, Stage primaryStage) {
-    Stage popupStage = new Stage();
-    popupStage.initModality(Modality.APPLICATION_MODAL);
-    popupStage.initOwner(primaryStage);
-    popupStage.setTitle(title);
-    return popupStage;
+  private static void informUserAboutContinuingGame(){
+    Stage popupStage = createPopupStage("Continuing the game", gameController.getPrimaryStage());
+    VBox popupLayout = createPopupLayout(popupStage);
+
+    VBox container = new VBox();
+    TextArea instructions = getStyledTextArea("You can resume the game by clicking on the run iterations button.");
+    container.getChildren().addAll(instructions);
+
+    Button okayButton = new Button("Okay");
+    container.setAlignment(javafx.geometry.Pos.CENTER);
+    okayButton.setOnAction(e -> {
+      popupStage.close();
+    });
+
+    PopupScene.dimBackground(gameController.getPrimaryStage(), popupStage);
+    container.getChildren().add(okayButton);
+    popupLayout.getChildren().add(container);
+    showPopupStage(popupStage, popupLayout, 400, 180);
+    popupStage.toFront();
+
+
   }
 
-  /**
-   * Method that creates the layout of the pop-up window.
-   *
-   * @param popupStage The stage to be used.
-   * @return popupLayout The layout of the pop-up window.
-   */
-  private static VBox createPopupLayout(Stage popupStage) {
-    VBox popupLayout = new VBox();
-    popupLayout.prefWidthProperty().bind(popupStage.widthProperty());
-    popupLayout.prefHeightProperty().bind(popupStage.heightProperty());
-    return popupLayout;
-  }
-  /**
-   * Method that shows the pop-up stage.
-   *
-   * @param popupStage  The stage to be used.
-   * @param popupLayout The layout of the pop-up window.
-   */
 
-  private static void showPopupStage(Stage popupStage, VBox popupLayout, int width, int height) {
-    Scene popuScene = new Scene(popupLayout, width, height);
-    String css = UserFeedback.class.getResource("/userFeedback.css").toExternalForm();
-    popuScene.getStylesheets().add(css);
-    popupStage.setScene(popuScene);
-    popupStage.show();
-  }
+
 }

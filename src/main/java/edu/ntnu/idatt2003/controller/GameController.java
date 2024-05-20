@@ -9,6 +9,7 @@ import edu.ntnu.idatt2003.view.UserFeedback;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.awt.*;
@@ -32,6 +33,7 @@ public class GameController {
   private final List<ChaosGameDescription> listOfDescriptions;
   private ChaosGame chaosGame;
   private boolean persistenceIsNull;
+  Stage primaryStage;
 
   /**
    * Constructor that initialises the array lists and adds the game presets.
@@ -42,6 +44,17 @@ public class GameController {
     loadChaosGamePresets();
   }
 
+  /**
+   * Method that sets the primary Stage.
+   */
+  public void setPrimaryStage(Stage inputStage){
+    this.primaryStage = inputStage;
+  }
+  /**
+   * Method that returns the primary Stage.
+   */
+  public Stage getPrimaryStage(){
+    return primaryStage;}
   /**
    * A static method that always returns the same object of the GameController class.
    */

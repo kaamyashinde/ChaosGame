@@ -8,6 +8,7 @@
     -fx-border-color: #503c52;
     -fx-border-width: 2px;
     -fx-text-fill: #503c52;
+    -fx-font-size: 1.5em;
 }
 
 /* Style for the popup container */
@@ -27,6 +28,7 @@
 .heading{
     -fx-font-size: 3em;
     -fx-font-family: Georgia;
+    -fx-font-weight: bold;
     -fx-background-color: transparent;
     -fx-text-fill: #503c52;
 }

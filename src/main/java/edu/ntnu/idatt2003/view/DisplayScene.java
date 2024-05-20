@@ -72,6 +72,7 @@ public class DisplayScene implements ChaosGameObserver {
    * @return The scene for the Chaos Game.
    */
   public Scene getDisplay(Stage primaryStage) {
+    gameController.setPrimaryStage(primaryStage);
     layout = new AnchorPane();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
 
