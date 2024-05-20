@@ -3,9 +3,12 @@ package edu.ntnu.idatt2003.view;
 import edu.ntnu.idatt2003.controller.FileController;
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.model.ChaosGameObserver;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -33,6 +36,7 @@ public class UserFeedback {
   private static TextArea getStyledTextArea(String inputMessage) {
     TextArea textArea = new TextArea(inputMessage);
     textArea.getStyleClass().add("content");
+    textArea.setEditable(false);
     textArea.setWrapText(true);
     return textArea;
   }
@@ -197,6 +201,15 @@ public class UserFeedback {
    */
   public static void displayUserManual() {
     Stage popupStage = createPopupStage("User Manual", gameController.getPrimaryStage());
+    popupStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        Node focusOwner = popupStage.getScene().getFocusOwner();
+        if (focusOwner instanceof Button) {
+          ((Button) focusOwner).fire();
+          event.consume();
+        }
+      }
+    });
     VBox popupLayout = createPopupLayout(popupStage);
 
     VBox container = new VBox();

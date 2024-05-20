@@ -6,7 +6,12 @@
     -fx-font-size: 1.5em;
    /* -fx-border-insets: 10 20 10 20;*/
     -fx-padding: 10 20;
-
+}
+.button:focused{
+-fx-border-color: #9f6c66 ;
+    -fx-border-width: 3px ;
+    -fx-text-fill: #9f6c66;
+    -fx-border-radius: 5px;
 }
 .border{
     -fx-border-color: #f2e6e3;

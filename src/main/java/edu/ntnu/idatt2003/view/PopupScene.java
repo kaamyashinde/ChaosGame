@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.view;
 
+import edu.ntnu.idatt2003.controller.GameController;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
  * @since 0.3.6
  */
 public class PopupScene {
+  private static final GameController gameController = GameController.getInstance();
   /**
    * Method that initialises the pop-up stage.
    *
@@ -52,6 +54,8 @@ public class PopupScene {
 
   protected static void showPopupStage(Stage popupStage, VBox popupLayout, int width, int height) {
     Scene popuScene = new Scene(popupLayout, width, height);
+    gameController.applyEnterKeyActionPolicy(popupStage);
+
     String css = UserFeedback.class.getResource("/stylesheets/userFeedback.css").toExternalForm();
     popuScene.getStylesheets().add(css);
     popupStage.setScene(popuScene);

@@ -64,7 +64,12 @@
 .edit-popup .button {
     -fx-padding: 5 10
 }
-
+.button:focused{
+    -fx-border-color: #9f6c66 ;
+    -fx-border-width: 3px ;
+    -fx-text-fill: #9f6c66;
+    -fx-border-radius: 5px;
+}
 .user-manual-title{
     -fx-font-size: 2em;
     -fx-font-family: Georgia;

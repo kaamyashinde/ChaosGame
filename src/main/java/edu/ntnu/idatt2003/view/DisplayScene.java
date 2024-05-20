@@ -287,9 +287,7 @@ public class DisplayScene implements ChaosGameObserver {
     HBox sectionHeadingEdit = styleTextFields(new TextField("Edit the values of the Chaos Game:"));
     editMenu.getChildren().add(sectionHeadingEdit);
     Button editCurrentDescription = new Button("Edit Current Description");
-    editCurrentDescription.setFocusTraversable(false);
     Button editSelectedDescription = new Button("Edit Selected Description");
-    editSelectedDescription.setFocusTraversable(false);
     editMenu.getChildren().addAll(editCurrentDescription, editSelectedDescription);
     editCurrentDescription.setOnAction(e -> editCurrentDescription());
     editSelectedDescription.setOnAction(e -> editSelectedDescription());

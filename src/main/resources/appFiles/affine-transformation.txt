@@ -1,0 +1,4 @@
+AffineTransform2D # Type of transformation
+0.0,0.0 # Lower left
+0.0,0.0 # Upper right
+0.0,0.0,0.0,0.0,0.0,0.0

@@ -2,7 +2,11 @@ package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.GameController;
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * The main class that starts the application.
@@ -21,11 +25,13 @@ public class Main extends Application {
         launch(args);
     }
 
+
     @Override
     public void start(javafx.stage.Stage primaryStage) throws Exception {
      try  {
         displayScene = new DisplayScene();
         Scene scene = displayScene.getDisplay(primaryStage);
+      gameController.applyEnterKeyActionPolicy(primaryStage);
         String css = getClass().getClassLoader().getResource("stylesheets/styles.css").toExternalForm();
         scene.getStylesheets().add(css);
 

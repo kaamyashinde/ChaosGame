@@ -6,13 +6,19 @@ import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.ChaosGameDescriptionFactory;
 import edu.ntnu.idatt2003.view.UserFeedback;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +33,7 @@ import java.util.List;
  * @since 0.3.5
  */
 public class GameController {
+//TODO fix model validators catching the exception
 
   private static final GameController instance = new GameController();
   private final FileController fileController;
@@ -42,6 +49,19 @@ public class GameController {
     fileController = new FileController();
     listOfDescriptions = new ArrayList<>();
     loadChaosGamePresets();
+  }
+
+  public void applyEnterKeyActionPolicy(Stage stage){
+    stage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+      if (event.getCode() == KeyCode.ENTER) {
+        Node focusOwner = stage.getScene().getFocusOwner();
+        if (focusOwner instanceof javafx.scene.control.Button) {
+          ((Button) focusOwner).fire();
+          event.consume();
+        }
+      }
+    });
+
   }
 
   /**
