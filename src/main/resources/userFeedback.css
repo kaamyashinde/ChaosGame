@@ -44,3 +44,17 @@
     -fx-scale-y: 1.05;
 
 }
+
+/* Style for the text fields in the popup */
+.edit-popup .text-field{
+    -fx-background-color: #f2e6e3;
+    -fx-border-color: #503c52;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3;
+    -fx-text-fill: #503c52;
+    -fx-font-size: 1.25em;
+ /* -fx-padding: 10 20;*/
+}
+
+.edit-popup .button{
+-fx-padding: 5 10}
