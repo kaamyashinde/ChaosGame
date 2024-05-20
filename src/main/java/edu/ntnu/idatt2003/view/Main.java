@@ -29,7 +29,7 @@ public class Main extends Application {
 
       if (!gameController.getPersistenceIsNull()){
         UserFeedback userFeedback = new UserFeedback();
-       // userFeedback.startMessage();
+       userFeedback.startMessage();
       }
     }
 
