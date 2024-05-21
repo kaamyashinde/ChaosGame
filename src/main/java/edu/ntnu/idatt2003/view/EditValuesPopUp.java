@@ -163,7 +163,6 @@ public class EditValuesPopUp {
     transformationNumber.setMaxWidth(60);
     transformationNumber.getStyleClass().add("display-number");
 
-    //transformationNumber.setPromptText("Transformation Number");
     List<Button> traverseButtons = objectListController.affineTransformationButtonsList();
     descriptionValuesController.displayCorrectAffineTransformation(currentDescription, traverseButtons, textFields, transformationNumber);
     matrixRow1.getChildren().addAll(textFields.get(0), textFields.get(1));
@@ -202,7 +201,8 @@ public class EditValuesPopUp {
       try {
         ValidationController.validateInteger(transformationNumber.getText());
         descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText()) - 1, textFields);
-        descriptionValuesController.clearTextFields(textFields);
+        popupStage.close();
+
       } catch (Exception exception) {
         UserFeedback.displayError("Invalid input for the affine transformations.", "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
       }
