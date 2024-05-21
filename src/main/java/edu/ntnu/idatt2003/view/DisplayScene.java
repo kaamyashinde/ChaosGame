@@ -52,7 +52,6 @@ public class DisplayScene implements ChaosGameObserver {
   Button editCButton;
   Button editMaxAndMinButton;
   Button editAffineTransformationsButton;
-  SetOnActionController setOnActionController;
   TextField fileName;
 
   public DisplayScene() {
@@ -405,14 +404,14 @@ public class DisplayScene implements ChaosGameObserver {
     displayEditOptions.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
 
     editMaxAndMinButton = new Button("Edit Max and Min");
-    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createEditMaxAndMinPopup());
+    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createMaxAndMinPopup());
     displayEditOptions.getChildren().add(editMaxAndMinButton);
 
     editCButton = new Button("Edit C");
     editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup());
 
     editAffineTransformationsButton = new Button("Edit Affine Transformations");
-    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.displayAffine());
+    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.createAffineTransformationPopup());
     Button updateButton = new Button("Update");
 
   }
@@ -431,7 +430,7 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   private void editCurrentDescription() {
-    editValuesPopUp.setChaosGameDescription();
+    editValuesPopUp.setCurrentChaosGameDescription();
     handleEditOption(1);
   }
 
@@ -442,7 +441,7 @@ public class DisplayScene implements ChaosGameObserver {
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
     ChaosGameDescription description = fileController.readChaosGameDescriptionFromAppFiles(selectedFile);
     System.out.println("new description is:");
-    editValuesPopUp.setChaosGameDescriptionWithInput(description);
+    editValuesPopUp.setInputChaosGameDescription(description);
 
     handleEditOption(0);
 
