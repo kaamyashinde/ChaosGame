@@ -5,6 +5,7 @@ import edu.ntnu.idatt2003.controller.*;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -53,6 +55,7 @@ public class DisplayScene implements ChaosGameObserver {
   Button editMaxAndMinButton;
   Button editAffineTransformationsButton;
   TextField fileName;
+  ImageView chaosGameImageView;
 
   public DisplayScene() {
     gameController = GameController.getInstance();
@@ -197,15 +200,18 @@ public class DisplayScene implements ChaosGameObserver {
    * @param bodyRow The body row where the canvas is placed.
    * @return The StackPane containing the canvas.
    */
-  private StackPane getChaosGamePane(HBox bodyRow) {
+  private ImageView getChaosGamePane(HBox bodyRow) {
     graphicsContext = null;
-    Pair<StackPane, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
-    StackPane chaosGamePane = pairContainingPaneAndContext.getKey();
-    chaosGamePane.getStyleClass().add("inner-border");
-    chaosGamePane.prefWidthProperty().bind(layout.widthProperty());
-    chaosGamePane.prefHeightProperty().bind(layout.heightProperty());
+    Pair<ImageView, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
+    chaosGameImageView = pairContainingPaneAndContext.getKey();
+    // chaosGamePane.getStyleClass().add("inner-border");
+    chaosGameImageView.fitWidthProperty().bind(Bindings.min(layout.widthProperty().divide(2), 500));
+    chaosGameImageView.fitHeightProperty().bind(Bindings.min(layout.heightProperty().divide(2), 500));
+    chaosGameImageView.setPreserveRatio(true);
+    chaosGameImageView.setSmooth(true);
+    chaosGameImageView.setCache(true);
     graphicsContext = pairContainingPaneAndContext.getValue();
-    return chaosGamePane;
+    return chaosGameImageView;
   }
 
   /**
@@ -501,7 +507,7 @@ public class DisplayScene implements ChaosGameObserver {
     try {
       ValidationController.validateInteger(iterations.getText());
       int steps = Integer.parseInt(iterations.getText());
-      gameController.runGame(steps);
+      gameController.runGame(steps, chaosGameImageView);
     } catch (Exception exception) {
       UserFeedback.displayError("Number of iterations has to be a positive integer.", "Please enter a positive integer to run the application.");
       exception.printStackTrace();
@@ -573,7 +579,9 @@ public class DisplayScene implements ChaosGameObserver {
     gameController.setPrimaryStage(primaryStage);
     layout = new AnchorPane();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
+   layout.prefHeightProperty().bind(primaryStage.heightProperty());
     VBox root = setUpLayoutAndAddComponents();
+
 
     AnchorPane.setTopAnchor(root, 0.0);
     AnchorPane.setBottomAnchor(root, 0.0);

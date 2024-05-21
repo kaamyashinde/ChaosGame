@@ -7,9 +7,12 @@ import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.view.UserFeedback;
 import javafx.scene.Node;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
@@ -42,6 +45,7 @@ public class GameController {
   private Stage primaryStage;
   private ChaosGame chaosGame;
   private boolean persistenceIsNull;
+  Canvas canvas;
 
   /**
    * Constructor that initialises the necessary fields and loads the chaos game presets.
@@ -173,7 +177,7 @@ public class GameController {
    * @param observer The observer that is added to the canvas.
    * @return A pair of the stack pane and the graphics context.
    */
-  public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
+  /*public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
     initialiseGame(observer, width, height);
     Canvas canvas = new Canvas(width, height);
     GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -181,7 +185,18 @@ public class GameController {
     chaosGamePane.getChildren().add(canvas);
     saveCurrentGame();
     return new Pair<>(chaosGamePane, gc);
-  }
+  }*/
+  public Pair<ImageView, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
+    initialiseGame(observer, width, height);
+   canvas = new Canvas(width, height);
+    GraphicsContext gc = canvas.getGraphicsContext2D();
+    WritableImage writableImage = new WritableImage(width, height);
+    SnapshotParameters snapshotParameters = new SnapshotParameters();
+    canvas.snapshot(snapshotParameters, writableImage);
+    ImageView imageView = new ImageView(writableImage);
+    saveCurrentGame();
+    return new Pair<>(imageView, gc);
+}
 
   /**
    * Method that returns the primary Stage.
@@ -251,10 +266,11 @@ public class GameController {
    *
    * @param steps The number of steps that the game is run for.
    */
-  public void runGame(int steps) {
+  public void runGame(int steps, ImageView imageView) {
     try {
       if (chaosGame != null) {
         chaosGame.runSteps(steps);
+        updateImageView(imageView, canvas);
         saveCurrentGame();
       }
     } catch (ArrayIndexOutOfBoundsException e) {
@@ -302,6 +318,12 @@ public class GameController {
     chaosGame = inputGame;
     addObserverToGame(observer);
     saveCurrentGame();
+  }
+  public void updateImageView(ImageView imageView, Canvas canvas) {
+    WritableImage writableImage = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+    SnapshotParameters snapshotParameters = new SnapshotParameters();
+    canvas.snapshot(snapshotParameters, writableImage);
+    imageView.setImage(writableImage);
   }
 
 }
