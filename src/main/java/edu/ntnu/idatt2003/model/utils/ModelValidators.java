@@ -5,8 +5,6 @@ package edu.ntnu.idatt2003.model.utils;
  */
 public class ModelValidators {
 
-
-
     public static void validateVectorValue(double value) {
         if (value < -1000 || value > 1000) {
             throw new IllegalArgumentException("Value must be between -500 and 500");

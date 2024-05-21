@@ -14,7 +14,7 @@ public class ValidationController {
    * @param input The input to be validated.
    * @throws IllegalArgumentException if the input cannot be parsed to a double.
    */
-  public static void validateDouble(String input) throws IllegalArgumentException {
+  protected static void validateDouble(String input) throws IllegalArgumentException {
     try {
       Double.parseDouble(input);
     } catch (NumberFormatException e) {
