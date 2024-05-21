@@ -19,7 +19,6 @@ class Matrix2x2Test {
         vector = new Vector2D(5, 6);
     }
 
-    //positive test
     /**
      * Testing the multiply method.
      */

@@ -15,7 +15,6 @@ class JuliaTransformTest {
     void transform() {
 
 
-        //JuliaTransform juliaTransform = new JuliaTransform(new Complex(0, 0), 1);
         JuliaTransform juliaTransform = new JuliaTransform(Complex.createComplex(0, 0), 1);
 
         Vector2D vector2D = new Vector2D(1, 1);

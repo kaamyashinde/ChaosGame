@@ -16,7 +16,6 @@ public class ChaosGameDescriptionTest {
 
     @Test
     public void testToString() {
-        // Arrange
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
         List<Transform2D> transforms = new ArrayList<>();
@@ -31,25 +30,20 @@ public class ChaosGameDescriptionTest {
                 "1.0,1.0 # Upper right\n" +
                 "0.5,0.0,0.0,0.5,0.0,0.0 # 1st transform\n";
 
-        // Act
         String actual = description.toString();
 
-        // Assert
         assertEquals(expected, actual);
     }
 
     @Test
     public void testGetMinCoords() {
-        // Arrange
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
         List<Transform2D> transforms = new ArrayList<>();
         ChaosGameDescription description = new ChaosGameDescription(minCoords, maxCoords, transforms);
 
-        // Act
         Vector2D actualMinCoords = description.getMinCoords();
 
-        // Assert
         assertEquals(minCoords, actualMinCoords);
     }
 
@@ -61,16 +55,13 @@ public class ChaosGameDescriptionTest {
         List<Transform2D> transforms = new ArrayList<>();
         ChaosGameDescription description = new ChaosGameDescription(minCoords, maxCoords, transforms);
 
-        // Act
         Vector2D actualMaxCoords = description.getMaxCoords();
 
-        // Assert
         assertEquals(maxCoords, actualMaxCoords);
     }
 
     @Test
     public void testGetTransforms() {
-        // Arrange
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
         List<Transform2D> transforms = new ArrayList<>();
@@ -80,10 +71,8 @@ public class ChaosGameDescriptionTest {
         transforms.add(affine);
         ChaosGameDescription description = new ChaosGameDescription(minCoords, maxCoords, transforms);
 
-        // Act
         List<Transform2D> actualTransforms = description.getTransforms();
 
-        // Assert
         assertEquals(transforms, actualTransforms);
     }
 
