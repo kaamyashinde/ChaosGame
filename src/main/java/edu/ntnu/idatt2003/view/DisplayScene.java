@@ -383,7 +383,7 @@ exception.printStackTrace();      }
     buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
 
     // Use the readChaosGameDescriptionFromFile method to read the ChaosGameDescription from the selected file
-    ChaosGameDescription description = fileController.readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
+    ChaosGameDescription description = fileController.readChaosGameDescriptionFromAppFiles(selectedFile);
 ValidationController.validateFileName(selectedFile);
     // Use the setCurrentChaosGameDescription method to update the chaosGame with the new ChaosGameDescription
     gameController.updateChaosGame(new ChaosGame(description, 500, 500), this);
@@ -427,7 +427,7 @@ ValidationController.validateFileName(selectedFile);
    */
   private void editSelectedDescription() {
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
-    ChaosGameDescription description = fileController.readChaosGameDescriptionFromFile("appFiles/" + selectedFile);
+    ChaosGameDescription description = fileController.readChaosGameDescriptionFromAppFiles(selectedFile);
     System.out.println("new description is:");
     editValuesPopUp.setChaosGameDescriptionWithInput(description);
 

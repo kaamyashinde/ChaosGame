@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * This class is responsible for handling the file operations.
  * <p>
- * Author: Kaamya Shinde
+ * Author: 10041
  * Version: 0.3
  * Since: 0.3.3
  */
@@ -20,12 +20,10 @@ public class FileController {
   private static final String FILE_PATH_RESOURCES = "src/main/resources/";
   private static final String FILE_PATH_APP_FILES = FILE_PATH_RESOURCES + "appFiles/";
   private static final String FILE_PATH_PRESETS = FILE_PATH_RESOURCES + "presets/";
-  String selectedFile;
-  File directory;
-  List<File> files;
-
-  ComboBox<String> fileDropDown = new ComboBox<>();
-  ChaosGameDescription description;
+  private static final String FILE_PATH_PERSISTENCE = FILE_PATH_RESOURCES + "persistence/persistence.txt";
+  private final ComboBox<String> fileDropDown = new ComboBox<>();
+  private final File directory;
+  private List<File> files;
 
   /**
    * Constructor that initializes the directory and the list of files.
@@ -35,14 +33,49 @@ public class FileController {
     files = Arrays.asList(Objects.requireNonNull(directory.listFiles()));
     setFileDropDown();
   }
+  /**
+   * Method that reads the chaos game description from the persistence file.
+   * @return The chaos game description that is read from the persistence file.
+   */
+  private ChaosGameDescription readChaosGameDescriptionFromPersistence(){
+    return ChaosGameFileHandler.readFromFile(FILE_PATH_PERSISTENCE);
+  }
+  /**
+   * Method that sets the file drop down with the files in the appFiles directory.
+   */
+  private void setFileDropDown() {
+    files.forEach(file -> fileDropDown.getItems().add(file.getName()));
+  }
 
   /**
    * Method that clears the contents of the persistence file.
    */
   public static void clearFileContent() {
-    ChaosGameFileHandler.clearFileContent("src/main/resources/persistance/persistance.txt");
+    ChaosGameFileHandler.clearFileContent(FILE_PATH_PERSISTENCE);
   }
-
+  /**
+   * Method that loads the last game from the persistence file.
+   * @return The chaos game description that is read from the persistence file.
+   */
+  public ChaosGameDescription loadLastGame() {
+    return readChaosGameDescriptionFromPersistence();
+  }
+  /**
+   * Method that reads the chaos game description from a file in the appFiles directory.
+   * @param fileName The name of the file that is read.
+   * @return The chaos game description that is read from the file.
+   */
+  public ChaosGameDescription readChaosGameDescriptionFromAppFiles(String fileName) {
+    return ChaosGameFileHandler.readFromFile(FILE_PATH_APP_FILES + fileName );
+  }
+  /**
+   * Method that reads the chaos game description from a file in the presets directory.
+   * @param fileName The name of the file that is read.
+   * @return The chaos game description that is read from the file.
+   */
+  public ChaosGameDescription readChaosGameDescriptionFromPresets(String fileName) {
+    return ChaosGameFileHandler.readFromFile(FILE_PATH_PRESETS + fileName + ".txt");
+  }
   /**
    * Method that returns the file drop down.
    *
@@ -51,64 +84,13 @@ public class FileController {
   public ComboBox<String> getFileDropDown() {
     return fileDropDown;
   }
-
   /**
-   * Method that sets the file drop down with the files in the appFiles directory.
+   * Method that overwrites the persistence file with the chaos game description.
+   * @param desc The chaos game description that is written to the persistence file.
    */
-  private void setFileDropDown() {
-    files.forEach(file -> fileDropDown.getItems().add(file.getName()));
-    fileDropDown.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-      selectedFile = newValue;
-      setDescription(readChaosGameDescriptionFromFile("appFiles/" + selectedFile));
-    });
+  public void saveLastGame(ChaosGameDescription desc) {
+    ChaosGameFileHandler.writeToFile(desc, FILE_PATH_PERSISTENCE);
   }
-
-  private void setDescription(ChaosGameDescription description) {
-    this.description = description;
-    if (this.description != null) {
-      System.out.println("Description set: " + this.description.toString());
-    } else {
-      System.out.println("Description is null");
-    }
-  }
-
-  /**
-   * Method that reads the chaos game description from a file.
-   *
-   * @param fileName The name of the file that is read.
-   * @return The chaos game description that is read from the file.
-   */
-  public ChaosGameDescription readChaosGameDescriptionFromFile(String fileName) {
-    return ChaosGameFileHandler.readFromFile(FILE_PATH_RESOURCES + fileName);
-  }
-
-  //method to read from appFiles
-
-  public ChaosGameDescription readChaosGameDescriptionFromPresets(String fileName) {
-    return ChaosGameFileHandler.readFromFile(FILE_PATH_PRESETS + fileName + ".txt");
-  }
-
-  public ChaosGameDescription readChaosGameDescriptionFromAppFiles(String fileName) {
-    return ChaosGameFileHandler.readFromFile(FILE_PATH_APP_FILES + fileName);
-  }
-
-  /**
-   * Method that writes the chaos game description to a file.
-   *
-   * @param desc     The chaos game description that is written to the file.
-   * @param fileName The name of the file that is written.
-   */
-  public void writeChaosGameDescriptionToAppFiles(ChaosGameDescription desc, String fileName) {
-    ChaosGameFileHandler.writeToFile(desc, FILE_PATH_APP_FILES + fileName + ".txt");
-  }
-
-  /**
-   * Method that writes the chaos game description to a file in the presets directory.
-   */
-  public void writeChaosGameDescriptionToPresets(ChaosGameDescription desc, String fileName) {
-    ChaosGameFileHandler.writeToFile(desc, FILE_PATH_PRESETS + fileName + ".txt");
-  }
-
   /**
    * Method that updates the file drop down with the files in the appFiles directory.
    * It is called when a file is added to the directory from the application.
@@ -118,13 +100,20 @@ public class FileController {
     files = Arrays.asList(Objects.requireNonNull(directory.listFiles()));
     files.forEach(file -> fileDropDown.getItems().add(file.getName()));
   }
-
-  // Persistence methods
-  public void saveLastGame(ChaosGameDescription desc) {
-    ChaosGameFileHandler.writeToFile(desc, "src/main/resources/persistance/persistance.txt");
+  /**
+   * Method that writes the chaos game description to a file.
+   *
+   * @param desc     The chaos game description that is written to the file.
+   * @param fileName The name of the file that is written.
+   */
+  public void writeChaosGameDescriptionToAppFiles(ChaosGameDescription desc, String fileName) {
+    ChaosGameFileHandler.writeToFile(desc, FILE_PATH_APP_FILES + fileName + ".txt");
+  }
+  /**
+   * Method that writes the chaos game description to a file in the presets directory.
+   */
+  public void writeChaosGameDescriptionToPresets(ChaosGameDescription desc, String fileName) {
+    ChaosGameFileHandler.writeToFile(desc, FILE_PATH_PRESETS + fileName + ".txt");
   }
 
-  public ChaosGameDescription loadLastGame() {
-    return readChaosGameDescriptionFromFile("persistance/" + "persistance.txt");
-  }
 }
