@@ -16,6 +16,11 @@ import java.util.List;
  * and Julia transformations.
  * The class also includes methods to create a chaos game description
  * with a Barnsley Fern fractal.
+ *
+ * @since 1.0.0
+ * @version 1.0.5
+ * @author 10041
+ * @author 10072
  */
 public class ChaosGameDescriptionCreator {
 

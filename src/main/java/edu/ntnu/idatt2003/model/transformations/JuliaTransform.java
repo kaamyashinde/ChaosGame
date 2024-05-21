@@ -43,10 +43,23 @@ public class JuliaTransform extends Transform2D {
     return new Vector2D(result.getReal(), result.getImaginary());
   }
 
+  /**
+   * Gets the point used in the transformation.
+   *
+   * @return the point
+   *         A Complex object representing the point used in the transformation.
+   */
   public Complex getPoint() {
     return point;
   }
 
+  /**
+   * Gets the sign used in the transformation.
+   *
+   * @return the sign
+   *         An integer representing the sign used in the transformation.
+   *         This is either 1 (positive square root) or -1 (negative square root).
+   */
   public int getSign() {
     return sign;
   }

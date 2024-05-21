@@ -8,12 +8,13 @@ import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
  * A class to represent a 2D affine transformation as a transformation on the form T(x) = Ax + b.
  * A is the matrix and b is the vector.
  *
- * @author 10041
- * @version 0.1.0
+ *
  * @see Transform2D
  * @see Matrix2x2
  * @see Vector2D
  * @since 0.1.0
+ * @version 1.1.2
+ * @author 10041
  */
 
 public class AffineTransform2D extends Transform2D {

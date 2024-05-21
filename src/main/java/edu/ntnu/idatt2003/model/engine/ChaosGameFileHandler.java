@@ -13,6 +13,11 @@ import java.util.Scanner;
 
 /**
  * A class to handle reading and writing of chaos game descriptions to and from files.
+ *
+ * @since 0.2.0
+ * @version 1.4.5
+ * @author 10041
+ *
  */
 
 public class ChaosGameFileHandler {

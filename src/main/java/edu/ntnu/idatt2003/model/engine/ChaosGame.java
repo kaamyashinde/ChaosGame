@@ -16,11 +16,13 @@ import java.util.Random;
  * Implement the class ChaosGame according to figure 6.
  *
  * @author 10041
- * @version 0.2.0
+ *
  * @see ChaosCanvas
  * @see ChaosGameDescription
  * @see Vector2D
  * @since 0.2.0
+ * @version 1.2.3
+ * @author 10041
  */
 
 public class ChaosGame {

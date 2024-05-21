@@ -16,26 +16,24 @@ import java.util.List;
  * The transformations can be of the type AffineTransform2D or JuliaTransform.
  * The class also has a toString method to write the description to a file.
  *
- * @author janja
- * @author Kaamya Shinde
- * @version 0.2.0
+ *
  * @see AffineTransform2D
  * @see JuliaTransform
  * @see Transform2D
  * @see Vector2D
  * @since 0.2.0
+ * @version 1.4.5
+ * @author 10041
+ * @author 10072
  */
 public class ChaosGameDescription {
 
   private Vector2D minCoords;
   private Vector2D maxCoords;
   private List<Transform2D> transforms;
-  private List<Double> probabilities;
-  private List<Integer> transformCounts; // To count how many times each transform is used
-
 
   /**
-   * Constructor for the ChaosGameDescription class. //Uten statestikk
+   * Constructor for the ChaosGameDescription class.
    *
    * @param minCoords the coordinates of the lower left corner of the canvas
    * @param maxCoords the coordinates of the upper right corner of the canvas

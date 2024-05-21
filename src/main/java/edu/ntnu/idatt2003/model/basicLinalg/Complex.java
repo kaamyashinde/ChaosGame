@@ -9,7 +9,7 @@ import edu.ntnu.idatt2003.model.utils.ModelValidators;
  *
  * @see Vector2D
  * @since 0.1.0
- * @version 0.2.0
+ * @version 1.3.2
  * @author 10072
  */
 public class Complex extends Vector2D {
@@ -78,11 +78,12 @@ public class Complex extends Vector2D {
   public double getImaginary() {
     return this.getX1();
   }
+
   /**
    * Method for subtracting two complex numbers.
    *
-   * @param other the other complex number to add to this complex number
-   * @return Complex The sum of the two complex numbers.
+   * @param other the other complex number to subtract to this complex number
+   * @return the difference between the two complex numbers.
    */
 
   public Complex subtract(Complex other) {

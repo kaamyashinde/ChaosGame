@@ -7,9 +7,10 @@ import edu.ntnu.idatt2003.model.utils.ModelValidators;
  * The class has accessor methods for the x and y components,
  * and methods to add and subtract vectors.
  *
- * @author 10041
- * @version 0.1.0
  * @since 0.1.0
+ * @version 1.1.2
+ * @author 10041
+ *
  */
 public class Vector2D {
   private final double x0;
@@ -32,6 +33,8 @@ public class Vector2D {
 
   /**
    * Accessor method for the x component of the vector.
+   *
+   * @return the x component of the vector
    */
   public double getX0() {
     return this.x0;
@@ -39,6 +42,7 @@ public class Vector2D {
 
   /**
    * Accessor method for the y component of vector.
+   * @return the y component of the vector
    */
   public double getX1() {
     return this.x1;

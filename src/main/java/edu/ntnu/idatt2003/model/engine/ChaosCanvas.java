@@ -20,12 +20,14 @@ import java.util.List;
  * In order to convert this, we shall use Affine transformation.
  *
  *
- * @author 10041
- * @version 0.2.0
+ *
+ *
  * @see Matrix2x2
  * @see Vector2D
  * @see AffineTransform2D
  * @since 0.2.0
+ * @version 1.2.5
+ * @author 10041
  */
 
 public class ChaosCanvas {
@@ -79,6 +81,11 @@ public class ChaosCanvas {
 
   }
 
+  /**
+   * The method is used to convert the coordinates of the canvas to the indices of the canvas.
+   * @param coords the coordinates to convert
+   * @return the indices of the canvas
+   */
   public Vector2D coordsToIndices(Vector2D coords) {
     return transformCoordsToIndices.transform(coords);
   }
@@ -137,10 +144,19 @@ public class ChaosCanvas {
     }
   }
 
+  /**
+   * Adds an observer to the list of observers.
+   * @param observer the observer to add
+   */
   public void addObserver(ChaosGameObserver observer) {
     observers.add(observer);
   }
 
+  /**
+   * Notifies all observers in the list of observers.
+   * @param x0 the x-coordinate of the pixel
+   * @param x1 the y-coordinate of the pixel
+   */
   public void notifyObserverRemovePixel(double x0, double x1) {
     observers.forEach(observer -> observer.updateRemovePixel(x0, x1));
   }
@@ -152,6 +168,10 @@ public class ChaosCanvas {
     observers.forEach(observer -> observer.updateAddPixel(x0, x1));
   }
 
+  /**
+   * Removes an observer from the list of observers.
+   * @param observer the observer to remove
+   */
   public void removeObserver(ChaosGameObserver observer) {
     observers.remove(observer);
   }

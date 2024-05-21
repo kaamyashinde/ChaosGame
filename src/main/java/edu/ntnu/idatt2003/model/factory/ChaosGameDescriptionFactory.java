@@ -13,11 +13,11 @@ import edu.ntnu.idatt2003.model.engine.ChaosGameDescriptionCreator;
  *   <li>Sierpinski Triangle</li>
  * </ul>
  *
- * @author Kaamya Shinde
- * @version 0.1
  * @see ChaosGameDescription
  * @see ChaosGameDescriptionCreator
  * @since 0.3.7
+ * @version 1.2.3
+ * @author 10041
  */
 public class ChaosGameDescriptionFactory {
   /**
