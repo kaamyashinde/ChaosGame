@@ -632,6 +632,23 @@ public class DisplayScene implements ChaosGameObserver {
     ChaosGameDescription newPreset = new ChaosGameDescription(originalPreset);
     gameController.updateChaosGame(new ChaosGame(newPreset, 500, 500), observer);
     gameController.updateButtonStyle(caseNum, buttons);
+    updateEditButtons();
+  }
+  /**
+   * Method that updates the edit buttons based on the current Chaos Game.
+   */
+  public void updateEditButtons() {
+    displayEditOptions.getChildren().clear();
+    HBox editCurrentDescHeading = styleTextFields(new TextField("Edit Current Description:"));
+    displayEditOptions.getChildren().add(editCurrentDescHeading);
+    displayEditOptions(displayEditOptions);
+    displayEditOptions.setPadding(new Insets(20));
+
+    if (gameController.isAffine()) {
+      displayEditOptions.getChildren().add(editAffineTransformationsButton);
+    } else {
+      displayEditOptions.getChildren().add(editCButton);
+    }
   }
 
   /**
@@ -640,11 +657,10 @@ public class DisplayScene implements ChaosGameObserver {
   private void updateChaosGameFromSelectedFile() {
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
     buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
-
     ChaosGameDescription description = fileController.readChaosGameDescriptionFromAppFiles(selectedFile);
     ValidationController.validateFileName(selectedFile);
-
     gameController.updateChaosGame(new ChaosGame(description, 500, 500), this);
+    updateEditButtons();
   }
 
   /**
