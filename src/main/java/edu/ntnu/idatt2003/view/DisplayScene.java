@@ -186,6 +186,7 @@ public class DisplayScene implements ChaosGameObserver {
     styledTextFiled.setPadding(new Insets(10));
     styledTextFiled.setStyle("-fx-background-color: #b97d6d");
     inputTextField.setFocusTraversable(false);
+    inputTextField.setEditable(false);
     inputTextField.prefWidthProperty().bind(styledTextFiled.widthProperty());
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.setAlignment(Pos.CENTER);

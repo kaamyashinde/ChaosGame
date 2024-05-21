@@ -80,8 +80,10 @@ public class UserFeedback {
     VBox popupLayout = createPopupLayout(popupStage);
     TextField headingOne = new TextField("Welcome back to the ");
     headingOne.getStyleClass().add("heading");
+    headingOne.setEditable(false);
     headingOne.setAlignment(javafx.geometry.Pos.CENTER);
     TextField headingTwo = new TextField("Chaos Game!");
+    headingTwo.setEditable(false);
     headingTwo.getStyleClass().add("heading");
     headingTwo.setAlignment(javafx.geometry.Pos.CENTER);
     TextArea TextArea1 = getStyledTextArea("You can start where u left off or start a new game.");
@@ -131,10 +133,12 @@ public class UserFeedback {
     Stage popupStage = createPopupStage("Welcome to the Chaos Game!", primaryStage);
     VBox popupLayout = createPopupLayout(popupStage);
     TextField headingOne = new TextField("Welcome to the ");
+    headingOne.setEditable(false);
     headingOne.setFocusTraversable(false);
     headingOne.getStyleClass().add("heading");
     headingOne.setAlignment(javafx.geometry.Pos.CENTER);
     TextField headingTwo = new TextField("Chaos Game!");
+    headingTwo.setEditable(false);
     headingTwo.setFocusTraversable(false);
     headingTwo.getStyleClass().add("heading");
     headingTwo.setAlignment(javafx.geometry.Pos.CENTER);
