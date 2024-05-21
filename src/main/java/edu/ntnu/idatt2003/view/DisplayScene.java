@@ -14,9 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -43,6 +41,7 @@ public class DisplayScene implements ChaosGameObserver {
   EmptyFractalController emptyFractalController;
   DescriptionValuesController descriptionValuesController;
   Button runIterations;
+  VBox root;
   VBox leftBodyRow;
   VBox displayEditOptions;
   VBox rightBodyRow;
@@ -111,6 +110,18 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
+   * Method that creates the top row of the footer.
+   *
+   * @return The BorderPane with the buttons for running the iterations and clearing the canvas, along with the user manual button.
+   */
+  private BorderPane footerTopRow() {
+    BorderPane footerTopRow = new BorderPane();
+    centeredContentInFooterTopRow(footerTopRow);
+    rightContentToFooterTopRow(footerTopRow);
+    return footerTopRow;
+  }
+
+  /**
    * Method that creates the body row by creating three VBoxes and a StackPane.
    * The StackPane is where the canvas is placed and is at the centre of the body row.
    */
@@ -122,39 +133,27 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
-   * Method that returns the footer row.
+   * Method that creates the bottom row of the footer.
+   *
+   * @return The HBox with the buttons for changing the color mode.
    */
-  private HBox footerHBox() {
-
-    HBox footerRow = new HBox();
-    TextField iterations = new TextField();
-    iterations.setPromptText("Enter number of iterations");
-    iterations.setText("10000");
-    runIterations = new Button("Run iterations");
-    runIterations.setOnAction(e -> runIterationsAction(iterations));
-    footerRow.prefHeight(100);
-
+  private HBox footerBottomRow() {
+    HBox footerBottomRow = new HBox();
     gameController.setUseGradient(true);
-    Button clearCanvasButton = new Button("Clear Canvas");
-    clearCanvasButton.setOnAction(e -> gameController.clearCanvas(chaosGameImageView));
     Button gradientColorMode = new Button("Gradient Color");
+    HBox gradientColorModeHBox = getStyledButtonInHBox(gradientColorMode);
     gradientColorMode.setOnAction(e -> gameController.setUseGradient(true));
     Button countColorMode = new Button("Count Color");
-    countColorMode.setOnAction(e -> {
-      gameController.setUseGradient(false);
-      gradientColorMode.getStyleClass().remove("button-selected");
-      countColorMode.getStyleClass().add("button-selected");
-
-    });
-    gradientColorMode.setOnAction(e -> {
-      gameController.setUseGradient(true);
-      countColorMode.getStyleClass().remove("button-selected");
-      gradientColorMode.getStyleClass().add("button-selected");
-    });
-    footerRow.getChildren().addAll(iterations, runIterations, clearCanvasButton, gradientColorMode, countColorMode);
-    footerRow.setAlignment(Pos.CENTER);
-    return footerRow;
+    HBox countColorModeHBox = getStyledButtonInHBox(countColorMode);
+    changeColorMode(true, gradientColorMode, countColorMode);
+    countColorMode.setOnAction(e -> changeColorMode(false, countColorMode, gradientColorMode));
+    gradientColorMode.setOnAction(e -> changeColorMode(true, gradientColorMode, countColorMode));
+    footerBottomRow.getChildren().addAll(gradientColorModeHBox, countColorModeHBox);
+    footerBottomRow.prefHeight(100);
+    footerBottomRow.setAlignment(Pos.CENTER);
+    return footerBottomRow;
   }
+
 
   /**
    * Method that creates the combo box for the files and places it in an HBox.
@@ -175,6 +174,20 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
+   * Method that helps create the padding for the buttons.
+   *
+   * @param button The button that is being styled.
+   * @return The HBox with the button.
+   */
+  private HBox getStyledButtonInHBox(Button button) {
+    HBox styledButtonBox = new HBox();
+    styledButtonBox.getChildren().add(button);
+    styledButtonBox.setAlignment(Pos.CENTER);
+    styledButtonBox.setPadding(new Insets(5));
+    return styledButtonBox;
+  }
+
+  /**
    * Method that creates the design for the text fields.
    *
    * @param inputTextField The text field that is being styled.
@@ -186,6 +199,7 @@ public class DisplayScene implements ChaosGameObserver {
     styledTextFiled.setPadding(new Insets(10));
     styledTextFiled.setStyle("-fx-background-color: #b97d6d");
     inputTextField.setFocusTraversable(false);
+    inputTextField.setEditable(false);
     inputTextField.prefWidthProperty().bind(styledTextFiled.widthProperty());
     inputTextField.setAlignment(Pos.CENTER);
     inputTextField.setAlignment(Pos.CENTER);
@@ -201,7 +215,7 @@ public class DisplayScene implements ChaosGameObserver {
   private HBox titleHBox() {
     HBox titleRow = new HBox();
     titleRow.prefWidthProperty().bind(layout.widthProperty());
-    titleRow.setPrefHeight(100);
+    titleRow.setPrefHeight(90);
     titleRow.setMinHeight(100);
     titleRow.setMaxHeight(200);
 
@@ -266,7 +280,7 @@ public class DisplayScene implements ChaosGameObserver {
     inputFields.getChildren().addAll(emptyFractalsDisplayHBox, fileName);
     emptyFractal.getChildren().addAll(inputFields, registerFileButton, switchButton);
     emptyFractal.setAlignment(Pos.CENTER);
-    VBox.setMargin(emptyFractal, new Insets(20));
+    VBox.setMargin(emptyFractal, new Insets(10, 20, 10, 20));
 
     switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, inputFields, numberOfTransformations));
     registerFileButton.setOnAction(e -> createEmptyFractalFileAction());
@@ -307,7 +321,7 @@ public class DisplayScene implements ChaosGameObserver {
     Button updateChaosGameButton = new Button("Update Game");
     updateChaosGameButton.setOnAction(e -> dropDownMenuUpdateChaosGameAction());
     dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, getDropDownInHBox(dropDownMenu), updateChaosGameButton);
-    VBox.setMargin(dropDownMenu, new Insets(20));
+    VBox.setMargin(dropDownMenu, new Insets(10, 20, 10, 20));
     return dropDownMenu;
   }
 
@@ -334,6 +348,16 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
+   * Method that returns the footer row.
+   */
+  private VBox footerHBox() {
+    VBox footerRow = new VBox();
+    footerRow.getChildren().addAll(footerTopRow(), footerBottomRow());
+    footerRow.prefHeightProperty().bind(root.heightProperty());
+    return footerRow;
+  }
+
+  /**
    * Method that creates the left column of the body row.
    *
    * @return The VBox with the left column.
@@ -342,10 +366,8 @@ public class DisplayScene implements ChaosGameObserver {
     leftBodyRow = new VBox();
     leftBodyRow.getStyleClass().add("inner-border");
     leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), saveCurrentDescToFile());
-    //leftBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
-    leftBodyRow.setPrefSize(700, 500);
-    leftBodyRow.setMinSize(250, 400);
-    leftBodyRow.setMaxSize(400, 600);
+    leftBodyRow.prefWidthProperty().bind(root.widthProperty());
+    leftBodyRow.prefHeightProperty().bind(root.heightProperty());
     return leftBodyRow;
   }
 
@@ -357,9 +379,8 @@ public class DisplayScene implements ChaosGameObserver {
   private VBox rightBodyRow() {
     rightBodyRow = new VBox();
     rightBodyRow.getStyleClass().add("inner-border");
-    rightBodyRow.setPrefSize(400, 500);
-    rightBodyRow.setMinSize(250, 400);
-    rightBodyRow.setMaxSize(400, 600);
+    rightBodyRow.prefWidthProperty().bind(root.widthProperty());
+    rightBodyRow.prefHeightProperty().bind(root.heightProperty());
     displayEditOptions = new VBox();
     rightBodyRow.getChildren().addAll(displayPresetsOptions(), editMenuButtons(), displayEditOptions);
     return rightBodyRow;
@@ -379,11 +400,11 @@ public class DisplayScene implements ChaosGameObserver {
     Button saveCurrentDescToFile = new Button("Save Current Config");
     saveCurrentDescToFile.setAlignment(Pos.CENTER);
     saveCurrentDescToFile.setOnAction(e ->
-      saveCurrentDescToFileAction(saveToFile)
-   );
+        saveCurrentDescToFileAction(saveToFile)
+    );
     saveCurrentDesc.getChildren().addAll(saveToFileDisplayHBox, saveToFile, saveCurrentDescToFile);
     saveCurrentDesc.setAlignment(Pos.CENTER);
-    VBox.setMargin(saveCurrentDesc, new Insets(20));
+    VBox.setMargin(saveCurrentDesc, new Insets(10, 20, 10, 20));
     return saveCurrentDesc;
   }
 
@@ -393,12 +414,50 @@ public class DisplayScene implements ChaosGameObserver {
    * @return The root VBox.
    */
   private VBox setUpLayoutAndAddComponents() {
-    VBox root = new VBox();
+    root = new VBox();
     root.prefWidthProperty().bind(layout.widthProperty());
     layout.getChildren().add(root);
     root.getChildren().addAll(titleHBox(), bodyHBox(), footerHBox());
-    //root.getChildren().stream().filter(node -> node instanceof HBox).forEach(node -> ((HBox) node).prefWidthProperty().bind(root.widthProperty()));
     return root;
+  }
+
+  /**
+   * Method that centers the content in the footer top row.
+   * The content consists of a text field for the number of iterations, a button for running the iterations and a button for clearing the canvas.
+   *
+   * @param footerTopRow The BorderPane where the content is placed.
+   */
+  private void centeredContentInFooterTopRow(BorderPane footerTopRow) {
+    TextField iterations = new TextField();
+    iterations.setPromptText("Enter number of iterations");
+    iterations.setText("10000");
+    iterations.getStyleClass().add("number-of-iterations");
+    iterations.setPrefWidth(100);
+    runIterations = new Button("Run iterations");
+    HBox runIterationsButtonHBox = getStyledButtonInHBox(runIterations);
+    runIterations.setOnAction(e -> runIterationsAction(iterations));
+    Button clearCanvasButton = new Button("Clear Canvas");
+    HBox clearCanvasButtonHBox = getStyledButtonInHBox(clearCanvasButton);
+    clearCanvasButton.setOnAction(e -> gameController.clearCanvas(chaosGameImageView));
+    HBox centerContent = new HBox(iterations, runIterationsButtonHBox, clearCanvasButtonHBox);
+
+    centerContent.setPadding(new Insets(0, 0, 0, 150));
+    centerContent.setAlignment(Pos.CENTER);
+
+    footerTopRow.setCenter(centerContent);
+  }
+
+  /**
+   * Method that changes the color mode based on the button that is clicked.
+   *
+   * @param useGradient   The boolean value that determines if the gradient color mode is used.
+   * @param toStyle       The button that is clicked.
+   * @param toRemoveStyle The button that is not clicked.
+   */
+  private void changeColorMode(boolean useGradient, Button toStyle, Button toRemoveStyle) {
+    gameController.setUseGradient(useGradient);
+    toRemoveStyle.getStyleClass().remove("button-selected");
+    toStyle.getStyleClass().add("button-selected");
   }
 
   /**
@@ -418,6 +477,7 @@ public class DisplayScene implements ChaosGameObserver {
       }
     }
   }
+
 
   /**
    * Method that displays the edit options for the values of the Chaos Game.
@@ -511,6 +571,25 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
+   * Method that creates the right content for the footer top row.
+   * The right content consists of a button for the user manual.
+   *
+   * @param footerTopRow The BorderPane where the right content is placed.
+   */
+  private void rightContentToFooterTopRow(BorderPane footerTopRow) {
+    Button userManual = new Button("User Manual");
+    HBox newButtonHBox = getStyledButtonInHBox(userManual);
+    HBox.setMargin(newButtonHBox, new Insets(5));
+    Region spacer = new Region();
+    spacer.setMinWidth(40);
+    spacer.setPrefWidth(40);
+    spacer.setMaxWidth(40);
+    newButtonHBox.getChildren().add(spacer);
+    userManual.setOnAction(e -> UserFeedback.displayUserManual());
+    footerTopRow.setRight(newButtonHBox);
+  }
+
+  /**
    * Method that handles the action of running the iterations.
    *
    * @param iterations The text field where the number of iterations is entered.
@@ -553,6 +632,23 @@ public class DisplayScene implements ChaosGameObserver {
     ChaosGameDescription newPreset = new ChaosGameDescription(originalPreset);
     gameController.updateChaosGame(new ChaosGame(newPreset, 500, 500), observer);
     gameController.updateButtonStyle(caseNum, buttons);
+    updateEditButtons();
+  }
+  /**
+   * Method that updates the edit buttons based on the current Chaos Game.
+   */
+  public void updateEditButtons() {
+    displayEditOptions.getChildren().clear();
+    HBox editCurrentDescHeading = styleTextFields(new TextField("Edit Current Description:"));
+    displayEditOptions.getChildren().add(editCurrentDescHeading);
+    displayEditOptions(displayEditOptions);
+    displayEditOptions.setPadding(new Insets(20));
+
+    if (gameController.isAffine()) {
+      displayEditOptions.getChildren().add(editAffineTransformationsButton);
+    } else {
+      displayEditOptions.getChildren().add(editCButton);
+    }
   }
 
   /**
@@ -561,11 +657,10 @@ public class DisplayScene implements ChaosGameObserver {
   private void updateChaosGameFromSelectedFile() {
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
     buttons.forEach(button -> button.getStyleClass().remove("button-selected"));
-
     ChaosGameDescription description = fileController.readChaosGameDescriptionFromAppFiles(selectedFile);
     ValidationController.validateFileName(selectedFile);
-
     gameController.updateChaosGame(new ChaosGame(description, 500, 500), this);
+    updateEditButtons();
   }
 
   /**
