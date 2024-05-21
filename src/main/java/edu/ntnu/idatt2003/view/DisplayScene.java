@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -74,7 +73,11 @@ public class DisplayScene implements ChaosGameObserver {
    */
   @Override
   public void updateAddPixel(double X0, double X1) {
-    observerActionController.addGradientColor(X0, X1, graphicsContext);
+    if (gameController.getUseGradient()) {
+      observerActionController.addGradientColor(X0, X1, graphicsContext);
+    } else {
+      observerActionController.addColorBasedOnCount(X0, X1, graphicsContext);
+    }
   }
 
   /**
@@ -131,9 +134,24 @@ public class DisplayScene implements ChaosGameObserver {
     runIterations.setOnAction(e -> runIterationsAction(iterations));
     footerRow.prefHeight(100);
 
+    gameController.setUseGradient(true);
     Button clearCanvasButton = new Button("Clear Canvas");
-    clearCanvasButton.setOnAction(e -> gameController.clearCanvas());
-    footerRow.getChildren().addAll(iterations, runIterations, clearCanvasButton);
+    clearCanvasButton.setOnAction(e -> gameController.clearCanvas(chaosGameImageView));
+    Button gradientColorMode = new Button("Gradient Color");
+    gradientColorMode.setOnAction(e -> gameController.setUseGradient(true));
+    Button countColorMode = new Button("Count Color");
+    countColorMode.setOnAction(e -> {
+      gameController.setUseGradient(false);
+      gradientColorMode.getStyleClass().remove("button-selected");
+      countColorMode.getStyleClass().add("button-selected");
+
+    });
+    gradientColorMode.setOnAction(e -> {
+      gameController.setUseGradient(true);
+      countColorMode.getStyleClass().remove("button-selected");
+      gradientColorMode.getStyleClass().add("button-selected");
+    });
+    footerRow.getChildren().addAll(iterations, runIterations, clearCanvasButton, gradientColorMode, countColorMode);
     footerRow.setAlignment(Pos.CENTER);
     return footerRow;
   }
@@ -397,7 +415,7 @@ public class DisplayScene implements ChaosGameObserver {
       fileName.clear();
       numberOfTransformations.clear();
     } catch (Exception exception) {
-      if (fileName.getText().isEmpty() || fileName.getText().isBlank()){
+      if (fileName.getText().isEmpty() || fileName.getText().isBlank()) {
         UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
       } else {
         UserFeedback.displayError("No number of transformations was given.", "Please enter the number of transformations and try again.");
@@ -579,7 +597,7 @@ public class DisplayScene implements ChaosGameObserver {
     gameController.setPrimaryStage(primaryStage);
     layout = new AnchorPane();
     layout.prefWidthProperty().bind(primaryStage.widthProperty());
-   layout.prefHeightProperty().bind(primaryStage.heightProperty());
+    layout.prefHeightProperty().bind(primaryStage.heightProperty());
     VBox root = setUpLayoutAndAddComponents();
 
 

@@ -6,16 +6,12 @@ import edu.ntnu.idatt2003.model.factory.ChaosGameDescriptionFactory;
 import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.view.UserFeedback;
-import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -29,23 +25,23 @@ import java.util.stream.IntStream;
  * This means that the model classes are used only in this controller to perform the game functions.
  * Thereafter, the methods are only called up on in the view package.
  *
+ * @author 10041
  * @version 0.8
  * @see edu.ntnu.idatt2003.view.DisplayScene
  * @since 0.3.5
- * @author 10041
  */
 public class GameController {
-//TODO fix model validators catching the exception
   /**
    * The instance of the GameController class that is used to implement the Singleton pattern.
    */
   private static final GameController instance = new GameController();
   private final FileController fileController;
   private final List<ChaosGameDescription> listOfDescriptions;
+  Canvas canvas;
   private Stage primaryStage;
   private ChaosGame chaosGame;
   private boolean persistenceIsNull;
-  Canvas canvas;
+  private boolean useGradient;
 
   /**
    * Constructor that initialises the necessary fields and loads the chaos game presets.
@@ -130,6 +126,13 @@ public class GameController {
   public boolean isAffine() {
     return chaosGame != null && chaosGame.getDescription().getTransformType() == AffineTransform2D.class;
   }
+  /**
+   * Method that returns the value of the useGradient field.
+   * @return The value of the useGradient field.
+   */
+  public boolean getUseGradient() {
+    return useGradient;
+  }
 
   /**
    * Method that returns the chaos game object.
@@ -152,15 +155,7 @@ public class GameController {
     return chaosGame.getDescription();
   }
 
-  /**
-   * Update the chaos game description with a new chaos game description.
-   */
-  public void setCurrentChaosGameDescription(ChaosGameDescription description) {
-    if (chaosGame != null) {
-      chaosGame.setDescription(description);
-      saveCurrentGame();
-    }
-  }
+
 
   /**
    * Method that returns a value from the list of descriptions.
@@ -175,20 +170,11 @@ public class GameController {
    * @param width    The width of the canvas.
    * @param height   The height of the canvas.
    * @param observer The observer that is added to the canvas.
-   * @return A pair of the stack pane and the graphics context.
+   * @return A pair of the Image view and the graphics context.
    */
-  /*public Pair<StackPane, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
-    initialiseGame(observer, width, height);
-    Canvas canvas = new Canvas(width, height);
-    GraphicsContext gc = canvas.getGraphicsContext2D();
-    StackPane chaosGamePane = new StackPane();
-    chaosGamePane.getChildren().add(canvas);
-    saveCurrentGame();
-    return new Pair<>(chaosGamePane, gc);
-  }*/
   public Pair<ImageView, GraphicsContext> createGamePaneCanvas(int width, int height, ChaosGameObserver observer) {
     initialiseGame(observer, width, height);
-   canvas = new Canvas(width, height);
+    canvas = new Canvas(width, height);
     GraphicsContext gc = canvas.getGraphicsContext2D();
     WritableImage writableImage = new WritableImage(width, height);
     SnapshotParameters snapshotParameters = new SnapshotParameters();
@@ -196,13 +182,22 @@ public class GameController {
     ImageView imageView = new ImageView(writableImage);
     saveCurrentGame();
     return new Pair<>(imageView, gc);
-}
+  }
 
   /**
    * Method that returns the primary Stage.
    */
   public Stage getPrimaryStage() {
     return primaryStage;
+  }
+  /**
+   * Update the chaos game description with a new chaos game description.
+   */
+  public void setCurrentChaosGameDescription(ChaosGameDescription description) {
+    if (chaosGame != null) {
+      chaosGame.setDescription(description);
+      saveCurrentGame();
+    }
   }
 
   /**
@@ -217,9 +212,10 @@ public class GameController {
   /**
    * Method that clears the canvas.
    */
-  public void clearCanvas() {
+  public void clearCanvas(ImageView imageView) {
     if (chaosGame != null) {
       chaosGame.getCanvas().clear();
+      updateImageView(imageView, canvas);
       saveCurrentGame();
     }
   }
@@ -287,6 +283,13 @@ public class GameController {
       fileController.saveLastGame(desc);
     }
   }
+  /**
+   * Method that sets the useGradient field to true or false.
+   * @param useGradient The value that the useGradient field is to be set to.
+   */
+  public void setUseGradient(boolean useGradient) {
+    this.useGradient = useGradient;
+  }
 
   /**
    * Method that updates the style of the buttons based on the case number.
@@ -319,12 +322,22 @@ public class GameController {
     addObserverToGame(observer);
     saveCurrentGame();
   }
+
+  /**
+   * Method that updates the image view with the canvas.
+   * @param imageView The image view that is to be updated.
+   * @param canvas The canvas that is being used to update the image view.
+   */
   public void updateImageView(ImageView imageView, Canvas canvas) {
-    WritableImage writableImage = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+    WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
     SnapshotParameters snapshotParameters = new SnapshotParameters();
     canvas.snapshot(snapshotParameters, writableImage);
     imageView.setImage(writableImage);
   }
+
+
+
+
 
 }
 
