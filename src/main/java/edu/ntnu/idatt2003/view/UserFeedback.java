@@ -191,6 +191,8 @@ public class UserFeedback {
    */
   public static void displayUserManual() {
     Stage popupStage = createPopupStage("User Manual", gameController.getPrimaryStage());
+    popupStage.setMinHeight(800);
+    popupStage.setMinWidth(400);
     popupStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
       if (event.getCode() == KeyCode.ENTER) {
         Node focusOwner = popupStage.getScene().getFocusOwner();
