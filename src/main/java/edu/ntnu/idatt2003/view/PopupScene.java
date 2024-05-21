@@ -18,6 +18,10 @@ import java.util.Objects;
  * @since 0.3.6
  */
 public class PopupScene {
+
+  // Private constructor to prevent instantiation
+  private PopupScene() {}
+
   /**
    * Method that initialises the pop-up stage.
    *

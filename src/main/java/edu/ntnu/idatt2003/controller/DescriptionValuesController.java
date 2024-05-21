@@ -76,7 +76,7 @@ public class DescriptionValuesController {
    * @param inputDesc       the chaos game description
    * @param inputTextFields the list of text fields for the affine transformations
    */
-  public void displayAffineTransformations(int index, ChaosGameDescription inputDesc, List<TextField> inputTextFields) {
+  private void displayAffineTransformations(int index, ChaosGameDescription inputDesc, List<TextField> inputTextFields) {
     AffineTransform2D affine = (AffineTransform2D) inputDesc.getTransforms().get(index);
     inputTextFields.get(0).setText(String.valueOf(affine.getMatrix().getA00()));
     inputTextFields.get(1).setText(String.valueOf(affine.getMatrix().getA01()));
