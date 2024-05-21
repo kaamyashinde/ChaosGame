@@ -26,6 +26,9 @@ import static edu.ntnu.idatt2003.view.PopupScene.*;
 public class UserFeedback {
   private static final GameController gameController = GameController.getInstance();
 
+  // Private constructor to prevent instantiation
+  private UserFeedback() {}
+
   /**
    * Method that styles the text area by adding the content style to it.
    *

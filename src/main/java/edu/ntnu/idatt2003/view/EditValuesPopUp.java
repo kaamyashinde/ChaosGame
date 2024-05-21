@@ -27,9 +27,9 @@ import static edu.ntnu.idatt2003.view.PopupScene.*;
  */
 
 public class EditValuesPopUp {
-  DescriptionValuesController descriptionValuesController = new DescriptionValuesController();
-  ObjectListController objectListController = new ObjectListController();
-  GameController gameController = GameController.getInstance();
+  private final DescriptionValuesController descriptionValuesController = new DescriptionValuesController();
+  private final ObjectListController objectListController = new ObjectListController();
+  private GameController gameController = GameController.getInstance();
   ChaosGameDescription currentDescription;
   /**
    * Method that creates the register button for the pop-up window.
