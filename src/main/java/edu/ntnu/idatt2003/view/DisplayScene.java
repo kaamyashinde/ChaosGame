@@ -334,7 +334,7 @@ public class DisplayScene implements ChaosGameObserver {
 
     Button updateChaosGameButton = new Button("Update Game");
     updateChaosGameButton.setOnAction(e -> dropDownMenuUpdateChaosGameAction());
-    dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, getDropDownInHBox(dropDownMenu), updateChaosGameButton);
+    dropDownMenu.getChildren().addAll(dropDownMenuDisplayHbox, getDropDownInHbox(dropDownMenu), updateChaosGameButton);
     VBox.setMargin(dropDownMenu, new Insets(10, 20, 10, 20));
     return dropDownMenu;
   }
@@ -417,7 +417,7 @@ public class DisplayScene implements ChaosGameObserver {
     saveCurrentDescToFile.setOnAction(e ->
         saveCurrentDescToFileAction(saveToFile)
     );
-    saveCurrentDesc.getChildren().addAll(saveToFileDisplayHBox, saveToFile, saveCurrentDescToFile);
+    saveCurrentDesc.getChildren().addAll(saveToFileDisplayHbox, saveToFile, saveCurrentDescToFile);
     saveCurrentDesc.setAlignment(Pos.CENTER);
     VBox.setMargin(saveCurrentDesc, new Insets(10, 20, 10, 20));
     return saveCurrentDesc;
@@ -432,7 +432,7 @@ public class DisplayScene implements ChaosGameObserver {
     root = new VBox();
     root.prefWidthProperty().bind(layout.widthProperty());
     layout.getChildren().add(root);
-    root.getChildren().addAll(titleHBox(), bodyHBox(), footerHBox());
+    root.getChildren().addAll(titleHbox(), bodyHbox(), footerHBox());
     return root;
   }
 
@@ -674,7 +674,7 @@ public class DisplayScene implements ChaosGameObserver {
     if (gameController.isAffine()) {
       displayEditOptions.getChildren().add(editAffineTransformationsButton);
     } else {
-      displayEditOptions.getChildren().add(editCButton);
+      displayEditOptions.getChildren().add(editCbutton);
     }
   }
 
