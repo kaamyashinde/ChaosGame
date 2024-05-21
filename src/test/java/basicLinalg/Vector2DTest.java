@@ -19,7 +19,6 @@ class Vector2DTest {
         v2 = new Vector2D(3, 4);
     }
 
-//positive test
     @Test
     @DisplayName("Add two vectors")
     void add() {
@@ -36,12 +35,11 @@ class Vector2DTest {
         assertEquals(-2, v3.getX1());
     }
 
-    //negative test
     @Test
     @DisplayName("Invalid vector values")
     void invalidVectorValuesTest(){
         assertThrows(IllegalArgumentException.class, () -> {
-            Vector2D invalidVector = new Vector2D(-600, 2); // x0 value is out of range
+            Vector2D invalidVector = new Vector2D(-1400, 2); // x0 value is out of range
         });
     }
 }

@@ -27,11 +27,6 @@ public class Matrix2x2 {
      */
     public Matrix2x2(double inputA00, double inputA01, double inputA10, double inputA11) throws IllegalArgumentException{
 
-        ModelValidators.validateMatrixValue(inputA00, "a00");
-        ModelValidators.validateMatrixValue(inputA01, "a01");
-        ModelValidators.validateMatrixValue(inputA10, "a10");
-        ModelValidators.validateMatrixValue(inputA11, "a11");
-
         this.a00 = inputA00;
         this.a01 = inputA01;
         this.a10 = inputA10;

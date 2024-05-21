@@ -44,7 +44,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>edu.ntnu.idatt2003.view.Main</mainClass>
+                    <mainClass>edu.ntnu.idatt2003.ChaosGameApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>

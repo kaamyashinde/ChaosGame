@@ -7,7 +7,6 @@ import edu.ntnu.idatt2003.controller.ValidationController;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -32,17 +31,6 @@ public class EditValuesPopUp {
   ObjectListController objectListController = new ObjectListController();
   GameController gameController = GameController.getInstance();
   ChaosGameDescription currentDescription;
-
-
-  public void setChaosGameDescription() {
-    currentDescription = gameController.getCurrentChaosGameDescription();
-  }
-
-  public void setChaosGameDescriptionWithInput(ChaosGameDescription input) {
-    currentDescription = input;
-    gameController = GameController.getInstance();
-  }
-
   /**
    * Method that creates the register button for the pop-up window.
    *
@@ -53,21 +41,14 @@ public class EditValuesPopUp {
     registerButton.getStyleClass().add("edit-popup-button");
     return new Button("Register");
   }
-
-
   /**
-   * Method that creates the pop-up window for editing the C value.
+   * Method that creates the pop-up window for editing the complex number value.
    */
-
-
   public void createConstantCPopup() {
     Stage popupStage = createPopupStage("Edit C", gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
-    //container for the two values
     VBox displayMatrix = new VBox();
-    //container for the real part
     VBox left = new VBox();
-    //container for the imaginary part
     VBox right = new VBox();
 
     Label real = new Label("Real part");
@@ -100,12 +81,10 @@ public class EditValuesPopUp {
       }
     });
   }
-
-
   /**
    * Method that creates the pop-up window for editing the min and max coordinates.
    */
-  public void createEditMaxAndMinPopup() {
+  public void createMaxAndMinPopup() {
     Stage popupStage = createPopupStage("Edit Min and Max", gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
     HBox minValues = new HBox();
@@ -140,11 +119,10 @@ public class EditValuesPopUp {
       }
     });
   }
-
   /**
    * Method that creates the pop-up window for editing the affine transformations.
    */
-  public void displayAffine() {
+  public void createAffineTransformationPopup() {
     Stage popupStage = createPopupStage("Edit affine transformations", gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
     HBox values = new HBox();
@@ -153,7 +131,7 @@ public class EditValuesPopUp {
     Label matrixLabel = new Label("Matrix");
     HBox matrixRow1 = new HBox();
     HBox matrixRow2 = new HBox();
-    matrixValues.getChildren().addAll(matrixLabel,matrixRow1, matrixRow2);
+    matrixValues.getChildren().addAll(matrixLabel, matrixRow1, matrixRow2);
     List<TextField> textFields = objectListController.affineTransformationTextFieldsList();
     objectListController.setTextFieldWidth(textFields);
     ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
@@ -163,7 +141,6 @@ public class EditValuesPopUp {
     transformationNumber.setMaxWidth(60);
     transformationNumber.getStyleClass().add("display-number");
 
-    //transformationNumber.setPromptText("Transformation Number");
     List<Button> traverseButtons = objectListController.affineTransformationButtonsList();
     descriptionValuesController.displayCorrectAffineTransformation(currentDescription, traverseButtons, textFields, transformationNumber);
     matrixRow1.getChildren().addAll(textFields.get(0), textFields.get(1));
@@ -174,7 +151,7 @@ public class EditValuesPopUp {
     Label vectorLabel = new Label("Vector");
     HBox vectorRow1 = new HBox();
     HBox vectorRow2 = new HBox();
-    vectorValues.getChildren().addAll(vectorLabel,vectorRow1, vectorRow2);
+    vectorValues.getChildren().addAll(vectorLabel, vectorRow1, vectorRow2);
     vectorRow1.getChildren().addAll(textFields.get(4));
     vectorRow2.getChildren().addAll(textFields.get(5));
     values.getChildren().addAll(matrixValues, spacerBetweenMatrixAndVector, vectorValues);
@@ -202,10 +179,26 @@ public class EditValuesPopUp {
       try {
         ValidationController.validateInteger(transformationNumber.getText());
         descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText()) - 1, textFields);
-        descriptionValuesController.clearTextFields(textFields);
+        popupStage.close();
+
       } catch (Exception exception) {
         UserFeedback.displayError("Invalid input for the affine transformations.", "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
       }
     });
+  }
+  /**
+   * Method that sets the current chaos game description to the one that is currently being used in the game.
+   */
+  public void setCurrentChaosGameDescription() {
+    currentDescription = gameController.getCurrentChaosGameDescription();
+  }
+  /**
+   * Method that sets the chaos game description to the one that is passed as an input.
+   *
+   * @param input The chaos game description that is passed as an input.
+   */
+  public void setInputChaosGameDescription(ChaosGameDescription input) {
+    currentDescription = input;
+    gameController = GameController.getInstance();
   }
 }

@@ -23,8 +23,8 @@ public class Vector2D {
      */
     public Vector2D(double inputX0, double inputX1)
             throws IllegalArgumentException {
-        ModelValidators.validateVectorValue(inputX0, "x0");
-        ModelValidators.validateVectorValue(inputX1, "x1");
+        ModelValidators.validateVectorValue(inputX0);
+        ModelValidators.validateVectorValue(inputX1);
         this.x0 = inputX0;
         this.x1 = inputX1;
     }
