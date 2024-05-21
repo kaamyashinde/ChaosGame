@@ -217,15 +217,8 @@ public class UserInterface {
      * Initiates the transformation for the Affine set.
      * <p>
      * The user is prompted to enter the coordinates for the transformations.
-     * Then the user is asked whether they want to create the transformations manually or automatically.
-     * <ol>
-     *     <li>
-     *     If the user chooses to create the transformations manually, they are prompted to enter the values for the complex number for each transformation.
-     *     </li>
-     *     <li>
-     *         If the user chooses to create the transformations automatically, they are prompted to enter the number of transformations to generate.
-     *         </li>
-     * </ol>
+     *Then the user is asked to enter the number of transformations to add.
+     * The user is then prompted to enter the values for the matrix and vector for each transformation.
      *
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations.
      */
@@ -233,89 +226,49 @@ public class UserInterface {
     private static ChaosGameDescription initiateTransformationAffine() {
         Vector2D[] coords = userInputForCoordsOfTransformations();
 
-        System.out.println("How do you want to generate the affine transformations? 1: Manually, 2: Automatically");
-        int choice = input.nextInt();
+        System.out.println("How many transformations do you want to generate?");
+        int numberOfTransformations = input.nextInt();
 
-        if (choice == 1) {
-            System.out.println("How many transformations do you want to generate?");
-            int numberOfTransformations = input.nextInt();
+        double[][] matrices = new double[numberOfTransformations][4];
+        double[][] vectors = new double[numberOfTransformations][2];
 
-            double[][] matrices = new double[numberOfTransformations][4];
-            double[][] vectors = new double[numberOfTransformations][2];
+        for (int i = 0; i < numberOfTransformations; i++) {
+            System.out.println("Enter the values for the matrix for transformation " + (i + 1) + ". Separate the values with a space. For example: 1 0 0 1");
+            matrices[i][0] = input.nextDouble();
+            matrices[i][1] = input.nextDouble();
+            matrices[i][2] = input.nextDouble();
+            matrices[i][3] = input.nextDouble();
 
-            for (int i = 0; i < numberOfTransformations; i++) {
-                System.out.println("Enter the values for the matrix for transformation " + (i + 1) + ". Separate the values with a space. For example: 1 0 0 1");
-                matrices[i][0] = input.nextDouble();
-                matrices[i][1] = input.nextDouble();
-                matrices[i][2] = input.nextDouble();
-                matrices[i][3] = input.nextDouble();
-
-                System.out.println("Enter the values for the vector for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 1");
-                vectors[i][0] = input.nextDouble();
-                vectors[i][1] = input.nextDouble();
-            }
-
-            return ChaosGameDescriptionCreator.createAffineChaosGameDescriptionManual(numberOfTransformations, matrices, vectors, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
-        } else if (choice == 2) {
-            System.out.println("How many transformations do you want to generate?");
-            int numberOfTransformations = input.nextInt();
-            System.out.println("Enter the values for the matrix. Separate the values with a space. For example: 1 0 0 1");
-            double matrix00 = input.nextDouble();
-            double matrix01 = input.nextDouble();
-            double matrix10 = input.nextDouble();
-            double matrix11 = input.nextDouble();
-            return ChaosGameDescriptionCreator.createAffineChaosGameDescription(numberOfTransformations, matrix00, matrix01, matrix10, matrix11, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
-        } else {
-            System.out.println(INVALID_INPUT);
-            return null;
+            System.out.println("Enter the values for the vector for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 1");
+            vectors[i][0] = input.nextDouble();
+            vectors[i][1] = input.nextDouble();
         }
+
+        return ChaosGameDescriptionCreator.createAffineChaosGameDescriptionManual(numberOfTransformations, matrices, vectors, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+
     }
 
     /**
      * Initiates the transformation for the Julia set.
      * <p>
      * The user is prompted to enter the coordinates for the transformations.
-     * Then the user is asked whether they want to create the transformations manually or automatically.
-     * <ol>
-     *     <li>
-     *     If the user chooses to create the transformations manually, they are prompted to enter the values for the complex number for each transformation.
-     *     </li>
-     *     <li>
-     *         If the user chooses to create the transformations automatically, they are prompted to enter the number of transformations to generate.
-     *         </li>
-     * </ol>
+     * Then the user is asked to enter the number of transformations to add.
      *
      * @return an object of the ChaosGameDescription class containing the coordinates and transformations.
      */
     private static ChaosGameDescription initiateTransformationJulia() {
         Vector2D[] coords = userInputForCoordsOfTransformations();
 
-        System.out.println("How do you want to generate the Julia transformations? 1: Manually, 2: Automatically");
-        int choice = input.nextInt();
 
-        if (choice == 1) {
-            System.out.println("How many transformations do you want to add");
-            int numberOfTransformations = input.nextInt();
+        System.out.println("Enter the values for the complex number for the transformation. Separate the values with a space. For example: 0 1");
+        double realPart = input.nextDouble();
+        double imaginaryPart = input.nextDouble();
 
-            double[][] complexNumbers = new double[numberOfTransformations][2];
-            int[] signs = new int[numberOfTransformations];
+        System.out.println("What is the sign of the complex number? 1: Positive, -1: Negative");
+        int sign = input.nextInt();
 
-            for (int i = 0; i < numberOfTransformations; i++) {
-                System.out.println("Enter the values for the complex number for transformation " + (i + 1) + ". Separate the values with a space. For example: 0 1");
-                complexNumbers[i][0] = input.nextDouble(); // real part
-                complexNumbers[i][1] = input.nextDouble(); // imaginary part
-                System.out.println("What is the sign of the complex number? 1: Positive, -1: Negative");
-                signs[i] = input.nextInt();
-            }
-            return ChaosGameDescriptionCreator.createJuliaChaosGameDescriptionManual(numberOfTransformations, complexNumbers, signs, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
-        } else if (choice == 2) {
-            System.out.println("How many transformations do you want to generate?");
-            int numberOfTransformations = input.nextInt();
-            return ChaosGameDescriptionCreator.createJuliaChaosGameDescription(numberOfTransformations, -.74543, .11301, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
-        } else {
-            System.out.println(INVALID_INPUT);
-            return null;
-        }
+        return ChaosGameDescriptionCreator.createJuliaChaosGameDescriptionManual(realPart, imaginaryPart, sign, coords[0].getX0(), coords[0].getX1(), coords[1].getX0(), coords[1].getX1());
+
     }
 
     /**

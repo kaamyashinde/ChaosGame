@@ -32,7 +32,8 @@ public class Complex extends Vector2D {
    * @return a new Complex object
    * @throws IllegalArgumentException if the input values are not valid
    */
-  public static Complex createComplex(double inputRealPart, double inputImaginaryPart) throws IllegalArgumentException {
+  public static Complex createComplex(double inputRealPart, double inputImaginaryPart)
+          throws IllegalArgumentException {
     ModelValidators.validateRealPartValue(inputRealPart);
     ModelValidators.validateImaginaryPartValue(inputImaginaryPart);
     return new Complex(inputRealPart, inputImaginaryPart);
@@ -48,6 +49,7 @@ public class Complex extends Vector2D {
    *     root of the magnitude of the original complex number multiplied by the sine of half the
    *     angle.
    */
+
   public Complex sqrt() {
     double magnitude = Math.sqrt(Math.sqrt(Math.pow(getX0(), 2) + Math.pow(getX1(), 2)));
     double angle = Math.atan2(getX1(), getX0()) / 2.0;
@@ -63,6 +65,7 @@ public class Complex extends Vector2D {
    *
    * @return the real part of the complex number
    */
+
   public double getReal() {
     return this.getX0();
   }
@@ -81,6 +84,7 @@ public class Complex extends Vector2D {
    * @param other the other complex number to add to this complex number
    * @return Complex The sum of the two complex numbers.
    */
+
   public Complex subtract(Complex other) {
     if (other == null) {
       throw new ClassCastException("Complex number expected");
