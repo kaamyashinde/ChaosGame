@@ -8,32 +8,13 @@ import java.util.List;
 /**
  * This class is responsible for creating lists of various GUI elements to be displayed in the view.
  * It aids in the separation of concerns between the view and the model.
+ *
+ * @author 10041
  * @version 0.1
  * @since 0.3.4
- * @author Kaamya Shinde
  */
 
 public class ObjectListController {
-  /**
-   * Method that creates a list containing the max and min coordinates text fields.
-   *
-   * @return a list containing the max and min coordinates text fields.
-   */
-  public List<TextField> maxAndMinCoordsTextFieldsList() {
-
-    TextField minCoordsX0 = new TextField();
-    TextField minCoordsX1 = new TextField();
-    TextField maxCoordsX0 = new TextField();
-    TextField maxCoordsX1 = new TextField();
-
-    minCoordsX0.setPromptText("Min X0");
-    minCoordsX1.setPromptText("Min X1");
-    maxCoordsX0.setPromptText("Max X0");
-    maxCoordsX1.setPromptText("Max X1");
-
-    return List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
-  }
-
   /**
    * Method that creates a list containing the buttons used to control the viewing of the Affine transformations.
    *
@@ -44,7 +25,6 @@ public class ObjectListController {
     Button nextTransformation = new Button(">");
     return List.of(previousTransformation, nextTransformation);
   }
-
   /**
    * Method that creates a list containing the matrix and vector for a specific affine transformation.
    *
@@ -67,15 +47,6 @@ public class ObjectListController {
     return List.of(matrixA00, matrixA01, matrixA10, matrixA11, vectorB0, vectorB1);
   }
   /**
-   * A method that sets the prefered width of the text fields.
-   */
-  public void setTextFieldWidth(List<TextField> textFields) {
-textFields.forEach(textField -> textField.setPrefWidth(70));
-textFields.forEach(textField -> textField.setMinWidth(60));
-textFields.forEach(textField -> textField.setMaxWidth(80));
-  }
-
-  /**
    * Method that creates a list containing the text fields for the C value in the Julia transformation.
    *
    * @return a list containing the text fields for the C value in the Julia transformation.
@@ -86,5 +57,32 @@ textFields.forEach(textField -> textField.setMaxWidth(80));
     X0.setPromptText("X0");
     X1.setPromptText("X1");
     return List.of(X0, X1);
+  }
+  /**
+   * Method that creates a list containing the max and min coordinates text fields.
+   *
+   * @return a list containing the max and min coordinates text fields.
+   */
+  public List<TextField> maxAndMinCoordsTextFieldsList() {
+
+    TextField minCoordsX0 = new TextField();
+    TextField minCoordsX1 = new TextField();
+    TextField maxCoordsX0 = new TextField();
+    TextField maxCoordsX1 = new TextField();
+
+    minCoordsX0.setPromptText("Min X0");
+    minCoordsX1.setPromptText("Min X1");
+    maxCoordsX0.setPromptText("Max X0");
+    maxCoordsX1.setPromptText("Max X1");
+
+    return List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
+  }
+  /**
+   * A method that sets the prefered width of the text fields.
+   */
+  public void setTextFieldWidth(List<TextField> textFields) {
+    textFields.forEach(textField -> textField.setPrefWidth(70));
+    textFields.forEach(textField -> textField.setMinWidth(60));
+    textFields.forEach(textField -> textField.setMaxWidth(80));
   }
 }

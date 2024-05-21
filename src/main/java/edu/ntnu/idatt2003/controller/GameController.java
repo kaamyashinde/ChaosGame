@@ -29,6 +29,7 @@ import java.util.stream.IntStream;
  * @version 0.8
  * @see edu.ntnu.idatt2003.view.DisplayScene
  * @since 0.3.5
+ * @author 10041
  */
 public class GameController {
 //TODO fix model validators catching the exception
@@ -57,9 +58,6 @@ public class GameController {
   public static synchronized GameController getInstance() {
     return instance;
   }
-
-
-
 
   /**
    * Method that returns the default preset description that is used to initialise the game.

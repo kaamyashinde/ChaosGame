@@ -11,7 +11,6 @@ import javafx.stage.Stage;
  * @version 0.1
  * @since 0.3.7
  * @author 10041
-
  */
 public class KeyActionPolicyController {
   /**
