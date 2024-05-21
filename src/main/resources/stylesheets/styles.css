@@ -3,19 +3,13 @@
 }
 .button{
     -fx-background-color: #f2e6e3;
-    -fx-font-size: 1.5em;
-   /* -fx-border-insets: 10 20 10 20;*/
-    -fx-padding: 10 20;
+    -fx-font-size: 1.3em;
+    -fx-padding: 10;
 }
 .button:focused{
 -fx-border-color: #9f6c66 ;
     -fx-border-width: 3px ;
     -fx-text-fill: #9f6c66;
-    -fx-border-radius: 5px;
-}
-.border{
-    -fx-border-color: #f2e6e3;
-    -fx-border-width: 1px;
     -fx-border-radius: 5px;
 }
 .button:hover{
@@ -51,7 +45,7 @@ StackPane {
 .section-heading{
     -fx-background-color: #b97d6d;
     -fx-text-fill: #f4f0eb;
-    -fx-font-size: 14px;
+    -fx-font-size: 1.3em;
     -fx-padding: 10 20;
     -fx-border-radius: 0;
     -fx-background-radius: 5px;

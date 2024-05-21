@@ -15,48 +15,53 @@ import javafx.scene.Scene;
  */
 public class Main extends Application {
 
-    private GameController gameController = GameController.getInstance();
-
   DisplayScene displayScene;
+  private GameController gameController = GameController.getInstance();
+
   public static void main(String[] args) {
-        launch(args);
-    }
+    launch(args);
+  }
 
 
-    @Override
-    public void start(javafx.stage.Stage primaryStage) throws Exception {
-     try  {
-        displayScene = new DisplayScene();
-        Scene scene = displayScene.getDisplay(primaryStage);
+  @Override
+  public void start(javafx.stage.Stage primaryStage) throws Exception {
+    try {
+      displayScene = new DisplayScene();
+      Scene scene = displayScene.getDisplay(primaryStage);
       KeyActionPolicyController.applyEnterKeyActionPolicy(primaryStage);
-        String css = getClass().getClassLoader().getResource("stylesheets/styles.css").toExternalForm();
-        scene.getStylesheets().add(css);
+      String css = getClass().getClassLoader().getResource("stylesheets/styles.css").toExternalForm();
+      scene.getStylesheets().add(css);
 
-        gameController.loadLastGame(displayScene);
+      gameController.loadLastGame(displayScene);
 
-        primaryStage.setScene(scene);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Chaos Game");
-        primaryStage.toBack();
-        primaryStage.show();
+      primaryStage.setScene(scene);
+      primaryStage.setScene(scene);
+      primaryStage.setTitle("Chaos Game");
+      primaryStage.toBack();
+      primaryStage.show();
+      primaryStage.setMinWidth(990);
+      primaryStage.setMaxWidth(1200);
+      primaryStage.setMinHeight(730);
+      primaryStage.setMaxHeight(1200);
 
-        if (!gameController.getPersistenceIsNull()) {
-          UserFeedback.welcomeBackMessage(primaryStage, displayScene);
-        } else {
-          UserFeedback.welcomeMessage(primaryStage, displayScene);
-        }
-      } catch (Exception e) {
-       System.out.println("cautch exception of type"  + e.getClass().getName());
-        e.printStackTrace();
 
+      if (!gameController.getPersistenceIsNull()) {
+        UserFeedback.welcomeBackMessage(primaryStage, displayScene);
+      } else {
+        UserFeedback.welcomeMessage(primaryStage, displayScene);
       }
-    }
-
-    @Override
-    public void stop() {
-        System.out.println("Saving current game state before exit");
-       // gameController.saveCurrentGame();
-      gameController.returnChaosGame().getCanvas().removeObserver(displayScene);
+    } catch (Exception e) {
+      System.out.println("cautch exception of type" + e.getClass().getName());
+      e.printStackTrace();
 
     }
+  }
+
+  @Override
+  public void stop() {
+    System.out.println("Saving current game state before exit");
+    // gameController.saveCurrentGame();
+    gameController.returnChaosGame().getCanvas().removeObserver(displayScene);
+
+  }
 }
