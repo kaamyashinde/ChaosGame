@@ -34,7 +34,7 @@ public class Main extends Application {
     primaryStage.toBack();
     primaryStage.show();
     primaryStage.setMinWidth(990);
-    primaryStage.setMinHeight(730);
+    primaryStage.setMinHeight(750);
   }
 
   @Override

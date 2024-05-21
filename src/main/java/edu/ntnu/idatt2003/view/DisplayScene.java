@@ -215,7 +215,7 @@ public class DisplayScene implements ChaosGameObserver {
   private HBox titleHBox() {
     HBox titleRow = new HBox();
     titleRow.prefWidthProperty().bind(layout.widthProperty());
-    titleRow.setPrefHeight(100);
+    titleRow.setPrefHeight(90);
     titleRow.setMinHeight(100);
     titleRow.setMaxHeight(200);
 
@@ -280,7 +280,7 @@ public class DisplayScene implements ChaosGameObserver {
     inputFields.getChildren().addAll(emptyFractalsDisplayHBox, fileName);
     emptyFractal.getChildren().addAll(inputFields, registerFileButton, switchButton);
     emptyFractal.setAlignment(Pos.CENTER);
-    VBox.setMargin(emptyFractal, new Insets(20));
+    VBox.setMargin(emptyFractal, new Insets(10, 20, 10, 20));
 
     switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, inputFields, numberOfTransformations));
     registerFileButton.setOnAction(e -> createEmptyFractalFileAction());
@@ -321,7 +321,7 @@ public class DisplayScene implements ChaosGameObserver {
     Button updateChaosGameButton = new Button("Update Game");
     updateChaosGameButton.setOnAction(e -> dropDownMenuUpdateChaosGameAction());
     dropDownMenu.getChildren().addAll(dropDownMenuDisplayHBox, getDropDownInHBox(dropDownMenu), updateChaosGameButton);
-    VBox.setMargin(dropDownMenu, new Insets(20));
+    VBox.setMargin(dropDownMenu, new Insets(10, 20, 10, 20));
     return dropDownMenu;
   }
 
@@ -353,6 +353,7 @@ public class DisplayScene implements ChaosGameObserver {
   private VBox footerHBox() {
     VBox footerRow = new VBox();
     footerRow.getChildren().addAll(footerTopRow(), footerBottomRow());
+    footerRow.prefHeightProperty().bind(root.heightProperty());
     return footerRow;
   }
 
@@ -366,12 +367,7 @@ public class DisplayScene implements ChaosGameObserver {
     leftBodyRow.getStyleClass().add("inner-border");
     leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), saveCurrentDescToFile());
     leftBodyRow.prefWidthProperty().bind(root.widthProperty());
-    leftBodyRow.setMinHeight(400);
-    leftBodyRow.setPrefHeight(500);
-    leftBodyRow.setMaxHeight(600);
-    // leftBodyRow.setPrefSize(700, 500);
-    // leftBodyRow.setMinSize(250, 400);
-    //leftBodyRow.setMaxSize(400, 600);
+    leftBodyRow.prefHeightProperty().bind(root.heightProperty());
     return leftBodyRow;
   }
 
@@ -384,9 +380,7 @@ public class DisplayScene implements ChaosGameObserver {
     rightBodyRow = new VBox();
     rightBodyRow.getStyleClass().add("inner-border");
     rightBodyRow.prefWidthProperty().bind(root.widthProperty());
-    rightBodyRow.setMinHeight(400);
-    rightBodyRow.setPrefHeight(500);
-    rightBodyRow.setMaxHeight(600);
+    rightBodyRow.prefHeightProperty().bind(root.heightProperty());
     displayEditOptions = new VBox();
     rightBodyRow.getChildren().addAll(displayPresetsOptions(), editMenuButtons(), displayEditOptions);
     return rightBodyRow;
@@ -410,7 +404,7 @@ public class DisplayScene implements ChaosGameObserver {
     );
     saveCurrentDesc.getChildren().addAll(saveToFileDisplayHBox, saveToFile, saveCurrentDescToFile);
     saveCurrentDesc.setAlignment(Pos.CENTER);
-    VBox.setMargin(saveCurrentDesc, new Insets(20));
+    VBox.setMargin(saveCurrentDesc, new Insets(10, 20, 10, 20));
     return saveCurrentDesc;
   }
 
