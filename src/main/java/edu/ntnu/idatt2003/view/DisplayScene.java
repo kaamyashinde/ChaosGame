@@ -14,9 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
@@ -112,6 +110,18 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
+   * Method that creates the top row of the footer.
+   *
+   * @return The BorderPane with the buttons for running the iterations and clearing the canvas, along with the user manual button.
+   */
+  private BorderPane footerTopRow() {
+    BorderPane footerTopRow = new BorderPane();
+    centeredContentInFooterTopRow(footerTopRow);
+    rightContentToFooterTopRow(footerTopRow);
+    return footerTopRow;
+  }
+
+  /**
    * Method that creates the body row by creating three VBoxes and a StackPane.
    * The StackPane is where the canvas is placed and is at the centre of the body row.
    */
@@ -144,30 +154,6 @@ public class DisplayScene implements ChaosGameObserver {
     return footerBottomRow;
   }
 
-  /**
-   * Method that creates the top row of the footer.
-   *
-   * @return The HBox with the text field for the number of iterations and the buttons for running the iterations and clearing the canvas.
-   */
-  private HBox footerTopRow() {
-    HBox footerTopRow = new HBox();
-    TextField iterations = new TextField();
-    iterations.setPromptText("Enter number of iterations");
-    iterations.setText("10000");
-    iterations.getStyleClass().add("number-of-iterations");
-    iterations.setPrefWidth(100);
-    runIterations = new Button("Run iterations");
-    HBox runIterationsButtonHBox = getStyledButtonInHBox(runIterations);
-    runIterations.setOnAction(e -> runIterationsAction(iterations));
-    Button clearCanvasButton = new Button("Clear Canvas");
-    HBox clearCanvasButtonHBox = getStyledButtonInHBox(clearCanvasButton);
-    clearCanvasButton.setOnAction(e -> gameController.clearCanvas(chaosGameImageView));
-    footerTopRow.getChildren().addAll(iterations, runIterationsButtonHBox, clearCanvasButtonHBox);
-    footerTopRow.prefHeight(100);
-    footerTopRow.setAlignment(Pos.CENTER);
-    return footerTopRow;
-  }
-
 
   /**
    * Method that creates the combo box for the files and places it in an HBox.
@@ -189,16 +175,18 @@ public class DisplayScene implements ChaosGameObserver {
 
   /**
    * Method that helps create the padding for the buttons.
+   *
    * @param button The button that is being styled.
    * @return The HBox with the button.
    */
-  private HBox getStyledButtonInHBox(Button button){
+  private HBox getStyledButtonInHBox(Button button) {
     HBox styledButtonBox = new HBox();
     styledButtonBox.getChildren().add(button);
     styledButtonBox.setAlignment(Pos.CENTER);
     styledButtonBox.setPadding(new Insets(5));
     return styledButtonBox;
   }
+
   /**
    * Method that creates the design for the text fields.
    *
@@ -440,6 +428,32 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
+   * Method that centers the content in the footer top row.
+   * The content consists of a text field for the number of iterations, a button for running the iterations and a button for clearing the canvas.
+   *
+   * @param footerTopRow The BorderPane where the content is placed.
+   */
+  private void centeredContentInFooterTopRow(BorderPane footerTopRow) {
+    TextField iterations = new TextField();
+    iterations.setPromptText("Enter number of iterations");
+    iterations.setText("10000");
+    iterations.getStyleClass().add("number-of-iterations");
+    iterations.setPrefWidth(100);
+    runIterations = new Button("Run iterations");
+    HBox runIterationsButtonHBox = getStyledButtonInHBox(runIterations);
+    runIterations.setOnAction(e -> runIterationsAction(iterations));
+    Button clearCanvasButton = new Button("Clear Canvas");
+    HBox clearCanvasButtonHBox = getStyledButtonInHBox(clearCanvasButton);
+    clearCanvasButton.setOnAction(e -> gameController.clearCanvas(chaosGameImageView));
+    HBox centerContent = new HBox(iterations, runIterationsButtonHBox, clearCanvasButtonHBox);
+
+    centerContent.setPadding(new Insets(0, 0, 0, 150));
+    centerContent.setAlignment(Pos.CENTER);
+
+    footerTopRow.setCenter(centerContent);
+  }
+
+  /**
    * Method that changes the color mode based on the button that is clicked.
    *
    * @param useGradient   The boolean value that determines if the gradient color mode is used.
@@ -469,6 +483,7 @@ public class DisplayScene implements ChaosGameObserver {
       }
     }
   }
+
 
   /**
    * Method that displays the edit options for the values of the Chaos Game.
@@ -559,6 +574,25 @@ public class DisplayScene implements ChaosGameObserver {
     if (gameController.getPersistenceIsNull()) {
       buttons.get(0).getStyleClass().add("button-selected");
     }
+  }
+
+  /**
+   * Method that creates the right content for the footer top row.
+   * The right content consists of a button for the user manual.
+   *
+   * @param footerTopRow The BorderPane where the right content is placed.
+   */
+  private void rightContentToFooterTopRow(BorderPane footerTopRow) {
+    Button userManual = new Button("User Manual");
+    HBox newButtonHBox = getStyledButtonInHBox(userManual);
+    HBox.setMargin(newButtonHBox, new Insets(5));
+    Region spacer = new Region();
+    spacer.setMinWidth(40);
+    spacer.setPrefWidth(40);
+    spacer.setMaxWidth(40);
+    newButtonHBox.getChildren().add(spacer);
+    userManual.setOnAction(e -> UserFeedback.displayUserManual());
+    footerTopRow.setRight(newButtonHBox);
   }
 
   /**
