@@ -48,8 +48,8 @@ public class ModelValidators {
    * @throws IllegalArgumentException if the imaginary part is not within the range -1.5 to 1.5 inclusive
    */
   public static void validateImaginaryPartValue(double imaginaryPart) {
-    if (imaginaryPart < -1.5 || imaginaryPart > 1.5) {
-      throw new IllegalArgumentException("imaginaryPart must be between -1.5 and 1.5");
+    if (imaginaryPart < -7 || imaginaryPart > 7) {
+      throw new IllegalArgumentException("imaginaryPart must be between 7 and 7");
     }
   }
 

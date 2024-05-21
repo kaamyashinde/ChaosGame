@@ -51,12 +51,10 @@ class ChaosCanvasTest {
         }
     }
 
-    //negative test
-
     @Test
     void putPixelOutOfBoundsTest() {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            canvasToTest.putPixel(new Vector2D(10,10)); // coordinates are out of canvas bounds
+            canvasToTest.putPixel(new Vector2D(10,10));
         });
     }
 }
