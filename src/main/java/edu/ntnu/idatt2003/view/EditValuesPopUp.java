@@ -149,6 +149,7 @@ public class EditValuesPopUp {
     objectListController.setTextFieldWidth(textFields);
     ChaosGameDescription currentDescription = gameController.getCurrentChaosGameDescription();
     TextField transformationNumber = new TextField("1");
+    transformationNumber.setEditable(false);
     transformationNumber.setPrefWidth(50);
     transformationNumber.setMinWidth(50);
     transformationNumber.setMaxWidth(60);

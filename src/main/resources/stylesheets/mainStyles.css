@@ -71,3 +71,13 @@ The styles for the cell in the combo box when hovered over.
 .my-combo-box .cell:hover {
     -fx-background-color: #ffbb6c;
 }
+/**
+The styles for the number of iterations text field.
+ */
+.number-of-iterations{
+    -fx-font-size: 18px;
+    -fx-font-family: "Arial";
+    -fx-background-color: #f4f0eb;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+}

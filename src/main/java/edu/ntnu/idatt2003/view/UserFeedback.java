@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.view;
 import edu.ntnu.idatt2003.controller.FileController;
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -61,6 +62,10 @@ public class UserFeedback {
     popupLayout.getChildren().add(container);
     dimBackground(gameController.getPrimaryStage(), popupStage);
 
+    Button understood = new Button("Understood");
+    understood.setOnAction(e -> popupStage.close());
+    container.getChildren().add(understood);
+    container.setAlignment(Pos.CENTER);
     showPopupStage(popupStage, popupLayout, 400, 200);
     popupStage.toFront();
 
@@ -76,10 +81,14 @@ public class UserFeedback {
     VBox popupLayout = createPopupLayout(popupStage);
     TextField headingOne = new TextField("Welcome back to the ");
     headingOne.getStyleClass().add("heading");
-    headingOne.setAlignment(javafx.geometry.Pos.CENTER);
+    headingOne.setEditable(false);
+    headingOne.setFocusTraversable(false);
+    headingOne.setAlignment(Pos.CENTER);
     TextField headingTwo = new TextField("Chaos Game!");
+    headingTwo.setEditable(false);
+    headingTwo.setFocusTraversable(false);
     headingTwo.getStyleClass().add("heading");
-    headingTwo.setAlignment(javafx.geometry.Pos.CENTER);
+    headingTwo.setAlignment(Pos.CENTER);
     TextArea TextArea1 = getStyledTextArea("You can start where u left off or start a new game.");
     Button startNewGame = new Button("Start a new game");
     startNewGame.setAlignment(javafx.geometry.Pos.CENTER);
@@ -124,16 +133,17 @@ public class UserFeedback {
    * Method that displays a welcome message to the user.
    * This one is displayed when the user starts the game for the first time.
    * The user is provided with the option to start a new game.
-   * The user is also informed about how the chaos game works, and how to play it.
    */
   public static void welcomeMessage(Stage primaryStage) {
     Stage popupStage = createPopupStage("Welcome to the Chaos Game!", primaryStage);
     VBox popupLayout = createPopupLayout(popupStage);
     TextField headingOne = new TextField("Welcome to the ");
+    headingOne.setEditable(false);
     headingOne.setFocusTraversable(false);
     headingOne.getStyleClass().add("heading");
     headingOne.setAlignment(javafx.geometry.Pos.CENTER);
     TextField headingTwo = new TextField("Chaos Game!");
+    headingTwo.setEditable(false);
     headingTwo.setFocusTraversable(false);
     headingTwo.getStyleClass().add("heading");
     headingTwo.setAlignment(javafx.geometry.Pos.CENTER);
@@ -141,13 +151,8 @@ public class UserFeedback {
     Button startNewGame = new Button("Start a new game");
     startNewGame.setAlignment(javafx.geometry.Pos.CENTER);
     startNewGame.setOnAction(e -> popupStage.close());
-    Button whatCanIdo = new Button("What can I do?");
-    whatCanIdo.setAlignment(javafx.geometry.Pos.CENTER);
-    whatCanIdo.setOnAction(e -> {
-      popupStage.close();
-      displayUserManual();
-    });
-    setUpMessagePopup(popupStage, popupLayout, headingOne, headingTwo, TextArea1, startNewGame, whatCanIdo);
+
+    setUpMessagePopup(popupStage, popupLayout, headingOne, headingTwo, TextArea1, startNewGame, null);
 
     showPopupStage(popupStage, popupLayout, 500, 400);
     popupStage.toFront();
@@ -192,6 +197,8 @@ public class UserFeedback {
    */
   public static void displayUserManual() {
     Stage popupStage = createPopupStage("User Manual", gameController.getPrimaryStage());
+    popupStage.setMinHeight(800);
+    popupStage.setMinWidth(400);
     popupStage.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
       if (event.getCode() == KeyCode.ENTER) {
         Node focusOwner = popupStage.getScene().getFocusOwner();
@@ -202,25 +209,28 @@ public class UserFeedback {
       }
     });
     VBox popupLayout = createPopupLayout(popupStage);
-
     VBox container = new VBox();
 
     TextField heading1 = new TextField("1. Create a new empty file");
+    heading1.setFocusTraversable(false);
     heading1.setEditable(false);
     heading1.getStyleClass().add("user-manual-title");
     TextArea instructions1 = getStyledTextArea("Create a new empty file of either Julia or Affine type. The default file creation is set to julia. Clicking on the \"Switch to Affine\" button gives the user an option to enter the number of transformations.");
 
     TextField heading2 = new TextField("2. Read description from a file");
+    heading2.setFocusTraversable(false);
     heading2.setEditable(false);
     heading2.getStyleClass().add("user-manual-title");
     TextArea instructions2 = getStyledTextArea("Read description from a file by selecting one from the drop down list. The user has to click on the \"update chaos game\" button in order to register the new configuration.");
 
     TextField heading3 = new TextField("3. Choose a preset fractal");
+    heading3.setFocusTraversable(false);
     heading3.setEditable(false);
     heading3.getStyleClass().add("user-manual-title");
     TextArea instructions3 = getStyledTextArea("The user can choose between three different fractals that have been loaded at application start. This is run by adjusting the number of iterations the user wants and running them by clicking on the \"run iterations\" button.");
 
     TextField heading4 = new TextField("4. Edit the value of the configuration");
+    heading4.setFocusTraversable(false);
     heading4.setEditable(false);
     heading4.getStyleClass().add("user-manual-title");
     TextArea instructions4 = getStyledTextArea("""
@@ -241,15 +251,23 @@ public class UserFeedback {
              Otherwise, all of the changes will be lost.""");
 
     TextField heading5 = new TextField("5. The run steps iterations");
+    heading5.setFocusTraversable(false);
     heading5.setEditable(false);
     heading5.getStyleClass().add("user-manual-title");
     TextArea instructions5 = getStyledTextArea("The run steps iterations runs"
         + " the game for the given number of steps."
         + " It is possible to clear out the canvas by clicking on the \"clear canvas\" button.");
 
-    container.getChildren().addAll(heading1, instructions1, heading2,
-        instructions2, heading3, instructions3, heading4, instructions4,
-        heading5, instructions5);
+    TextField heading6 = new TextField("6. The Colour Mode");
+    heading6.setFocusTraversable(false);
+    heading6.setEditable(false);
+    heading6.getStyleClass().add("user-manual-title");
+    TextArea instructions6 = getStyledTextArea("""
+        There are two different modes:
+            a. Gradient Colour Mode: The fractal is displayed with a gradient of red.
+            b. Count Colour Mode: The fractal is displayed with a count colour mode, where the number of times a point is visited is displayed in a colour gradient.
+        """);
+    container.getChildren().addAll(heading1, instructions1, heading2, instructions2, heading3, instructions3, heading4, instructions4, heading5, instructions5, heading6, instructions6);
 
     Button okayButton = new Button("Understood");
     container.setAlignment(javafx.geometry.Pos.CENTER);
