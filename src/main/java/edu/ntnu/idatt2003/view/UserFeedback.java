@@ -81,11 +81,13 @@ public class UserFeedback {
     TextField headingOne = new TextField("Welcome back to the ");
     headingOne.getStyleClass().add("heading");
     headingOne.setEditable(false);
-    headingOne.setAlignment(javafx.geometry.Pos.CENTER);
+    headingOne.setFocusTraversable(false);
+    headingOne.setAlignment(Pos.CENTER);
     TextField headingTwo = new TextField("Chaos Game!");
     headingTwo.setEditable(false);
+    headingTwo.setFocusTraversable(false);
     headingTwo.getStyleClass().add("heading");
-    headingTwo.setAlignment(javafx.geometry.Pos.CENTER);
+    headingTwo.setAlignment(Pos.CENTER);
     TextArea TextArea1 = getStyledTextArea("You can start where u left off or start a new game.");
     Button startNewGame = new Button("Start a new game");
     startNewGame.setAlignment(javafx.geometry.Pos.CENTER);
