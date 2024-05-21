@@ -19,10 +19,6 @@ public class Main extends Application {
   DisplayScene displayScene;
   private final GameController gameController = GameController.getInstance();
 
-  public static void main(String[] args) {
-    launch(args);
-  }
-
   /**
    * Method that sets the details of the scene.
    *
@@ -36,9 +32,7 @@ public class Main extends Application {
     primaryStage.toBack();
     primaryStage.show();
     primaryStage.setMinWidth(990);
-    primaryStage.setMaxWidth(1200);
     primaryStage.setMinHeight(730);
-    primaryStage.setMaxHeight(1200);
   }
 
   @Override
