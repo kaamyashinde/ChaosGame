@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.KeyActionPolicyController;
+import java.util.Objects;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -8,10 +9,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.Objects;
-
 /**
- * This class is responsible for providing stage creation for the popup windows, for both the user feedback and the edit values pop-up.
+ * This class is responsible for providing stage creation for the popup windows,
+ * for both the user feedback and the edit values pop-up.
  *
  * @author Kaamya Shinde
  * @version 0.1
@@ -20,7 +20,8 @@ import java.util.Objects;
 public class PopupScene {
 
   // Private constructor to prevent instantiation
-  private PopupScene() {}
+  private PopupScene() {
+  }
 
   /**
    * Method that initialises the pop-up stage.
@@ -61,7 +62,8 @@ public class PopupScene {
     overlay.prefWidthProperty().bind(primaryStage.widthProperty());
     overlay.prefHeightProperty().bind(primaryStage.heightProperty());
 
-    popupStage.showingProperty().addListener((observable, oldValue, newValue) -> overlay.setVisible(newValue));
+    popupStage.showingProperty()
+        .addListener((observable, oldValue, newValue) -> overlay.setVisible(newValue));
   }
 
   /**
@@ -74,8 +76,12 @@ public class PopupScene {
     Scene popuScene = new Scene(popupLayout, width, height);
     KeyActionPolicyController.applyEnterKeyActionPolicy(popupStage);
 
-    String popupStyles = Objects.requireNonNull(UserFeedback.class.getResource("/stylesheets/popupStyles.css")).toExternalForm();
-    String buttonStyles = Objects.requireNonNull(UserFeedback.class.getClassLoader().getResource("stylesheets/buttonStyles.css")).toExternalForm();
+    String popupStyles = Objects
+        .requireNonNull(UserFeedback.class
+            .getResource("/stylesheets/popupStyles.css")).toExternalForm();
+    String buttonStyles = Objects
+        .requireNonNull(UserFeedback.class
+            .getClassLoader().getResource("stylesheets/buttonStyles.css")).toExternalForm();
 
     popuScene.getStylesheets().addAll(popupStyles, buttonStyles);
     popupStage.setScene(popuScene);

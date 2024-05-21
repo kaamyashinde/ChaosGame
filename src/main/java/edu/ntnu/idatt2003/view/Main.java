@@ -2,11 +2,10 @@ package edu.ntnu.idatt2003.view;
 
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.controller.KeyActionPolicyController;
+import java.util.Objects;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.Objects;
 
 /**
  * The main class that starts the application.
@@ -42,8 +41,10 @@ public class Main extends Application {
     displayScene = new DisplayScene();
     Scene scene = displayScene.getDisplay(primaryStage);
     KeyActionPolicyController.applyEnterKeyActionPolicy(primaryStage);
-    String mainStyles = Objects.requireNonNull(getClass().getClassLoader().getResource("stylesheets/mainStyles.css")).toExternalForm();
-    String buttonStyles = Objects.requireNonNull(getClass().getClassLoader().getResource("stylesheets/buttonStyles.css")).toExternalForm();
+    String mainStyles = Objects.requireNonNull(getClass()
+        .getClassLoader().getResource("stylesheets/mainStyles.css")).toExternalForm();
+    String buttonStyles = Objects.requireNonNull(getClass()
+        .getClassLoader().getResource("stylesheets/buttonStyles.css")).toExternalForm();
     scene.getStylesheets().addAll(mainStyles, buttonStyles);
     gameController.loadLastGame(displayScene);
     setSceneDetails(primaryStage, scene);

@@ -5,6 +5,8 @@ import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.controller.ObjectListController;
 import edu.ntnu.idatt2003.controller.ValidationController;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
+import static edu.ntnu.idatt2003.view.PopupScene.*;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -14,12 +16,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.List;
 
-import static edu.ntnu.idatt2003.view.PopupScene.*;
 
 /**
- * This class is responsible for creating the pop-up windows for editing the values of the chaos game description.
+ * This class is responsible for creating the pop-up windows
+ * for editing the values of the chaos game description.
  *
  * @author Kaamya Shinde
  * @version 0.5
@@ -27,10 +28,12 @@ import static edu.ntnu.idatt2003.view.PopupScene.*;
  */
 
 public class EditValuesPopUp {
-  private final DescriptionValuesController descriptionValuesController = new DescriptionValuesController();
+  private final DescriptionValuesController descriptionValuesController
+      = new DescriptionValuesController();
   private final ObjectListController objectListController = new ObjectListController();
   private GameController gameController = GameController.getInstance();
   ChaosGameDescription currentDescription;
+
   /**
    * Method that creates the register button for the pop-up window.
    *
@@ -41,11 +44,13 @@ public class EditValuesPopUp {
     registerButton.getStyleClass().add("edit-popup-button");
     return new Button("Register");
   }
+
   /**
    * Method that creates the pop-up window for editing the complex number value.
    */
-  public void createConstantCPopup() {
-    Stage popupStage = createPopupStage("Edit C", gameController.getPrimaryStage());
+  public void createConstantCpopup() {
+    Stage popupStage = createPopupStage("Edit C",
+        gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
     VBox displayMatrix = new VBox();
     VBox left = new VBox();
@@ -68,7 +73,8 @@ public class EditValuesPopUp {
     forButtons.getChildren().add(registerButton);
     forButtons.setAlignment(Pos.CENTER);
 
-    descriptionValuesController.displayC(gameController.getCurrentChaosGameDescription(), textFields);
+    descriptionValuesController
+        .displayC(gameController.getCurrentChaosGameDescription(), textFields);
     popupLayout.getChildren().addAll(displayMatrix, spacer, forButtons);
     dimBackground(gameController.getPrimaryStage(), popupStage);
     showPopupStage(popupStage, popupLayout, 300, 300);
@@ -77,15 +83,18 @@ public class EditValuesPopUp {
         descriptionValuesController.registerC(textFields);
         popupStage.close();
       } catch (Exception exception) {
-        UserFeedback.displayError("Invalid input for the complex number value.", "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
+        UserFeedback.displayError("Invalid input for the complex number value.",
+            "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
       }
     });
   }
+
   /**
    * Method that creates the pop-up window for editing the min and max coordinates.
    */
   public void createMaxAndMinPopup() {
-    Stage popupStage = createPopupStage("Edit Min and Max", gameController.getPrimaryStage());
+    Stage popupStage = createPopupStage("Edit Min and Max",
+        gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
     HBox minValues = new HBox();
     HBox maxValues = new HBox();
@@ -115,15 +124,19 @@ public class EditValuesPopUp {
         descriptionValuesController.registerCoordinates(textFields);
         popupStage.close();
       } catch (Exception exception) {
-        UserFeedback.displayError("Invalid input for the max or min value.", "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
+        UserFeedback.displayError("Invalid input for the max or min value.",
+            "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
       }
     });
   }
+
   /**
-   * Method that creates the pop-up window for editing the affine transformations.
+   * Method that creates the pop-up window for editing the
+   * affine transformations.
    */
   public void createAffineTransformationPopup() {
-    Stage popupStage = createPopupStage("Edit affine transformations", gameController.getPrimaryStage());
+    Stage popupStage = createPopupStage("Edit affine transformations",
+        gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
     HBox values = new HBox();
     values.setAlignment(Pos.CENTER);
@@ -142,7 +155,9 @@ public class EditValuesPopUp {
     transformationNumber.getStyleClass().add("display-number");
 
     List<Button> traverseButtons = objectListController.affineTransformationButtonsList();
-    descriptionValuesController.displayCorrectAffineTransformation(currentDescription, traverseButtons, textFields, transformationNumber);
+    descriptionValuesController
+        .displayCorrectAffineTransformation(currentDescription,
+            traverseButtons, textFields, transformationNumber);
     matrixRow1.getChildren().addAll(textFields.get(0), textFields.get(1));
     matrixRow2.getChildren().addAll(textFields.get(2), textFields.get(3));
     VBox spacerBetweenMatrixAndVector = new VBox();
@@ -168,30 +183,39 @@ public class EditValuesPopUp {
 
     HBox transverseThroughTransformations = new HBox();
     transverseThroughTransformations.setAlignment(Pos.CENTER);
-    transverseThroughTransformations.getChildren().addAll(traverseButtons.get(0), transformationNumber, traverseButtons.get(1));
+    transverseThroughTransformations.getChildren()
+        .addAll(traverseButtons.get(0), transformationNumber, traverseButtons.get(1));
     forButtons.setSpacing(20);
     forButtons.getChildren().addAll(transverseThroughTransformations, registerButtonBox);
     traverseButtons.forEach(button -> button.setPrefHeight(transformationNumber.getHeight()));
-    popupLayout.getChildren().addAll(values, spacer, forButtons);
+    popupLayout.getChildren()
+        .addAll(values, spacer, forButtons);
     dimBackground(gameController.getPrimaryStage(), popupStage);
     showPopupStage(popupStage, popupLayout, 300, 300);
     registerButton.setOnAction(e -> {
       try {
         ValidationController.validateInteger(transformationNumber.getText());
-        descriptionValuesController.registerAffineTransformations(Integer.parseInt(transformationNumber.getText()) - 1, textFields);
+        descriptionValuesController
+            .registerAffineTransformations(
+                Integer.parseInt(transformationNumber.getText()) - 1, textFields);
         popupStage.close();
 
       } catch (Exception exception) {
-        UserFeedback.displayError("Invalid input for the affine transformations.", "Please ensure that the input is a number. Remember to use '.' as the decimal separator.");
+        UserFeedback.displayError("Invalid input for the affine transformations.",
+            "Please ensure that the input is a number."
+                + " Remember to use '.' as the decimal separator.");
       }
     });
   }
+
   /**
-   * Method that sets the current chaos game description to the one that is currently being used in the game.
+   * Method that sets the current chaos game description to
+   * the one that is currently being used in the game.
    */
   public void setCurrentChaosGameDescription() {
     currentDescription = gameController.getCurrentChaosGameDescription();
   }
+
   /**
    * Method that sets the chaos game description to the one that is passed as an input.
    *
