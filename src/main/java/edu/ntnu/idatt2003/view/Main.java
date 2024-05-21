@@ -6,6 +6,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 /**
  * The main class that starts the application.
  * It is responsible for starting the application and loading the last game state.
@@ -40,8 +42,8 @@ public class Main extends Application {
     displayScene = new DisplayScene();
     Scene scene = displayScene.getDisplay(primaryStage);
     KeyActionPolicyController.applyEnterKeyActionPolicy(primaryStage);
-    String mainStyles = getClass().getClassLoader().getResource("stylesheets/mainStyles.css").toExternalForm();
-    String buttonStyles = getClass().getClassLoader().getResource("stylesheets/buttonStyles.css").toExternalForm();
+    String mainStyles = Objects.requireNonNull(getClass().getClassLoader().getResource("stylesheets/mainStyles.css")).toExternalForm();
+    String buttonStyles = Objects.requireNonNull(getClass().getClassLoader().getResource("stylesheets/buttonStyles.css")).toExternalForm();
     scene.getStylesheets().addAll(mainStyles, buttonStyles);
     gameController.loadLastGame(displayScene);
     setSceneDetails(primaryStage, scene);
@@ -67,7 +69,7 @@ public class Main extends Application {
     if (!gameController.getPersistenceIsNull()) {
       UserFeedback.welcomeBackMessage(primaryStage, displayScene);
     } else {
-      UserFeedback.welcomeMessage(primaryStage, displayScene);
+      UserFeedback.welcomeMessage(primaryStage);
     }
   }
 

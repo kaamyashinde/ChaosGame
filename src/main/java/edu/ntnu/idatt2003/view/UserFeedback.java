@@ -119,7 +119,7 @@ public class UserFeedback {
    * The user is provided with the option to start a new game.
    * The user is also informed about how the chaos game works, and how to play it.
    */
-  public static void welcomeMessage(Stage primaryStage, ChaosGameObserver observer) {
+  public static void welcomeMessage(Stage primaryStage) {
     Stage popupStage = createPopupStage("Welcome to the Chaos Game!", primaryStage);
     VBox popupLayout = createPopupLayout(popupStage);
     TextField headingOne = new TextField("Welcome to the ");
@@ -133,9 +133,7 @@ public class UserFeedback {
     TextArea TextArea1 = getStyledTextArea("The Chaos Game is a mathematical game that creates fractals using a set of rules. The game is played by selecting a point on the canvas and then clicking on the run iterations button. The game will then run the iterations and create a fractal. ");
     Button startNewGame = new Button("Start a new game");
     startNewGame.setAlignment(javafx.geometry.Pos.CENTER);
-    startNewGame.setOnAction(e -> {
-      popupStage.close();
-    });
+    startNewGame.setOnAction(e -> popupStage.close());
     Button whatCanIDo = new Button("What can I do?");
     whatCanIDo.setAlignment(javafx.geometry.Pos.CENTER);
     whatCanIDo.setOnAction(e -> {
@@ -163,9 +161,7 @@ public class UserFeedback {
 
     Button okayButton = new Button("Okay");
     container.setAlignment(javafx.geometry.Pos.CENTER);
-    okayButton.setOnAction(e -> {
-      popupStage.close();
-    });
+    okayButton.setOnAction(e -> popupStage.close());
 
     PopupScene.dimBackground(gameController.getPrimaryStage(), popupStage);
     container.getChildren().add(okayButton);
@@ -220,11 +216,12 @@ public class UserFeedback {
     TextField heading4 = new TextField("4. Edit the value of the configuration");
     heading4.setEditable(false);
     heading4.getStyleClass().add("user-manual-title");
-    TextArea instructions4 = getStyledTextArea("There are two ways to do this :\n" +
-        "    a. Edit Current Game Description. The user updates the value of the configuration that is currently being used.\n" +
-        "    b. Edit Selected Description. The user can select a file to read from the drop down list and then edit the selected file. The user does not need to click on the \"update chaos game\" button in order for the \"edit selected description\" button to work. If the user chooses to update the chaos game after reading from the file, they can also use the \"edit current description\" button to update the configuration.\n" +
-        "    After doing so, the user has to enter the name of the file they want to save the description to. It is possible to create a new file, by writing a new name in the input, or the user can replace the existing file by writing the name of the file.\n" +
-        "    In order to save the file, the user has to click on the \"save description\" button. Otherwise, all of the changes will be lost.");
+    TextArea instructions4 = getStyledTextArea("""
+        There are two ways to do this :
+            a. Edit Current Game Description. The user updates the value of the configuration that is currently being used.
+            b. Edit Selected Description. The user can select a file to read from the drop down list and then edit the selected file. The user does not need to click on the "update chaos game" button in order for the "edit selected description" button to work. If the user chooses to update the chaos game after reading from the file, they can also use the "edit current description" button to update the configuration.
+            After doing so, the user has to enter the name of the file they want to save the description to. It is possible to create a new file, by writing a new name in the input, or the user can replace the existing file by writing the name of the file.
+            In order to save the file, the user has to click on the "save description" button. Otherwise, all of the changes will be lost.""");
 
     TextField heading5 = new TextField("5. The run steps iterations");
     heading5.setEditable(false);
@@ -235,9 +232,7 @@ public class UserFeedback {
 
     Button okayButton = new Button("Understood");
     container.setAlignment(javafx.geometry.Pos.CENTER);
-    okayButton.setOnAction(e -> {
-      popupStage.close();
-    });
+    okayButton.setOnAction(e ->  popupStage.close());
 
     PopupScene.dimBackground(gameController.getPrimaryStage(), popupStage);
     container.getChildren().add(okayButton);

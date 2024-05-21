@@ -78,7 +78,7 @@ public class ObjectListController {
     return List.of(minCoordsX0, minCoordsX1, maxCoordsX0, maxCoordsX1);
   }
   /**
-   * A method that sets the prefered width of the text fields.
+   * A method that sets the preferred width of the text fields.
    */
   public void setTextFieldWidth(List<TextField> textFields) {
     textFields.forEach(textField -> textField.setPrefWidth(70));

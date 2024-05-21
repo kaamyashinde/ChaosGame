@@ -116,7 +116,7 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private HBox bodyHBox() {
     HBox bodyRow = new HBox();
-    bodyRow.getChildren().addAll(leftBodyRow(bodyRow), getChaosGamePane(bodyRow), rightBodyRow(bodyRow));
+    bodyRow.getChildren().addAll(leftBodyRow(), getChaosGamePane(), rightBodyRow());
     bodyRow.setAlignment(Pos.CENTER);
     return bodyRow;
   }
@@ -215,14 +215,13 @@ public class DisplayScene implements ChaosGameObserver {
   /**
    * Method that creates the canvas for the Chaos Game and returns the StackPane containing the canvas.
    *
-   * @param bodyRow The body row where the canvas is placed.
    * @return The StackPane containing the canvas.
    */
-  private ImageView getChaosGamePane(HBox bodyRow) {
+  private ImageView getChaosGamePane() {
     graphicsContext = null;
     Pair<ImageView, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
     chaosGameImageView = pairContainingPaneAndContext.getKey();
-    // chaosGamePane.getStyleClass().add("inner-border");
+
     chaosGameImageView.fitWidthProperty().bind(Bindings.min(layout.widthProperty().divide(2), 500));
     chaosGameImageView.fitHeightProperty().bind(Bindings.min(layout.heightProperty().divide(2), 500));
     chaosGameImageView.setPreserveRatio(true);
@@ -337,10 +336,9 @@ public class DisplayScene implements ChaosGameObserver {
   /**
    * Method that creates the left column of the body row.
    *
-   * @param bodyRow The body row where the left column is placed.
    * @return The VBox with the left column.
    */
-  private VBox leftBodyRow(HBox bodyRow) {
+  private VBox leftBodyRow() {
     leftBodyRow = new VBox();
     leftBodyRow.getStyleClass().add("inner-border");
     leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), saveCurrentDescToFile());
@@ -354,13 +352,11 @@ public class DisplayScene implements ChaosGameObserver {
   /**
    * Method that creates the right column of the body row.
    *
-   * @param bodyRow The body row where the right column is placed.
    * @return The VBox with the right column.
    */
-  private VBox rightBodyRow(HBox bodyRow) {
+  private VBox rightBodyRow() {
     rightBodyRow = new VBox();
     rightBodyRow.getStyleClass().add("inner-border");
-    //rightBodyRow.prefWidthProperty().bind(bodyRow.widthProperty());
     rightBodyRow.setPrefSize(400, 500);
     rightBodyRow.setMinSize(250, 400);
     rightBodyRow.setMaxSize(400, 600);
@@ -382,9 +378,9 @@ public class DisplayScene implements ChaosGameObserver {
 
     Button saveCurrentDescToFile = new Button("Save Current Config");
     saveCurrentDescToFile.setAlignment(Pos.CENTER);
-    saveCurrentDescToFile.setOnAction(e -> {
-      saveCurrentDescToFileAction(saveToFile);
-    });
+    saveCurrentDescToFile.setOnAction(e ->
+      saveCurrentDescToFileAction(saveToFile)
+   );
     saveCurrentDesc.getChildren().addAll(saveToFileDisplayHBox, saveToFile, saveCurrentDescToFile);
     saveCurrentDesc.setAlignment(Pos.CENTER);
     VBox.setMargin(saveCurrentDesc, new Insets(20));
@@ -420,7 +416,6 @@ public class DisplayScene implements ChaosGameObserver {
       } else {
         UserFeedback.displayError("No number of transformations was given.", "Please enter the number of transformations and try again.");
       }
-      exception.printStackTrace();
     }
   }
 
@@ -454,7 +449,6 @@ public class DisplayScene implements ChaosGameObserver {
       updateChaosGameFromSelectedFile();
     } catch (Exception exception) {
       UserFeedback.displayError("No file was chosen.", "Please choose a file from the drop down and try again.");
-      exception.printStackTrace();
     }
   }
 
@@ -528,7 +522,6 @@ public class DisplayScene implements ChaosGameObserver {
       gameController.runGame(steps, chaosGameImageView);
     } catch (Exception exception) {
       UserFeedback.displayError("Number of iterations has to be a positive integer.", "Please enter a positive integer to run the application.");
-      exception.printStackTrace();
     }
   }
 
@@ -546,7 +539,6 @@ public class DisplayScene implements ChaosGameObserver {
       saveToFile.clear();
     } catch (Exception exception) {
       UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
-      exception.printStackTrace();
     }
   }
 
