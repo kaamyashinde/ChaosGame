@@ -4,22 +4,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Group ID for the project -->
     <groupId>grp_1</groupId>
+    <!-- Artifact ID for the project -->
     <artifactId>IDATT2003-grp1-ChaosGame</artifactId>
+    <!-- Version of the project -->
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <!-- Java compiler source version -->
         <maven.compiler.source>21</maven.compiler.source>
+        <!-- Java compiler target version -->
         <maven.compiler.target>21</maven.compiler.target>
+        <!-- Source encoding for the project -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!-- Dependency for JavaFX controls -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.1</version>
         </dependency>
+        <!-- Dependency for JUnit Jupiter (JUnit 5) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -29,16 +37,19 @@
 
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin for compiling Java code -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.12.1</version>
             </plugin>
+            <!-- Maven Surefire Plugin for running unit tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.3</version>
             </plugin>
+            <!-- JavaFX Maven Plugin for running JavaFX applications -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -47,6 +58,7 @@
                     <mainClass>edu.ntnu.idatt2003.ChaosGameApplication</mainClass>
                 </configuration>
             </plugin>
+            <!-- Maven Javadoc Plugin for generating Javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
