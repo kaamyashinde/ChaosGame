@@ -6,9 +6,11 @@ import edu.ntnu.idatt2003.model.utils.ModelValidators;
  * A class to represent a complex number that inherits the Vector2D class.
  * Apart from the constructor, it has a method to find the square root of the complex number.
  * The addition and subtraction methods are inherited from the Vector2D class.
- * @since 0.1.0
- * @version 0.2.0
+ *
  * @see Vector2D
+ * @since 0.1.0
+ * @version 1.3.2
+ * @author 10072
  */
 public class Complex extends Vector2D {
 
@@ -30,7 +32,8 @@ public class Complex extends Vector2D {
    * @return a new Complex object
    * @throws IllegalArgumentException if the input values are not valid
    */
-  public static Complex createComplex(double inputRealPart, double inputImaginaryPart) throws IllegalArgumentException {
+  public static Complex createComplex(double inputRealPart, double inputImaginaryPart)
+          throws IllegalArgumentException {
     ModelValidators.validateRealPartValue(inputRealPart);
     ModelValidators.validateImaginaryPartValue(inputImaginaryPart);
     return new Complex(inputRealPart, inputImaginaryPart);
@@ -46,6 +49,7 @@ public class Complex extends Vector2D {
    *     root of the magnitude of the original complex number multiplied by the sine of half the
    *     angle.
    */
+
   public Complex sqrt() {
     double magnitude = Math.sqrt(Math.sqrt(Math.pow(getX0(), 2) + Math.pow(getX1(), 2)));
     double angle = Math.atan2(getX1(), getX0()) / 2.0;
@@ -61,6 +65,7 @@ public class Complex extends Vector2D {
    *
    * @return the real part of the complex number
    */
+
   public double getReal() {
     return this.getX0();
   }
@@ -73,12 +78,14 @@ public class Complex extends Vector2D {
   public double getImaginary() {
     return this.getX1();
   }
+
   /**
    * Method for subtracting two complex numbers.
    *
-   * @param other the other complex number to add to this complex number
-   * @return Complex The sum of the two complex numbers.
+   * @param other the other complex number to subtract to this complex number
+   * @return the difference between the two complex numbers.
    */
+
   public Complex subtract(Complex other) {
     if (other == null) {
       throw new ClassCastException("Complex number expected");

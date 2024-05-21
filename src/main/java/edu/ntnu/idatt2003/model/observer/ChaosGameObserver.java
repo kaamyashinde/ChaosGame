@@ -1,6 +1,14 @@
 package edu.ntnu.idatt2003.model.observer;
 
+/**
+ * An interface for the ChaosGameObserver class.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ * @author 10041
+ */
 public interface ChaosGameObserver {
-  void updateAddPixel(double X0, double X1);
-  void updateRemovePixel(double X0, double X1);
+  void updateAddPixel(double x0, double x1);
+
+  void updateRemovePixel(double x0, double x1);
 }

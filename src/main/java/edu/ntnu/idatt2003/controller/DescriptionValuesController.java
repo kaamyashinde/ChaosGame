@@ -7,13 +7,15 @@ import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
+import java.util.List;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import java.util.List;
+
 
 /**
  * The controller for the handling of the chaos game description values.
- * It is responsible for registering, displaying and clearing the values of the chaos game description.
+ * It is responsible for registering, displaying and clearing
+ * the values of the chaos game description.
  *
  * @author 10041
  * @version 0.4
@@ -31,10 +33,16 @@ public class DescriptionValuesController {
    * @param inputTransformationTextFields the list of text fields for the affine transformations
    * @param inputTransformationNumber     the text field for the affine transformation number
    */
-  private void handleNextButtonAction(ChaosGameDescription inputDesc, List<TextField> inputTransformationTextFields, TextField inputTransformationNumber) {
+
+  private void handleNextButtonAction(ChaosGameDescription inputDesc,
+                                      List<TextField> inputTransformationTextFields,
+                                      TextField inputTransformationNumber) {
     transformNum = (transformNum + 1) % transforms.size();
-    updateTransformationDisplay(inputDesc, inputTransformationTextFields, inputTransformationNumber);
+    updateTransformationDisplay(inputDesc,
+            inputTransformationTextFields,
+            inputTransformationNumber);
   }
+
   /**
    * Method that handles the action for the previous button.
    *
@@ -42,6 +50,7 @@ public class DescriptionValuesController {
    * @param inputTransformationTextFields the list of text fields for the affine transformations
    * @param inputTransformationNumber     the text field for the affine transformation number
    */
+
   private void handlePreviousButtonAction(ChaosGameDescription inputDesc, List<TextField> inputTransformationTextFields, TextField inputTransformationNumber) {
     transformNum = (transformNum - 1 + transforms.size()) % transforms.size();
     updateTransformationDisplay(inputDesc, inputTransformationTextFields, inputTransformationNumber);
@@ -54,10 +63,12 @@ public class DescriptionValuesController {
    * @param inputTransformationTextFields the list of text fields for the affine transformations
    * @param inputTransformationNumber     the text field for the affine transformation number
    */
+
   private void setButtonActions(List<Button> inputTraverseButtons, ChaosGameDescription inputDesc, List<TextField> inputTransformationTextFields, TextField inputTransformationNumber) {
     inputTraverseButtons.get(0).setOnAction(e -> handlePreviousButtonAction(inputDesc, inputTransformationTextFields, inputTransformationNumber));
     inputTraverseButtons.get(1).setOnAction(e -> handleNextButtonAction(inputDesc, inputTransformationTextFields, inputTransformationNumber));
   }
+
   /**
    * Method that updates the display of the affine transformations.
    *
@@ -65,10 +76,12 @@ public class DescriptionValuesController {
    * @param inputTransformationTextFields the list of text fields for the affine transformations
    * @param inputTransformationNumber     the text field for the affine transformation number
    */
+
   private void updateTransformationDisplay(ChaosGameDescription inputDesc, List<TextField> inputTransformationTextFields, TextField inputTransformationNumber) {
     displayAffineTransformations(transformNum, inputDesc, inputTransformationTextFields);
     inputTransformationNumber.setText(String.valueOf(transformNum + 1));
   }
+
   /**
    * Method that displays the affine transformations. This is done based on the index of the affine transformation.
    *
@@ -76,6 +89,7 @@ public class DescriptionValuesController {
    * @param inputDesc       the chaos game description
    * @param inputTextFields the list of text fields for the affine transformations
    */
+
   private void displayAffineTransformations(int index, ChaosGameDescription inputDesc, List<TextField> inputTextFields) {
     AffineTransform2D affine = (AffineTransform2D) inputDesc.getTransforms().get(index);
     inputTextFields.get(0).setText(String.valueOf(affine.getMatrix().getA00()));
@@ -85,6 +99,7 @@ public class DescriptionValuesController {
     inputTextFields.get(4).setText(String.valueOf(affine.getVector().getX0()));
     inputTextFields.get(5).setText(String.valueOf(affine.getVector().getX1()));
   }
+
   /**
    * Method that displays the C value for the Julia transformation.
    *
@@ -117,18 +132,21 @@ public class DescriptionValuesController {
    * @param inputDescription the chaos game description
    * @param inputTextFields  the list of text fields for the max and min coordinates
    */
+
   public void displayMaxAndMinCoords(ChaosGameDescription inputDescription, List<TextField> inputTextFields) {
     inputTextFields.get(0).setText(String.valueOf(inputDescription.getMinCoords().getX0()));
     inputTextFields.get(1).setText(String.valueOf(inputDescription.getMinCoords().getX1()));
     inputTextFields.get(2).setText(String.valueOf(inputDescription.getMaxCoords().getX0()));
     inputTextFields.get(3).setText(String.valueOf(inputDescription.getMaxCoords().getX1()));
   }
+
   /**
    * Method that registers the affine transformations from the user input.
    *
    * @param index     the index of the affine transformation
    * @param inputList the list containing the text fields for the matrix and vector of the affine transformation.
    */
+
   public void registerAffineTransformations(int index, List<TextField> inputList) {
     inputList.forEach(textField -> ValidationController.validateDouble(textField.getText()));
 
@@ -162,6 +180,11 @@ public class DescriptionValuesController {
     gameController.setCurrentChaosGameDescription(currentDescription);
   }
 
+  /**
+   * Method that registers the max and min coordinates of the canvas.
+   *
+   * @param inputList the list containing the text fields for the max and min coordinates.
+   */
   public void registerCoordinates(List<TextField> inputList) {
     inputList.forEach(textField -> ValidationController.validateDouble(textField.getText()));
     double minX0 = Double.parseDouble(inputList.get(0).getText());

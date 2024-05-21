@@ -5,43 +5,42 @@ import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.transformations.AffineTransform2D;
 import edu.ntnu.idatt2003.model.transformations.JuliaTransform;
 import edu.ntnu.idatt2003.model.transformations.Transform2D;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * A class to represent a description of a chaos game. The description includes the coordinates of the lower left and
+ * A class to represent a description of a chaos game.
+ * The description includes the coordinates of the lower left and
  * upper right corners of the canvas, as well as a list of transformations to apply to the points.
  * The transformations can be of the type AffineTransform2D or JuliaTransform.
  * The class also has a toString method to write the description to a file.
  *
- * @author janja
- * @author Kaamya Shinde
- * @version 0.2.0
+ *
  * @see AffineTransform2D
  * @see JuliaTransform
  * @see Transform2D
  * @see Vector2D
  * @since 0.2.0
+ * @version 1.4.5
+ * @author 10041
+ * @author 10072
  */
 public class ChaosGameDescription {
 
   private Vector2D minCoords;
   private Vector2D maxCoords;
   private List<Transform2D> transforms;
-  private List<Double> probabilities;
-  private List<Integer> transformCounts; // To count how many times each transform is used
-
 
   /**
-   * Constructor for the ChaosGameDescription class. //Uten statestikk
+   * Constructor for the ChaosGameDescription class.
    *
-   * @param minCoords
-   * @param maxCoords
-   * @param transforms
+   * @param minCoords the coordinates of the lower left corner of the canvas
+   * @param maxCoords the coordinates of the upper right corner of the canvas
+   * @param transforms the list of transformations to apply to the points
    */
-  public ChaosGameDescription(Vector2D minCoords, Vector2D maxCoords, List<Transform2D> transforms) {
+  public ChaosGameDescription(Vector2D minCoords, Vector2D maxCoords,
+                              List<Transform2D> transforms) {
     this.minCoords = minCoords;
     this.maxCoords = maxCoords;
     this.transforms = transforms;
@@ -99,7 +98,8 @@ public class ChaosGameDescription {
 
   /**
    * Writes the description of the chaos game to a file.
-   * The description includes the type of the transformations, the coordinates of the lower left and upper right corners
+   * The description includes the type of the transformations,
+   * the coordinates of the lower left and upper right corners
    * of the canvas, and the parameters of each transformation.
    *
    * @return a string with the description of the chaos game
@@ -129,7 +129,8 @@ public class ChaosGameDescription {
         Vector2D vector = affine.getVector();
         sb.append(matrix.getA00()).append(",").append(matrix.getA01()).append(",")
             .append(matrix.getA10()).append(",").append(matrix.getA11()).append(",")
-            .append(vector.getX0()).append(",").append(vector.getX1()).append(" # ").append(transformNumber).append("st transform\n");
+            .append(vector.getX0()).append(",").append(vector.getX1()).append(" # ")
+            .append(transformNumber).append("st transform\n");
       } else if (transform instanceof JuliaTransform) {
         JuliaTransform julia = (JuliaTransform) transform;
         Vector2D point = julia.getPoint();

@@ -5,6 +5,8 @@ import edu.ntnu.idatt2003.controller.*;
 import edu.ntnu.idatt2003.model.engine.ChaosGame;
 import edu.ntnu.idatt2003.model.engine.ChaosGameDescription;
 import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,16 +20,18 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
- * Class that creates the scene for the Chaos Game. The scene consists of a navigation row, a title row, a body row and a footer row.
+ * Class that creates the scene for the Chaos Game.
+ * The scene consists of a navigation row, a title row, a body row and a footer row.
  * The body row is further divided into three columns.
  * The left column is responsible for the actions related to saving the configurations.
  * The middle column is where the canvas is placed.
- * The right column is responsible for the actions related to changing values of the configurations, along with the option to choose from a predefined set of fractals.
- * The footer row is responsible for the actions related to running the game and clearing the canvas.
+ * The right column is responsible for the actions related to changing values of the configurations,
+ * along with the option to choose from a predefined set of fractals.
+ * The footer row is responsible for the actions related to running
+ * the game and clearing the canvas.
  *
  * @author Kaamya Shinde
  * @version 0.7
@@ -49,12 +53,15 @@ public class DisplayScene implements ChaosGameObserver {
   GraphicsContext graphicsContext;
   TextField numberOfTransformations;
   EditValuesPopUp editValuesPopUp;
-  Button editCButton;
+  Button editCbutton;
   Button editMaxAndMinButton;
   Button editAffineTransformationsButton;
   TextField fileName;
   ImageView chaosGameImageView;
 
+  /**
+   * Constructor for the DisplayScene class.
+   */
   public DisplayScene() {
     gameController = GameController.getInstance();
     observerActionController = new ObserverActionController();
@@ -65,29 +72,31 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
-   * Method that updates the canvas by adding a colored pixel at the given coordinates. This method is inherited from the ChaosGameObserver interface.
+   * Method that updates the canvas by adding a colored pixel at the given coordinates.
+   * This method is inherited from the ChaosGameObserver interface.
    *
-   * @param X0 The x-coordinate of the pixel.
-   * @param X1 The y-coordinate of the pixel.
+   * @param x0 The x-coordinate of the pixel.
+   * @param x1 The y-coordinate of the pixel.
    */
   @Override
-  public void updateAddPixel(double X0, double X1) {
+  public void updateAddPixel(double x0, double x1) {
     if (gameController.getUseGradient()) {
-      observerActionController.addGradientColor(X0, X1, graphicsContext);
+      observerActionController.addGradientColor(x0, x1, graphicsContext);
     } else {
-      observerActionController.addColorBasedOnCount(X0, X1, graphicsContext);
+      observerActionController.addColorBasedOnCount(x0, x1, graphicsContext);
     }
   }
 
   /**
-   * Method that updates the canvas by removing a colored pixel at the given coordinates. This method is inherited from the ChaosGameObserver interface.
+   * Method that updates the canvas by removing a colored pixel at the given coordinates.
+   * This method is inherited from the ChaosGameObserver interface.
    *
-   * @param X0 The x-coordinate of the pixel.
-   * @param X1 The y-coordinate of the pixel.
+   * @param x0 The x-coordinate of the pixel.
+   * @param x1 The y-coordinate of the pixel.
    */
   @Override
-  public void updateRemovePixel(double X0, double X1) {
-    observerActionController.removeColor(X0, X1, graphicsContext);
+  public void updateRemovePixel(double x0, double x1) {
+    observerActionController.removeColor(x0, x1, graphicsContext);
   }
 
   /**
@@ -125,7 +134,7 @@ public class DisplayScene implements ChaosGameObserver {
    * Method that creates the body row by creating three VBoxes and a StackPane.
    * The StackPane is where the canvas is placed and is at the centre of the body row.
    */
-  private HBox bodyHBox() {
+  private HBox bodyHbox() {
     HBox bodyRow = new HBox();
     bodyRow.getChildren().addAll(leftBodyRow(), getChaosGamePane(), rightBodyRow());
     bodyRow.setAlignment(Pos.CENTER);
@@ -161,16 +170,16 @@ public class DisplayScene implements ChaosGameObserver {
    * @param dropDownMenu The VBox where the drop down menu is placed.
    * @return The HBox with the drop down menu.
    */
-  private HBox getDropDownInHBox(VBox dropDownMenu) {
-    HBox fileDropDownHBox = new HBox();
+  private HBox getDropDownInHbox(VBox dropDownMenu) {
+    HBox fileDropDownHbox = new HBox();
     ComboBox<String> fileDropDown = fileController.getFileDropDown();
-    fileDropDownHBox.getChildren().add(fileDropDown);
+    fileDropDownHbox.getChildren().add(fileDropDown);
     HBox.setMargin(fileDropDown, new Insets(10));
-    fileDropDownHBox.setAlignment(Pos.CENTER);
+    fileDropDownHbox.setAlignment(Pos.CENTER);
     fileDropDown.getStyleClass().add("my-combo-box");
     fileDropDown.setPromptText("Select a file");
     dropDownMenu.setAlignment(Pos.CENTER);
-    return fileDropDownHBox;
+    return fileDropDownHbox;
   }
 
   /**
@@ -212,7 +221,7 @@ public class DisplayScene implements ChaosGameObserver {
    *
    * @return The HBox with the title.
    */
-  private HBox titleHBox() {
+  private HBox titleHbox() {
     HBox titleRow = new HBox();
     titleRow.prefWidthProperty().bind(layout.widthProperty());
     titleRow.setPrefHeight(90);
@@ -227,17 +236,20 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
-   * Method that creates the canvas for the Chaos Game and returns the StackPane containing the canvas.
+   * Method that creates the canvas for the Chaos Game
+   * and returns the StackPane containing the canvas.
    *
    * @return The StackPane containing the canvas.
    */
   private ImageView getChaosGamePane() {
     graphicsContext = null;
-    Pair<ImageView, GraphicsContext> pairContainingPaneAndContext = gameController.createGamePaneCanvas(500, 500, this);
+    Pair<ImageView, GraphicsContext> pairContainingPaneAndContext = gameController
+        .createGamePaneCanvas(500, 500, this);
     chaosGameImageView = pairContainingPaneAndContext.getKey();
-
-    chaosGameImageView.fitWidthProperty().bind(Bindings.min(layout.widthProperty().divide(2), 500));
-    chaosGameImageView.fitHeightProperty().bind(Bindings.min(layout.heightProperty().divide(2), 500));
+    chaosGameImageView.fitWidthProperty()
+        .bind(Bindings.min(layout.widthProperty().divide(2), 500));
+    chaosGameImageView.fitHeightProperty()
+        .bind(Bindings.min(layout.heightProperty().divide(2), 500));
     chaosGameImageView.setPreserveRatio(true);
     chaosGameImageView.setSmooth(true);
     chaosGameImageView.setCache(true);
@@ -246,7 +258,8 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
-   * Method that sets the title of the scene to "Chaos Game" and returns the TextField with the title.
+   * Method that sets the title of the scene to "Chaos Game"
+   * and returns the TextField with the title.
    *
    * @return The TextField with the title.
    */
@@ -275,14 +288,15 @@ public class DisplayScene implements ChaosGameObserver {
     Button registerFileButton = new Button("Create empty File");
     Button switchButton = new Button("Switch to Affine");
 
-    HBox emptyFractalsDisplayHBox = styleTextFields(new TextField("Empty Fractal"));
+    HBox emptyFractalsDisplayHbox = styleTextFields(new TextField("Empty Fractal"));
 
-    inputFields.getChildren().addAll(emptyFractalsDisplayHBox, fileName);
+    inputFields.getChildren().addAll(emptyFractalsDisplayHbox, fileName);
     emptyFractal.getChildren().addAll(inputFields, registerFileButton, switchButton);
     emptyFractal.setAlignment(Pos.CENTER);
     VBox.setMargin(emptyFractal, new Insets(10, 20, 10, 20));
 
-    switchButton.setOnAction(e -> emptyFractalController.switchFractalToBeCreated(switchButton, inputFields, numberOfTransformations));
+    switchButton.setOnAction(e -> emptyFractalController
+        .switchFractalToBeCreated(switchButton, inputFields, numberOfTransformations));
     registerFileButton.setOnAction(e -> createEmptyFractalFileAction());
 
     return emptyFractal;
@@ -295,13 +309,13 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private VBox displayPresetsOptions() {
     VBox displayPresetsOptions = new VBox();
-    HBox presetsDisplayHBox = styleTextFields(new TextField("Choose a fractal"));
+    HBox presetsDisplayHbox = styleTextFields(new TextField("Choose a fractal"));
     VBox presetsButtons = new VBox();
 
     initiateButtonsListAndAddPresetButtons();
 
     buttons.forEach(button -> presetsButtons.getChildren().add(button));
-    displayPresetsOptions.getChildren().addAll(presetsDisplayHBox, presetsButtons);
+    displayPresetsOptions.getChildren().addAll(presetsDisplayHbox, presetsButtons);
     displayPresetsOptions.setAlignment(Pos.CENTER);
     VBox.setMargin(displayPresetsOptions, new Insets(20));
     return displayPresetsOptions;
@@ -314,7 +328,7 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private VBox dropDownMenu() {
     TextField dropDownMenuDisplay = new TextField("Read file:");
-    HBox dropDownMenuDisplayHBox = styleTextFields(dropDownMenuDisplay);
+    HBox dropDownMenuDisplayHbox = styleTextFields(dropDownMenuDisplay);
 
     VBox dropDownMenu = new VBox();
 
@@ -382,7 +396,8 @@ public class DisplayScene implements ChaosGameObserver {
     rightBodyRow.prefWidthProperty().bind(root.widthProperty());
     rightBodyRow.prefHeightProperty().bind(root.heightProperty());
     displayEditOptions = new VBox();
-    rightBodyRow.getChildren().addAll(displayPresetsOptions(), editMenuButtons(), displayEditOptions);
+    rightBodyRow.getChildren().addAll(displayPresetsOptions(),
+        editMenuButtons(), displayEditOptions);
     return rightBodyRow;
   }
 
@@ -393,7 +408,7 @@ public class DisplayScene implements ChaosGameObserver {
 
     VBox saveCurrentDesc = new VBox();
 
-    HBox saveToFileDisplayHBox = styleTextFields(new TextField("Save to file:"));
+    HBox saveToFileDisplayHbox = styleTextFields(new TextField("Save to file:"));
     TextField saveToFile = new TextField();
     saveToFile.setPromptText("Enter file name");
 
@@ -465,15 +480,18 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private void createEmptyFractalFileAction() {
     try {
-      emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
+      emptyFractalController
+          .toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
       fileController.updateFileDropDown();
       fileName.clear();
       numberOfTransformations.clear();
     } catch (Exception exception) {
       if (fileName.getText().isEmpty() || fileName.getText().isBlank()) {
-        UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
+        UserFeedback.displayError("No file name was given.",
+            "Please enter a file name and try again.");
       } else {
-        UserFeedback.displayError("No number of transformations was given.", "Please enter the number of transformations and try again.");
+        UserFeedback.displayError("No number of transformations was given.",
+            "Please enter the number of transformations and try again.");
       }
     }
   }
@@ -486,17 +504,20 @@ public class DisplayScene implements ChaosGameObserver {
    */
   private void displayEditOptions(VBox displayEditOptions) {
 
-    displayEditOptions.getChildren().removeAll(editMaxAndMinButton, editCButton, editAffineTransformationsButton);
+    displayEditOptions.getChildren()
+        .removeAll(editMaxAndMinButton, editCbutton, editAffineTransformationsButton);
 
     editMaxAndMinButton = new Button("Edit Max and Min");
     editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createMaxAndMinPopup());
     displayEditOptions.getChildren().add(editMaxAndMinButton);
 
-    editCButton = new Button("Edit C");
-    editCButton.setOnAction(e -> editValuesPopUp.createConstantCPopup());
+    editCbutton = new Button("Edit C");
+    editCbutton.setOnAction(e -> editValuesPopUp
+        .createConstantCpopup());
 
     editAffineTransformationsButton = new Button("Edit Affine Transformations");
-    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.createAffineTransformationPopup());
+    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp
+        .createAffineTransformationPopup());
 
   }
 
@@ -508,7 +529,8 @@ public class DisplayScene implements ChaosGameObserver {
     try {
       updateChaosGameFromSelectedFile();
     } catch (Exception exception) {
-      UserFeedback.displayError("No file was chosen.", "Please choose a file from the drop down and try again.");
+      UserFeedback.displayError("No file was chosen.",
+          "Please choose a file from the drop down and try again.");
     }
   }
 
@@ -521,8 +543,10 @@ public class DisplayScene implements ChaosGameObserver {
    * Method that creates the buttons for editing the selected description.
    */
   private void editSelectedDescription() {
-    String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
-    ChaosGameDescription description = fileController.readChaosGameDescriptionFromAppFiles(selectedFile);
+    String selectedFile = fileController.getFileDropDown()
+        .getSelectionModel().getSelectedItem();
+    ChaosGameDescription description = fileController
+        .readChaosGameDescriptionFromAppFiles(selectedFile);
     editValuesPopUp.setInputChaosGameDescription(description);
 
     handleEditOption(0);
@@ -547,7 +571,7 @@ public class DisplayScene implements ChaosGameObserver {
     if (gameController.isAffine()) {
       displayEditOptions.getChildren().add(editAffineTransformationsButton);
     } else {
-      displayEditOptions.getChildren().add(editCButton);
+      displayEditOptions.getChildren().add(editCbutton);
     }
 
   }
@@ -600,7 +624,8 @@ public class DisplayScene implements ChaosGameObserver {
       int steps = Integer.parseInt(iterations.getText());
       gameController.runGame(steps, chaosGameImageView);
     } catch (Exception exception) {
-      UserFeedback.displayError("Number of iterations has to be a positive integer.", "Please enter a positive integer to run the application.");
+      UserFeedback.displayError("Number of iterations has to be a positive integer.",
+          "Please enter a positive integer to run the application.");
     }
   }
 
@@ -613,11 +638,13 @@ public class DisplayScene implements ChaosGameObserver {
     try {
       ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
       ValidationController.validateFileName(saveToFile.getText());
-      fileController.writeChaosGameDescriptionToAppFiles(chaosGameDescription, saveToFile.getText());
+      fileController
+          .writeChaosGameDescriptionToAppFiles(chaosGameDescription, saveToFile.getText());
       fileController.updateFileDropDown();
       saveToFile.clear();
     } catch (Exception exception) {
-      UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
+      UserFeedback.displayError("No file name was given.",
+          "Please enter a file name and try again.");
     }
   }
 
@@ -673,7 +700,8 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   /**
-   * Method that creates the scene for the Chaos Game. The scene consists of a navigation row, a title row, a body row and a footer row.
+   * Method that creates the scene for the Chaos Game.
+   * The scene consists of a navigation row, a title row, a body row and a footer row.
    * The controllers are initialized and the scene is returned.
    * This scene is used to display the Chaos Game in the main method.
    *

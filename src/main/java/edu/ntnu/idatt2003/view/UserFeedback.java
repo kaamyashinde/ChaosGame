@@ -28,7 +28,8 @@ public class UserFeedback {
   private static final GameController gameController = GameController.getInstance();
 
   // Private constructor to prevent instantiation
-  private UserFeedback() {}
+  private UserFeedback() {
+  }
 
   /**
    * Method that styles the text area by adding the content style to it.
@@ -108,14 +109,17 @@ public class UserFeedback {
       informUserAboutContinuingGame();
 
     });
-    setUpMessagePopup(popupStage, popupLayout, headingOne, headingTwo, TextArea1, startNewGame, continueGame);
+    setUpMessagePopup(popupStage, popupLayout, headingOne,
+        headingTwo, TextArea1, startNewGame, continueGame);
 
 
     showPopupStage(popupStage, popupLayout, 500, 300);
     popupStage.toFront();
   }
 
-  private static void setUpMessagePopup(Stage popupStage, VBox popupLayout, TextField headingOne, TextField headingTwo, TextArea textArea1, Button startNewGame, Button continueGame) {
+  private static void setUpMessagePopup(Stage popupStage,
+                                        VBox popupLayout, TextField headingOne,
+                                        TextField headingTwo, TextArea textArea1, Button startNewGame, Button continueGame) {
     HBox buttons = new HBox();
     buttons.setAlignment(javafx.geometry.Pos.CENTER);
     buttons.getChildren().addAll(startNewGame, continueGame);
@@ -231,16 +235,28 @@ public class UserFeedback {
     heading4.getStyleClass().add("user-manual-title");
     TextArea instructions4 = getStyledTextArea("""
         There are two ways to do this :
-            a. Edit Current Game Description. The user updates the value of the configuration that is currently being used.
-            b. Edit Selected Description. The user can select a file to read from the drop down list and then edit the selected file. The user does not need to click on the "update chaos game" button in order for the "edit selected description" button to work. If the user chooses to update the chaos game after reading from the file, they can also use the "edit current description" button to update the configuration.
-            After doing so, the user has to enter the name of the file they want to save the description to. It is possible to create a new file, by writing a new name in the input, or the user can replace the existing file by writing the name of the file.
-            In order to save the file, the user has to click on the "save description" button. Otherwise, all of the changes will be lost.""");
+            a. Edit Current Game Description. The user updates the value of the
+             configuration that is currently being used.
+            b. Edit Selected Description. The user can select a file to read
+             from the drop down list and then edit the selected file.
+             The user does not need to click on the "update chaos game"
+              button in order for the "edit selected description" button to work.
+              If the user chooses to update the chaos game after reading from the file,
+               they can also use the "edit current description" button to update the configuration.
+            After doing so, the user has to enter the name of the file they want
+             to save the description to.
+             It is possible to create a new file, by writing a new name in the input,
+              or the user can replace the existing file by writing the name of the file.
+            In order to save the file, the user has to click on the "save description" button.
+             Otherwise, all of the changes will be lost.""");
 
     TextField heading5 = new TextField("5. The run steps iterations");
     heading5.setFocusTraversable(false);
     heading5.setEditable(false);
     heading5.getStyleClass().add("user-manual-title");
-    TextArea instructions5 = getStyledTextArea("The run steps iterations runs the game for the given number of steps. It is possible to clear out the canvas by clicking on the \"clear canvas\" button.");
+    TextArea instructions5 = getStyledTextArea("The run steps iterations runs"
+        + " the game for the given number of steps."
+        + " It is possible to clear out the canvas by clicking on the \"clear canvas\" button.");
 
     TextField heading6 = new TextField("6. The Colour Mode");
     heading6.setFocusTraversable(false);
@@ -255,9 +271,10 @@ public class UserFeedback {
 
     Button okayButton = new Button("Understood");
     container.setAlignment(javafx.geometry.Pos.CENTER);
-    okayButton.setOnAction(e ->  popupStage.close());
+    okayButton.setOnAction(e -> popupStage.close());
 
-    PopupScene.dimBackground(gameController.getPrimaryStage(), popupStage);
+    PopupScene.dimBackground(gameController
+        .getPrimaryStage(), popupStage);
     container.getChildren().add(okayButton);
     popupLayout.getChildren().add(container);
     showPopupStage(popupStage, popupLayout, 600, 600);
