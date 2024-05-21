@@ -6,9 +6,11 @@ import edu.ntnu.idatt2003.model.utils.ModelValidators;
  * A class to represent a complex number that inherits the Vector2D class.
  * Apart from the constructor, it has a method to find the square root of the complex number.
  * The addition and subtraction methods are inherited from the Vector2D class.
+ *
+ * @see Vector2D
  * @since 0.1.0
  * @version 0.2.0
- * @see Vector2D
+ * @author 10072
  */
 public class Complex extends Vector2D {
 
