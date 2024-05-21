@@ -32,8 +32,7 @@ public class ChaosGameDescription {
   private List<Transform2D> transforms;
   private List<Double> probabilities;
   private List<Integer> transformCounts; // To count how many times each transform is used
-  private boolean useProbabilities;
-  private boolean useStatistics;
+
 
   /**
    * Constructor for the ChaosGameDescription class. //Uten statestikk
@@ -48,16 +47,6 @@ public class ChaosGameDescription {
     this.transforms = transforms;
   }
 
-  //med statestikk
-
-  // Constructor for cases with probabilities and statistics
-  public ChaosGameDescription(boolean useProbabilities, boolean useStatistics) {
-    transforms = new ArrayList<>();
-    probabilities = new ArrayList<>();
-    transformCounts = new ArrayList<>();
-    this.useProbabilities = useProbabilities;
-    this.useStatistics = useStatistics;
-  }
 
   /**
    * A constructor to create a deep copy of the ChaosGameDescription object.
@@ -105,17 +94,6 @@ public class ChaosGameDescription {
 
   public void setTransforms(List<Transform2D> transforms) {
     this.transforms = transforms;
-  }
-
-  //extra metoder for statestikk
-
-
-  public void addTransform(Transform2D transform, double probability) {
-    transforms.add(transform);
-    probabilities.add(probability);
-    if (useStatistics) {
-      transformCounts.add(0); // Initialize count for this transform
-    }
   }
 
 

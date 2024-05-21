@@ -18,7 +18,7 @@ public class Complex extends Vector2D {
    * @param inputRealPart the real part of the complex number.
    * @param inputImaginaryPart the imaginary part of the complex number.
    */
-  public Complex(double inputRealPart, double inputImaginaryPart) {
+  private Complex(double inputRealPart, double inputImaginaryPart) {
     super(inputRealPart, inputImaginaryPart);
   }
 
