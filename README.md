@@ -40,3 +40,10 @@ todo: - må bli fikset ferdig når den samsvarende seksjonen i rapporten også e
 The tests are run by running the respective test packages for the model subpackages
 these are 'basicLinAlg', 'engine' and 'transformations'
 
+
+## How to run the application
+The application is run from Maven by executing mvn javafx:run on the command line. It is also possible to add a Maven configuration in the development environment and run mvn javafx:run from there.
+ 
+
+
+
