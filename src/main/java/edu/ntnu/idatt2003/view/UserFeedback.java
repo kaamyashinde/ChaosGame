@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.view;
 import edu.ntnu.idatt2003.controller.FileController;
 import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -60,6 +61,10 @@ public class UserFeedback {
     popupLayout.getChildren().add(container);
     dimBackground(gameController.getPrimaryStage(), popupStage);
 
+    Button understood = new Button("Understood");
+    understood.setOnAction(e -> popupStage.close());
+    container.getChildren().add(understood);
+    container.setAlignment(Pos.CENTER);
     showPopupStage(popupStage, popupLayout, 400, 200);
     popupStage.toFront();
 
