@@ -1,0 +1,38 @@
+
+/*
+The styles for the buttons in the application.
+ */
+.button {
+    -fx-background-color: #f2e6e3;
+    -fx-font-size: 1.3em;
+    -fx-padding: 10;
+}
+
+/*
+The styles for when the button is focused when traversing the application with the keyboard.
+ */
+.button:focused {
+    -fx-border-color: #9f6c66;
+    -fx-border-width: 3px;
+    -fx-text-fill: #9f6c66;
+    -fx-border-radius: 5px;
+}
+
+/*
+The styles for when the button is hovered over.
+ */
+.button:hover {
+    -fx-text-fill: #f2e6e3;
+    -fx-background-color: #ffbb6c;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 10, 0, 0, 0);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/*
+The styles for when the button is selected.
+ */
+.button-selected {
+    -fx-text-fill: #f2e6e3;
+    -fx-background-color: #ffbb6c;
+}

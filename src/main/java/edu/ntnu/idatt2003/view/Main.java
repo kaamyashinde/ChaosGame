@@ -42,12 +42,13 @@ public class Main extends Application {
   }
 
   @Override
-  public void start(javafx.stage.Stage primaryStage) throws Exception {
+  public void start(javafx.stage.Stage primaryStage) {
     displayScene = new DisplayScene();
     Scene scene = displayScene.getDisplay(primaryStage);
     KeyActionPolicyController.applyEnterKeyActionPolicy(primaryStage);
-    String css = getClass().getClassLoader().getResource("stylesheets/styles.css").toExternalForm();
-    scene.getStylesheets().add(css);
+    String mainStyles = getClass().getClassLoader().getResource("stylesheets/mainStyles.css").toExternalForm();
+    String buttonStyles = getClass().getClassLoader().getResource("stylesheets/buttonStyles.css").toExternalForm();
+    scene.getStylesheets().addAll(mainStyles, buttonStyles);
     gameController.loadLastGame(displayScene);
     setSceneDetails(primaryStage, scene);
 

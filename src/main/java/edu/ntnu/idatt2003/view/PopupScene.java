@@ -1,6 +1,5 @@
 package edu.ntnu.idatt2003.view;
 
-import edu.ntnu.idatt2003.controller.GameController;
 import edu.ntnu.idatt2003.controller.KeyActionPolicyController;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -8,6 +7,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 /**
  * This class is responsible for providing stage creation for the popup windows, for both the user feedback and the edit values pop-up.
@@ -30,6 +31,7 @@ public class PopupScene {
     popupStage.setTitle(title);
     return popupStage;
   }
+
   /**
    * Method that creates the layout of the pop-up window.
    *
@@ -42,6 +44,7 @@ public class PopupScene {
     popupLayout.prefHeightProperty().bind(popupStage.heightProperty());
     return popupLayout;
   }
+
   /**
    * Method that dims the background when the pop-up window is displayed.
    */
@@ -54,10 +57,9 @@ public class PopupScene {
     overlay.prefWidthProperty().bind(primaryStage.widthProperty());
     overlay.prefHeightProperty().bind(primaryStage.heightProperty());
 
-    popupStage.showingProperty().addListener((observable, oldValue, newValue) -> {
-      overlay.setVisible(newValue);
-    });
+    popupStage.showingProperty().addListener((observable, oldValue, newValue) -> overlay.setVisible(newValue));
   }
+
   /**
    * Method that shows the pop-up stage.
    *
@@ -68,8 +70,10 @@ public class PopupScene {
     Scene popuScene = new Scene(popupLayout, width, height);
     KeyActionPolicyController.applyEnterKeyActionPolicy(popupStage);
 
-    String css = UserFeedback.class.getResource("/stylesheets/userFeedback.css").toExternalForm();
-    popuScene.getStylesheets().add(css);
+    String popupStyles = Objects.requireNonNull(UserFeedback.class.getResource("/stylesheets/popupStyles.css")).toExternalForm();
+    String buttonStyles = Objects.requireNonNull(UserFeedback.class.getClassLoader().getResource("stylesheets/buttonStyles.css")).toExternalForm();
+
+    popuScene.getStylesheets().addAll(popupStyles, buttonStyles);
     popupStage.setScene(popuScene);
     popupStage.show();
   }

@@ -1,0 +1,73 @@
+/*
+The styles for the applications root.
+ */
+.root {
+    -fx-background-color: #262335;
+}
+
+/*
+The styles for the StackPane in the application.
+ */
+StackPane {
+    -fx-background-color: white;
+    -fx-border-color: #CEA4A0FF;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+/*
+The styles for the title in the application.
+ */
+.title {
+    -fx-font-size: 4em;
+    -fx-font-family: Georgia;
+    -fx-font-weight: bold;
+    -fx-background-color: transparent;
+    -fx-text-fill: #d4896a;
+}
+
+/*
+The styles for the section headings in the application.
+ */
+.section-heading {
+    -fx-background-color: #b97d6d;
+    -fx-text-fill: #f4f0eb;
+    -fx-font-size: 1.3em;
+    -fx-padding: 10 20;
+    -fx-border-radius: 0;
+    -fx-background-radius: 5px;
+    -fx-border-color: white;
+    -fx-font-family: "Arial", sans-serif;
+}
+
+/*
+The styles for the combo box in the application.
+ */
+.my-combo-box {
+    -fx-font-size: 18px;
+    -fx-font-family: "Arial";
+    -fx-background-color: #f4f0eb;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+}
+
+/*
+The styles for the list cell in the combo box.
+ */
+.my-combo-box .list-cell {
+    -fx-padding: 5px;
+}
+
+/*
+The styles for the arrow in the combo box.
+ */
+.my-combo-box .arrow {
+    -fx-background-color: #ffbb6c;
+}
+
+/*
+The styles for the cell in the combo box when hovered over.
+ */
+.my-combo-box .cell:hover {
+    -fx-background-color: #ffbb6c;
+}
