@@ -243,7 +243,6 @@ public class GameController {
     if (lastGame != null) {
       chaosGame = new ChaosGame(lastGame, 500, 500);
       addObserverToGame(observer);
-      System.out.println(lastGame);
     }
   }
 

@@ -48,7 +48,6 @@ public class UserFeedback {
    * @param errorDesc The description of the error along with description on how to avoid it.
    */
   public static void displayError(String message, String errorDesc) {
-    System.out.println(message);
     Stage popupStage = createPopupStage("Error", null);
     VBox popupLayout = createPopupLayout(popupStage);
     TextArea TextArea = getStyledTextArea(message);

@@ -34,7 +34,6 @@ public class ChaosGameFileHandler {
      */
 public static void writeToFile(ChaosGameDescription chaosGameDescription, String path) {
     if (chaosGameDescription == null) {
-        System.out.println("ChaosGameDescription is null. Please initialize it before calling writeToFile().");
         return;
     }
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {

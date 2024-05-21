@@ -388,8 +388,14 @@ public class DisplayScene implements ChaosGameObserver {
     try {
       emptyFractalController.toggleBetweenTheCreationOfTransformations(fileName, numberOfTransformations);
       fileController.updateFileDropDown();
+      fileName.clear();
+      numberOfTransformations.clear();
     } catch (Exception exception) {
-      UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
+      if (fileName.getText().isEmpty() || fileName.getText().isBlank()){
+        UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
+      } else {
+        UserFeedback.displayError("No number of transformations was given.", "Please enter the number of transformations and try again.");
+      }
       exception.printStackTrace();
     }
   }
@@ -412,7 +418,6 @@ public class DisplayScene implements ChaosGameObserver {
 
     editAffineTransformationsButton = new Button("Edit Affine Transformations");
     editAffineTransformationsButton.setOnAction(e -> editValuesPopUp.createAffineTransformationPopup());
-    Button updateButton = new Button("Update");
 
   }
 
@@ -440,7 +445,6 @@ public class DisplayScene implements ChaosGameObserver {
   private void editSelectedDescription() {
     String selectedFile = fileController.getFileDropDown().getSelectionModel().getSelectedItem();
     ChaosGameDescription description = fileController.readChaosGameDescriptionFromAppFiles(selectedFile);
-    System.out.println("new description is:");
     editValuesPopUp.setInputChaosGameDescription(description);
 
     handleEditOption(0);
@@ -512,10 +516,10 @@ public class DisplayScene implements ChaosGameObserver {
   private void saveCurrentDescToFileAction(TextField saveToFile) {
     try {
       ChaosGameDescription chaosGameDescription = gameController.getCurrentChaosGameDescription();
-      System.out.println(saveToFile.getText());
       ValidationController.validateFileName(saveToFile.getText());
       fileController.writeChaosGameDescriptionToAppFiles(chaosGameDescription, saveToFile.getText());
       fileController.updateFileDropDown();
+      saveToFile.clear();
     } catch (Exception exception) {
       UserFeedback.displayError("No file name was given.", "Please enter a file name and try again.");
       exception.printStackTrace();
