@@ -34,7 +34,7 @@ import javafx.util.Pair;
  * the game and clearing the canvas.
  *
  * @author Kaamya Shinde
- * @version 0.7
+ * @version 0.8
  * @since 0.0.3
  */
 public class DisplayScene implements ChaosGameObserver {
@@ -529,8 +529,13 @@ public class DisplayScene implements ChaosGameObserver {
     try {
       updateChaosGameFromSelectedFile();
     } catch (Exception exception) {
+      if (exception.getMessage().equals("File name cannot be empty")){
       UserFeedback.displayError("No file was chosen.",
           "Please choose a file from the drop down and try again.");
+      } else {
+        UserFeedback.displayError("The configuration cannot be run because it goes out of the restricted game boundaries.",
+            "Please try again with a different configuration.");
+      }
     }
   }
 
@@ -548,7 +553,7 @@ public class DisplayScene implements ChaosGameObserver {
     ChaosGameDescription description = fileController
         .readChaosGameDescriptionFromAppFiles(selectedFile);
     editValuesPopUp.setInputChaosGameDescription(description);
-
+    fileController.writeChaosGameDescriptionToAppFiles(description, selectedFile);
     handleEditOption(0);
 
   }
@@ -624,8 +629,14 @@ public class DisplayScene implements ChaosGameObserver {
       int steps = Integer.parseInt(iterations.getText());
       gameController.runGame(steps, chaosGameImageView);
     } catch (Exception exception) {
-      UserFeedback.displayError("Number of iterations has to be a positive integer.",
-          "Please enter a positive integer to run the application.");
+      if (exception.getMessage().equals("Input must be a positive integer" ) || exception.getMessage().equals("Input must be an integer")){
+        UserFeedback.displayError("Invalid input for the number of iterations.",
+            "Please enter a positive integer to run the application.");
+      } else {
+        UserFeedback.displayError("The configuration cannot be run because it goes out of the restricted game boundaries.",
+            "Please try again with a different configuration.");
+      }
+
     }
   }
 
