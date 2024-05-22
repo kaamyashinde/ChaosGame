@@ -147,7 +147,7 @@ public class DisplayScene implements ChaosGameObserver {
     gradientColorMode.setOnAction(e -> gameController.setUseGradient(true));
     Button countColorMode = new Button("Count Color");
     HBox countColorModeHBox = getStyledButtonInHBox(countColorMode);
-    changeColorMode(true, gradientColorMode, countColorMode);
+    countColorMode.getStyleClass().add("button-selected");
     countColorMode.setOnAction(e -> changeColorMode(false, countColorMode, gradientColorMode));
     gradientColorMode.setOnAction(e -> changeColorMode(true, gradientColorMode, countColorMode));
     footerBottomRow.getChildren().addAll(gradientColorModeHBox, countColorModeHBox);
