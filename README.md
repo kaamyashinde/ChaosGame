@@ -32,10 +32,6 @@ are within the 'main' directory. These include; 'controller,' 'model,' 'view,' a
 https://gitlab.stud.idi.ntnu.no/kamyaas/idatt2003-grp1-chaosgame
 
 
-## How to run the project
-
-todo: - må bli fikset ferdig når den samsvarende seksjonen i rapporten også er klar
-
 ## How to run the tests
 The tests are run by running the respective test packages for the model subpackages
 these are 'basicLinAlg', 'engine' and 'transformations'
