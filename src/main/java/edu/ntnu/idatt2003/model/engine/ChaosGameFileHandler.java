@@ -10,6 +10,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * A class to handle reading and writing of chaos game descriptions to and from files.
@@ -21,12 +22,7 @@ import java.util.Scanner;
  */
 
 public class ChaosGameFileHandler {
-
-  /**
-   * Constructor for the ChaosGameFileHandler class.
-   */
-  public ChaosGameFileHandler() {
-  }
+  private static final Logger LOGGER = Logger.getLogger(ChaosGameFileHandler.class.getName());
 
   /**
    * Writes a chaos game description to a file.
@@ -61,15 +57,13 @@ public class ChaosGameFileHandler {
       // Write the parameters of each transformation
       boolean juliaTransformWritten = false;
       for (Transform2D transform : chaosGameDescription.getTransforms()) {
-        if (transform instanceof AffineTransform2D) {
-          AffineTransform2D affine = (AffineTransform2D) transform;
+        if (transform instanceof AffineTransform2D affine) {
           Matrix2x2 matrix = affine.getMatrix();
           Vector2D vector = affine.getVector();
           writer.write(matrix.getA00() + "," + matrix.getA01() + "," + matrix.getA10()
               + "," + matrix.getA11() + "," + vector.getX0() + "," + vector.getX1());
           writer.newLine();
-        } else if (transform instanceof JuliaTransform && !juliaTransformWritten) {
-          JuliaTransform julia = (JuliaTransform) transform;
+        } else if (transform instanceof JuliaTransform julia && !juliaTransformWritten) {
           Complex point = julia.getPoint();
           writer.write(point.getReal() + "," + point.getImaginary()
               + " # Real and imaginary parts of the constant c");
@@ -78,7 +72,7 @@ public class ChaosGameFileHandler {
         }
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.severe("An error occurred while writing to the file: " + path);
     }
   }
 
@@ -91,27 +85,20 @@ public class ChaosGameFileHandler {
   public static ChaosGameDescription readFromFile(String path) {
     File file = new File(path);
     try (Scanner scanner = new Scanner(file)) {
-      // Check if the file is empty
       if (!scanner.hasNextLine()) {
-        // The file is empty
-        // Return a default ChaosGameDescription or null
         return null;
       }
 
-      // Read the type of transformation
       String transformType = scanner.nextLine().split("#")[0].trim();
 
-      // Read the coordinates of the lower left corner
       String[] minCoordsParts = scanner.nextLine().split("#")[0].trim().split(",");
       Vector2D minCoords = new Vector2D(Double.parseDouble(minCoordsParts[0]),
           Double.parseDouble(minCoordsParts[1]));
 
-      // Read the coordinates of the upper right corner
       String[] maxCoordsParts = scanner.nextLine().split("#")[0].trim().split(",");
       Vector2D maxCoords = new Vector2D(Double.parseDouble(maxCoordsParts[0]),
           Double.parseDouble(maxCoordsParts[1]));
 
-      // Read the parameters of each transformation
       List<Transform2D> transforms = new ArrayList<>();
       while (scanner.hasNextLine()) {
         String[] transformParts = scanner.nextLine().split("#")[0].trim().split(",");
@@ -131,7 +118,7 @@ public class ChaosGameFileHandler {
 
       return new ChaosGameDescription(minCoords, maxCoords, transforms);
     } catch (FileNotFoundException e) {
-      System.out.println("File not found: " + path + ". Please try again.");
+      LOGGER.warning("File not found: " + path + ". Please try again.");
       return null;
     }
   }
@@ -145,8 +132,8 @@ public class ChaosGameFileHandler {
       writer.print("");
       writer.close();
     } catch (FileNotFoundException e) {
-      System.out.println("File not found: " + filePath);
-      e.printStackTrace();
+      LOGGER.warning("File not found: " + filePath + ". Please try again.");
+
     }
   }
 

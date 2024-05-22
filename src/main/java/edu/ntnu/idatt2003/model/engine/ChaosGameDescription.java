@@ -123,16 +123,14 @@ public class ChaosGameDescription {
     // Write the parameters of each transformation
     int transformNumber = 1;
     for (Transform2D transform : transforms) {
-      if (transform instanceof AffineTransform2D) {
-        AffineTransform2D affine = (AffineTransform2D) transform;
+      if (transform instanceof AffineTransform2D affine) {
         Matrix2x2 matrix = affine.getMatrix();
         Vector2D vector = affine.getVector();
         sb.append(matrix.getA00()).append(",").append(matrix.getA01()).append(",")
             .append(matrix.getA10()).append(",").append(matrix.getA11()).append(",")
             .append(vector.getX0()).append(",").append(vector.getX1()).append(" # ")
             .append(transformNumber).append("st transform\n");
-      } else if (transform instanceof JuliaTransform) {
-        JuliaTransform julia = (JuliaTransform) transform;
+      } else if (transform instanceof JuliaTransform julia) {
         Vector2D point = julia.getPoint();
         int sign = julia.getSign();
         sb.append(point.getX0()).append(",").append(point.getX1()).append(",")
