@@ -33,7 +33,7 @@ public class EditValuesPopUp {
   private final ObjectListController objectListController = new ObjectListController();
   private GameController gameController = GameController.getInstance();
   ChaosGameDescription currentDescription;
-
+  private EditValuesPopUp(){}
   /**
    * Method that creates the register button for the pop-up window.
    *

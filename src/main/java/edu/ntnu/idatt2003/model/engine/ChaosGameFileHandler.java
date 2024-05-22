@@ -25,7 +25,7 @@ public class ChaosGameFileHandler {
   /**
    * Constructor for the ChaosGameFileHandler class.
    */
-  public ChaosGameFileHandler() {
+  private ChaosGameFileHandler() {
   }
 
   /**

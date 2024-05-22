@@ -117,6 +117,17 @@ public class UserFeedback {
     popupStage.toFront();
   }
 
+  /**
+   * Method that sets up the welcome message popup.
+   * @param popupStage The stage to display the popup on.
+   * @param popupLayout The layout of the popup.
+   * @param headingOne The first heading of the popup.
+   * @param headingTwo The second heading of the popup.
+   * @param textArea1 The text area that displays the message.
+   * @param startNewGame The button to start a new game.
+   * @param continueGame The button to continue the game.
+   */
+
   private static void setUpMessagePopup(Stage popupStage,
                                         VBox popupLayout, TextField headingOne,
                                         TextField headingTwo, TextArea textArea1, Button startNewGame, Button continueGame) {

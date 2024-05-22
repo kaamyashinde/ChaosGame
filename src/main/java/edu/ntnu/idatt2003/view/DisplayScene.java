@@ -24,7 +24,7 @@ import javafx.util.Pair;
 
 /**
  * Class that creates the scene for the Chaos Game.
- * The scene consists of a navigation row, a title row, a body row and a footer row.
+ * The scene consists of a title row, a body row and a footer row.
  * The body row is further divided into three columns.
  * The left column is responsible for the actions related to saving the configurations.
  * The middle column is where the canvas is placed.
