@@ -147,7 +147,7 @@ public class DisplayScene implements ChaosGameObserver {
     gradientColorMode.setOnAction(e -> gameController.setUseGradient(true));
     Button countColorMode = new Button("Count Color");
     HBox countColorModeHBox = getStyledButtonInHBox(countColorMode);
-    changeColorMode(true, gradientColorMode, countColorMode);
+    countColorMode.getStyleClass().add("button-selected");
     countColorMode.setOnAction(e -> changeColorMode(false, countColorMode, gradientColorMode));
     gradientColorMode.setOnAction(e -> changeColorMode(true, gradientColorMode, countColorMode));
     footerBottomRow.getChildren().addAll(gradientColorModeHBox, countColorModeHBox);
@@ -278,8 +278,8 @@ public class DisplayScene implements ChaosGameObserver {
     fileName.setPromptText("Enter file name");
     numberOfTransformations = new TextField();
     numberOfTransformations.setPromptText("Enter number of transformations for empty fractal");
-    Button registerFileButton = new Button("Create empty File");
     Button switchButton = new Button("Switch to Affine");
+    Button registerFileButton = new Button("Register Julia file");
 
     HBox emptyFractalsDisplayHbox = styleTextFields(new TextField("Empty Fractal"));
 
@@ -289,7 +289,7 @@ public class DisplayScene implements ChaosGameObserver {
     VBox.setMargin(emptyFractal, new Insets(10, 20, 10, 20));
 
     switchButton.setOnAction(e -> emptyFractalController
-        .switchFractalToBeCreated(switchButton, inputFields, numberOfTransformations));
+        .switchFractalToBeCreated(switchButton, registerFileButton, inputFields, numberOfTransformations));
     registerFileButton.setOnAction(e -> createEmptyFractalFileAction());
 
     return emptyFractal;
