@@ -49,7 +49,6 @@ public class ChaosGameDescriptionTest {
 
     @Test
     public void testGetMaxCoords() {
-        // Arrange
         Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
         List<Transform2D> transforms = new ArrayList<>();

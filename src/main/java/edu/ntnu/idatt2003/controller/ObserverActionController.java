@@ -47,7 +47,6 @@ public class ObserverActionController {
     if (colorValue < 0) colorValue = 0;
     Color color = Color.rgb(colorValue, colorValue, colorValue);
 
-    // Use the color to paint the pixel
     gc.setFill(color);
     gc.fillRect(x, y, 1, 1);
   }

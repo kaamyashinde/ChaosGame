@@ -34,7 +34,7 @@ class ComplexTest {
     @DisplayName("Invalid complex number")
     void invalidComplexNumberTest(){
         assertThrows(IllegalArgumentException.class, () -> {
-            Complex invalidComplex = Complex.createComplex(-27, 7); // real part is out of range
+            Complex invalidComplex = Complex.createComplex(-27, 7);
         });
     }
 }

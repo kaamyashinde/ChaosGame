@@ -98,27 +98,20 @@ public class ChaosGameFileHandler {
   public static ChaosGameDescription readFromFile(String path) {
     File file = new File(path);
     try (Scanner scanner = new Scanner(file)) {
-      // Check if the file is empty
       if (!scanner.hasNextLine()) {
-        // The file is empty
-        // Return a default ChaosGameDescription or null
         return null;
       }
 
-      // Read the type of transformation
       String transformType = scanner.nextLine().split("#")[0].trim();
 
-      // Read the coordinates of the lower left corner
       String[] minCoordsParts = scanner.nextLine().split("#")[0].trim().split(",");
       Vector2D minCoords = new Vector2D(Double.parseDouble(minCoordsParts[0]),
           Double.parseDouble(minCoordsParts[1]));
 
-      // Read the coordinates of the upper right corner
       String[] maxCoordsParts = scanner.nextLine().split("#")[0].trim().split(",");
       Vector2D maxCoords = new Vector2D(Double.parseDouble(maxCoordsParts[0]),
           Double.parseDouble(maxCoordsParts[1]));
 
-      // Read the parameters of each transformation
       List<Transform2D> transforms = getTransformsFromFile(scanner, transformType);
 
       return new ChaosGameDescription(minCoords, maxCoords, transforms);

@@ -96,8 +96,8 @@ public class ChaosGameDescriptionCreator {
     Vector2D maxCoords = new Vector2D(maxCoordsX0, maxCoordsX1);
     List<Transform2D> transforms = new ArrayList<>();
     for (int i = 0; i < numberOfTransformations; i++) {
-      double realPart = realPartBase + i * 0.01; // Change the real part for each transformation
-      double imaginaryPart = imaginaryPartBase + i * 0.01; // Change the imaginary part for each transformation
+      double realPart = realPartBase + i * 0.01;
+      double imaginaryPart = imaginaryPartBase + i * 0.01;
       Complex point = Complex.createComplex(realPart, imaginaryPart);
       JuliaTransform julia = new JuliaTransform(point, 1);
       transforms.add(julia);
