@@ -59,9 +59,10 @@ public class EmptyFractalController {
    * @param container             The left body row of the scene where the button is added to or removed from.
    * @param numberOfTransformations The text field that takes the number of transformations for the affine transformation.
    */
-  public void switchFractalToBeCreated(Button switchButton, VBox container, TextField numberOfTransformations) {
+  public void switchFractalToBeCreated(Button switchButton, Button registerFileButton, VBox container, TextField numberOfTransformations) {
     isAffine = switchFractalType();
     switchButton.setText("Switch to " + (isAffine ? "Julia" : "Affine"));
+    registerFileButton.setText("Register " + (isAffine ? "Affine" : "Julia") + " file");
     if (!isAffine) {
       container.getChildren().remove(numberOfTransformations);
     } else {
