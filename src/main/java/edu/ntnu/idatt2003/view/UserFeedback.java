@@ -132,7 +132,10 @@ public class UserFeedback {
                                         TextField headingTwo, TextArea textArea1, Button startNewGame, Button continueGame) {
     HBox buttons = new HBox();
     buttons.setAlignment(javafx.geometry.Pos.CENTER);
-    buttons.getChildren().addAll(startNewGame, continueGame);
+    buttons.getChildren().add(startNewGame);
+    if (continueGame != null){
+      buttons.getChildren().add(continueGame);
+    }
     VBox container = new VBox();
     container.getChildren().addAll(headingOne, headingTwo, textArea1, buttons);
     popupLayout.getChildren().add(container);
