@@ -69,6 +69,15 @@ public class ChaosGameDescriptionTest {
     @Test
     public void testGetMinCoords() {
         Vector2D minCoords = new Vector2D(0, 0);
+        Vector2D maxCoords = new Vector2D(1, 1);
+
+        affineTransforms = new ArrayList<>();
+        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5);
+        Vector2D vector = new Vector2D(0, 0);
+        AffineTransform2D affine = new AffineTransform2D(matrix, vector);
+        affineTransforms.add(affine);
+        affineDescription = new ChaosGameDescription(minCoords, maxCoords, affineTransforms);
+
         Vector2D actualMinCoords = affineDescription.getMinCoords();
 
         assertEquals(minCoords, actualMinCoords);
@@ -76,7 +85,16 @@ public class ChaosGameDescriptionTest {
 
     @Test
     public void testGetMaxCoords() {
+        Vector2D minCoords = new Vector2D(0, 0);
         Vector2D maxCoords = new Vector2D(1, 1);
+
+        affineTransforms = new ArrayList<>();
+        Matrix2x2 matrix = new Matrix2x2(0.5, 0, 0, 0.5);
+        Vector2D vector = new Vector2D(0, 0);
+        AffineTransform2D affine = new AffineTransform2D(matrix, vector);
+        affineTransforms.add(affine);
+        affineDescription = new ChaosGameDescription(minCoords, maxCoords, affineTransforms);
+
         Vector2D actualMaxCoords = affineDescription.getMaxCoords();
 
         assertEquals(maxCoords, actualMaxCoords);
