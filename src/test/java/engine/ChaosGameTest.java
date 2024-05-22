@@ -51,4 +51,15 @@ class ChaosGameTest {
         assertTrue(sum > 0);
     }
 
+    @Test
+    void getDescriptionTest(){
+        assertEquals(chaosGameDescription, chaosGame.getDescription());
+    }
+
+    @Test
+    void setDescriptionTest(){
+        chaosGame.setDescription(null);
+        assertNull(chaosGame.getDescription());
+    }
+
 }

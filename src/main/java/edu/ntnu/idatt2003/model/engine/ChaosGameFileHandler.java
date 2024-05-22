@@ -10,6 +10,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * A class to handle reading and writing of chaos game descriptions to and from files.
@@ -21,12 +22,7 @@ import java.util.Scanner;
  */
 
 public class ChaosGameFileHandler {
-
-  /**
-   * Constructor for the ChaosGameFileHandler class.
-   */
-  private ChaosGameFileHandler() {
-  }
+  private static final Logger LOGGER = Logger.getLogger(ChaosGameFileHandler.class.getName());
 
   /**
    * Writes a chaos game description to a file.
@@ -57,7 +53,7 @@ public class ChaosGameFileHandler {
 
       writeTheValuesForEachTransformation(chaosGameDescription, writer);
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.severe("An error occurred while writing to the file: " + path);
     }
   }
 
@@ -116,7 +112,7 @@ public class ChaosGameFileHandler {
 
       return new ChaosGameDescription(minCoords, maxCoords, transforms);
     } catch (FileNotFoundException e) {
-      System.out.println("File not found: " + path + ". Please try again.");
+      LOGGER.warning("File not found: " + path + ". Please try again.");
       return null;
     }
   }
@@ -156,8 +152,8 @@ public class ChaosGameFileHandler {
       writer.print("");
       writer.close();
     } catch (FileNotFoundException e) {
-      System.out.println("File not found: " + filePath);
-      e.printStackTrace();
+      LOGGER.warning("File not found: " + filePath + ". Please try again.");
+
     }
   }
 

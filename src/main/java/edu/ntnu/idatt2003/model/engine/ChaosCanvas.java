@@ -32,13 +32,13 @@ import java.util.List;
 
 public class ChaosCanvas {
 
-  private int[][] canvas;
-  private int width;
-  private int height;
-  private Vector2D minCoords;
-  private Vector2D maxCoords;
-  private AffineTransform2D transformCoordsToIndices;
-  private List<ChaosGameObserver> observers = new ArrayList<>();
+  private final int[][] canvas;
+  private final int width;
+  private final int height;
+  private final Vector2D minCoords;
+  private final Vector2D maxCoords;
+  private final AffineTransform2D transformCoordsToIndices;
+  private final List<ChaosGameObserver> observers = new ArrayList<>();
 
   /**
    * Constructor for the ChaosCanvas class.
@@ -176,4 +176,11 @@ public class ChaosCanvas {
     observers.remove(observer);
   }
 
+  /**
+   * Returns the size of the observers list.
+   * @return the size of the observers list
+   */
+  public int getObserversSize() {
+    return observers.size();
+  }
 }

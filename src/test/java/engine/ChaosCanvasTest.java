@@ -2,6 +2,7 @@ package engine;
 
 import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
 import edu.ntnu.idatt2003.model.engine.ChaosCanvas;
+import edu.ntnu.idatt2003.model.observer.ChaosGameObserver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,11 +10,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChaosCanvasTest {
     private ChaosCanvas canvasToTest;
+    private ChaosGameObserver observer;
     @BeforeEach
     void setUp(){
         canvasToTest = new ChaosCanvas(
                 5, 5, new Vector2D(0, 0), new Vector2D(5, 5)
         );
+        observer = new ChaosGameObserver() {
+            @Override
+            public void updateAddPixel(double x0, double x1) {
+                System.out.println("Pixel added at: " + x0 + ", " + x1);
+            }
+
+            @Override
+            public void updateRemovePixel(double x0, double x1) {
+                System.out.println("Pixel removed at: " + x0 + ", " + x1);
+            }
+        };
     }
 
     @Test
@@ -56,5 +69,18 @@ class ChaosCanvasTest {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
             canvasToTest.putPixel(new Vector2D(10,10));
         });
+    }
+
+    @Test
+    void addObserverTest(){
+        canvasToTest.addObserver(observer);
+        assertEquals(1, canvasToTest.getObserversSize());
+    }
+
+    @Test
+    void removeObserverTest(){
+        canvasToTest.addObserver(observer);
+        canvasToTest.removeObserver(observer);
+        assertEquals(0, canvasToTest.getObserversSize());
     }
 }
