@@ -28,18 +28,18 @@ import javafx.stage.Stage;
  */
 
 public class EditValuesPopUp {
-  private final DescriptionValuesController descriptionValuesController
+  private static ChaosGameDescription currentDescription;
+  private static final DescriptionValuesController descriptionValuesController
       = new DescriptionValuesController();
-  private final ObjectListController objectListController = new ObjectListController();
-  private GameController gameController = GameController.getInstance();
-  ChaosGameDescription currentDescription;
+  private static GameController gameController = GameController.getInstance();
+  private static final ObjectListController objectListController = new ObjectListController();
   private EditValuesPopUp(){}
   /**
    * Method that creates the register button for the pop-up window.
    *
    * @return registerButton The register button.
    */
-  private Button createRegisterButton() {
+  private static Button createRegisterButton() {
     Button registerButton = new Button("Register");
     registerButton.getStyleClass().add("edit-popup-button");
     return new Button("Register");
@@ -48,7 +48,7 @@ public class EditValuesPopUp {
   /**
    * Method that creates the pop-up window for editing the complex number value.
    */
-  public void createConstantCpopup() {
+  public static void createConstantCpopup() {
     Stage popupStage = createPopupStage("Edit C",
         gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
@@ -92,7 +92,7 @@ public class EditValuesPopUp {
   /**
    * Method that creates the pop-up window for editing the min and max coordinates.
    */
-  public void createMaxAndMinPopup() {
+  public static void createMaxAndMinPopup() {
     Stage popupStage = createPopupStage("Edit Min and Max",
         gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
@@ -134,7 +134,7 @@ public class EditValuesPopUp {
    * Method that creates the pop-up window for editing the
    * affine transformations.
    */
-  public void createAffineTransformationPopup() {
+  public static void createAffineTransformationPopup() {
     Stage popupStage = createPopupStage("Edit affine transformations",
         gameController.getPrimaryStage());
     VBox popupLayout = createPopupLayout(popupStage);
@@ -213,7 +213,7 @@ public class EditValuesPopUp {
    * Method that sets the current chaos game description to
    * the one that is currently being used in the game.
    */
-  public void setCurrentChaosGameDescription() {
+  public static void setCurrentChaosGameDescription() {
     currentDescription = gameController.getCurrentChaosGameDescription();
   }
 
@@ -222,7 +222,7 @@ public class EditValuesPopUp {
    *
    * @param input The chaos game description that is passed as an input.
    */
-  public void setInputChaosGameDescription(ChaosGameDescription input) {
+  public static void setInputChaosGameDescription(ChaosGameDescription input) {
     currentDescription = input;
     gameController = GameController.getInstance();
   }

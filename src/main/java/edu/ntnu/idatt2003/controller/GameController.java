@@ -37,7 +37,7 @@ public class GameController {
   private static final GameController instance = new GameController();
   private final FileController fileController;
   private final List<ChaosGameDescription> listOfDescriptions;
-  Canvas canvas;
+  private Canvas canvas;
   private Stage primaryStage;
   private ChaosGame chaosGame;
   private boolean persistenceIsNull;
