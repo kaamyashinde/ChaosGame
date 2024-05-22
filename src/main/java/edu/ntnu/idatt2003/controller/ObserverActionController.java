@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
  */
 
 public class ObserverActionController {
-  int[][] pixelCounts = new int[500][500];
+  private final int[][] pixelCounts = new int[500][500];
 
   /**
    * Method that is responsible for adding the gradient color to the canvas.
@@ -47,7 +47,6 @@ public class ObserverActionController {
     if (colorValue < 0) colorValue = 0;
     Color color = Color.rgb(colorValue, colorValue, colorValue);
 
-    // Use the color to paint the pixel
     gc.setFill(color);
     gc.fillRect(x, y, 1, 1);
   }

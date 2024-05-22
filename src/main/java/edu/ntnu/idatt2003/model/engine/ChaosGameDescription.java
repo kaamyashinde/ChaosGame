@@ -108,19 +108,22 @@ public class ChaosGameDescription {
   public String toString() {
     StringBuilder sb = new StringBuilder();
 
-    // Check if we have transformations and write the type of the first one
     if (!transforms.isEmpty()) {
       String transformType = transforms.get(0).getClass().getSimpleName();
       sb.append(transformType).append(" # Type of transformation\n");
     }
 
-    // Write the coordinates of the lower left corner
     sb.append(minCoords.getX0()).append(",").append(minCoords.getX1()).append(" # Lower left\n");
 
-    // Write the coordinates of the upper right corner
     sb.append(maxCoords.getX0()).append(",").append(maxCoords.getX1()).append(" # Upper right\n");
+    addingTransformationToStringBuilder(sb);
 
-    // Write the parameters of each transformation
+    return sb.toString();
+  }
+  /**
+   * Prints the transformations for the chaos game description.
+   */
+  private void addingTransformationToStringBuilder(StringBuilder sb){
     int transformNumber = 1;
     for (Transform2D transform : transforms) {
       if (transform instanceof AffineTransform2D affine) {
@@ -138,8 +141,6 @@ public class ChaosGameDescription {
       }
       transformNumber++;
     }
-
-    return sb.toString();
   }
 
   /**

@@ -24,7 +24,7 @@ import javafx.util.Pair;
 
 /**
  * Class that creates the scene for the Chaos Game.
- * The scene consists of a navigation row, a title row, a body row and a footer row.
+ * The scene consists of a title row, a body row and a footer row.
  * The body row is further divided into three columns.
  * The left column is responsible for the actions related to saving the configurations.
  * The middle column is where the canvas is placed.
@@ -38,26 +38,21 @@ import javafx.util.Pair;
  * @since 0.0.3
  */
 public class DisplayScene implements ChaosGameObserver {
-  AnchorPane layout;
-  GameController gameController;
-  ObserverActionController observerActionController;
-  FileController fileController;
-  EmptyFractalController emptyFractalController;
-  DescriptionValuesController descriptionValuesController;
-  Button runIterations;
-  VBox root;
-  VBox leftBodyRow;
-  VBox displayEditOptions;
-  VBox rightBodyRow;
-  List<Button> buttons;
-  GraphicsContext graphicsContext;
-  TextField numberOfTransformations;
-  EditValuesPopUp editValuesPopUp;
-  Button editCbutton;
-  Button editMaxAndMinButton;
-  Button editAffineTransformationsButton;
-  TextField fileName;
-  ImageView chaosGameImageView;
+  private final EmptyFractalController emptyFractalController;
+  private final FileController fileController;
+  private final GameController gameController;
+  private final ObserverActionController observerActionController;
+  private AnchorPane layout;
+  private Button editAffineTransformationsButton;
+  private Button editCbutton;
+  private Button editMaxAndMinButton;
+  private GraphicsContext graphicsContext;
+  private ImageView chaosGameImageView;
+  private List<Button> buttons;
+  private TextField fileName;
+  private TextField numberOfTransformations;
+  private VBox displayEditOptions;
+  private VBox root;
 
   /**
    * Constructor for the DisplayScene class.
@@ -67,8 +62,6 @@ public class DisplayScene implements ChaosGameObserver {
     observerActionController = new ObserverActionController();
     fileController = new FileController();
     emptyFractalController = new EmptyFractalController();
-    descriptionValuesController = new DescriptionValuesController();
-    editValuesPopUp = new EditValuesPopUp();
   }
 
   /**
@@ -377,7 +370,7 @@ public class DisplayScene implements ChaosGameObserver {
    * @return The VBox with the left column.
    */
   private VBox leftBodyRow() {
-    leftBodyRow = new VBox();
+    VBox leftBodyRow = new VBox();
     leftBodyRow.getStyleClass().add("inner-border");
     leftBodyRow.getChildren().addAll(createEmptyFractals(), dropDownMenu(), saveCurrentDescToFile());
     leftBodyRow.prefWidthProperty().bind(root.widthProperty());
@@ -391,7 +384,7 @@ public class DisplayScene implements ChaosGameObserver {
    * @return The VBox with the right column.
    */
   private VBox rightBodyRow() {
-    rightBodyRow = new VBox();
+    VBox rightBodyRow = new VBox();
     rightBodyRow.getStyleClass().add("inner-border");
     rightBodyRow.prefWidthProperty().bind(root.widthProperty());
     rightBodyRow.prefHeightProperty().bind(root.heightProperty());
@@ -448,7 +441,7 @@ public class DisplayScene implements ChaosGameObserver {
     iterations.setText("10000");
     iterations.getStyleClass().add("number-of-iterations");
     iterations.setPrefWidth(100);
-    runIterations = new Button("Run iterations");
+    Button runIterations = new Button("Run iterations");
     HBox runIterationsButtonHBox = getStyledButtonInHBox(runIterations);
     runIterations.setOnAction(e -> runIterationsAction(iterations));
     Button clearCanvasButton = new Button("Clear Canvas");
@@ -508,15 +501,15 @@ public class DisplayScene implements ChaosGameObserver {
         .removeAll(editMaxAndMinButton, editCbutton, editAffineTransformationsButton);
 
     editMaxAndMinButton = new Button("Edit Max and Min");
-    editMaxAndMinButton.setOnAction(e -> editValuesPopUp.createMaxAndMinPopup());
+    editMaxAndMinButton.setOnAction(e -> EditValuesPopUp.createMaxAndMinPopup());
     displayEditOptions.getChildren().add(editMaxAndMinButton);
 
     editCbutton = new Button("Edit C");
-    editCbutton.setOnAction(e -> editValuesPopUp
+    editCbutton.setOnAction(e -> EditValuesPopUp
         .createConstantCpopup());
 
     editAffineTransformationsButton = new Button("Edit Affine Transformations");
-    editAffineTransformationsButton.setOnAction(e -> editValuesPopUp
+    editAffineTransformationsButton.setOnAction(e -> EditValuesPopUp
         .createAffineTransformationPopup());
 
   }
@@ -540,7 +533,7 @@ public class DisplayScene implements ChaosGameObserver {
   }
 
   private void editCurrentDescription() {
-    editValuesPopUp.setCurrentChaosGameDescription();
+    EditValuesPopUp.setCurrentChaosGameDescription();
     handleEditOption(1);
   }
 
@@ -552,8 +545,8 @@ public class DisplayScene implements ChaosGameObserver {
         .getSelectionModel().getSelectedItem();
     ChaosGameDescription description = fileController
         .readChaosGameDescriptionFromAppFiles(selectedFile);
-    editValuesPopUp.setInputChaosGameDescription(description);
-    fileController.writeChaosGameDescriptionToAppFiles(description, selectedFile);
+    EditValuesPopUp.setInputChaosGameDescription(description);
+
     handleEditOption(0);
 
   }

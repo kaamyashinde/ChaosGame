@@ -36,7 +36,6 @@ public class ChaosGameFileHandler {
       return;
     }
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-      // Check if we have transformations and write the type of the first one
       if (!chaosGameDescription.getTransforms().isEmpty()) {
         String transformType = chaosGameDescription
             .getTransforms().get(0).getClass().getSimpleName();
@@ -44,35 +43,45 @@ public class ChaosGameFileHandler {
         writer.newLine();
       }
 
-      // Write the coordinates of the lower left corner
       Vector2D minCoords = chaosGameDescription.getMinCoords();
       writer.write(minCoords.getX0() + "," + minCoords.getX1() + " # Lower left");
       writer.newLine();
 
-      // Write the coordinates of the upper right corner
       Vector2D maxCoords = chaosGameDescription.getMaxCoords();
       writer.write(maxCoords.getX0() + "," + maxCoords.getX1() + " # Upper right");
       writer.newLine();
 
-      // Write the parameters of each transformation
-      boolean juliaTransformWritten = false;
-      for (Transform2D transform : chaosGameDescription.getTransforms()) {
-        if (transform instanceof AffineTransform2D affine) {
-          Matrix2x2 matrix = affine.getMatrix();
-          Vector2D vector = affine.getVector();
-          writer.write(matrix.getA00() + "," + matrix.getA01() + "," + matrix.getA10()
-              + "," + matrix.getA11() + "," + vector.getX0() + "," + vector.getX1());
-          writer.newLine();
-        } else if (transform instanceof JuliaTransform julia && !juliaTransformWritten) {
-          Complex point = julia.getPoint();
-          writer.write(point.getReal() + "," + point.getImaginary()
-              + " # Real and imaginary parts of the constant c");
-          writer.newLine();
-          juliaTransformWritten = true;
-        }
-      }
+      writeTheValuesForEachTransformation(chaosGameDescription, writer);
     } catch (IOException e) {
       LOGGER.severe("An error occurred while writing to the file: " + path);
+    }
+  }
+
+  /**
+   * Writes the values for each transformation in the chaos game description.
+   * @param chaosGameDescription the chaos game description to write
+   * @param writer the writer to write to
+   * @throws IOException if an I/O error occurs
+   */
+
+  private static void writeTheValuesForEachTransformation(ChaosGameDescription chaosGameDescription, BufferedWriter writer) throws IOException {
+    boolean juliaTransformWritten = false;
+    for (Transform2D transform : chaosGameDescription.getTransforms()) {
+      if (transform instanceof AffineTransform2D) {
+        AffineTransform2D affine = (AffineTransform2D) transform;
+        Matrix2x2 matrix = affine.getMatrix();
+        Vector2D vector = affine.getVector();
+        writer.write(matrix.getA00() + "," + matrix.getA01() + "," + matrix.getA10()
+            + "," + matrix.getA11() + "," + vector.getX0() + "," + vector.getX1());
+        writer.newLine();
+      } else if (transform instanceof JuliaTransform && !juliaTransformWritten) {
+        JuliaTransform julia = (JuliaTransform) transform;
+        Complex point = julia.getPoint();
+        writer.write(point.getReal() + "," + point.getImaginary()
+            + " # Real and imaginary parts of the constant c");
+        writer.newLine();
+        juliaTransformWritten = true;
+      }
     }
   }
 
@@ -99,28 +108,39 @@ public class ChaosGameFileHandler {
       Vector2D maxCoords = new Vector2D(Double.parseDouble(maxCoordsParts[0]),
           Double.parseDouble(maxCoordsParts[1]));
 
-      List<Transform2D> transforms = new ArrayList<>();
-      while (scanner.hasNextLine()) {
-        String[] transformParts = scanner.nextLine().split("#")[0].trim().split(",");
-        if (transformType.equals("AffineTransform2D")) {
-          Matrix2x2 matrix = new Matrix2x2(Double.parseDouble(transformParts[0]), Double.parseDouble(transformParts[1]),
-              Double.parseDouble(transformParts[2]), Double.parseDouble(transformParts[3]));
-          Vector2D vector = new Vector2D(Double.parseDouble(transformParts[4]),
-              Double.parseDouble(transformParts[5]));
-          transforms.add(new AffineTransform2D(matrix, vector));
-        } else if (transformType.equals("JuliaTransform")) {
-          Complex point = Complex.createComplex(Double.parseDouble(transformParts[0].trim()),
-              Double.parseDouble(transformParts[1].trim()));
-          transforms.add(new JuliaTransform(point, 1));
-          transforms.add(new JuliaTransform(point, -1));
-        }
-      }
+      List<Transform2D> transforms = getTransformsFromFile(scanner, transformType);
 
       return new ChaosGameDescription(minCoords, maxCoords, transforms);
     } catch (FileNotFoundException e) {
       LOGGER.warning("File not found: " + path + ". Please try again.");
       return null;
     }
+  }
+
+  /**
+   * Reads the transforms from a file.
+   * @param scanner the scanner to read from
+   * @param transformType the type of transformation
+   * @return a list of transforms
+   */
+  private static List<Transform2D> getTransformsFromFile(Scanner scanner, String transformType) {
+    List<Transform2D> transforms = new ArrayList<>();
+    while (scanner.hasNextLine()) {
+      String[] transformParts = scanner.nextLine().split("#")[0].trim().split(",");
+      if (transformType.equals("AffineTransform2D")) {
+        Matrix2x2 matrix = new Matrix2x2(Double.parseDouble(transformParts[0]), Double.parseDouble(transformParts[1]),
+            Double.parseDouble(transformParts[2]), Double.parseDouble(transformParts[3]));
+        Vector2D vector = new Vector2D(Double.parseDouble(transformParts[4]),
+            Double.parseDouble(transformParts[5]));
+        transforms.add(new AffineTransform2D(matrix, vector));
+      } else if (transformType.equals("JuliaTransform")) {
+        Complex point = Complex.createComplex(Double.parseDouble(transformParts[0].trim()),
+            Double.parseDouble(transformParts[1].trim()));
+        transforms.add(new JuliaTransform(point, 1));
+        transforms.add(new JuliaTransform(point, -1));
+      }
+    }
+    return transforms;
   }
 
   /**
