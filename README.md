@@ -29,8 +29,8 @@ the test directory is where the JUnit-test classes are stored while the differen
 are within the 'main' directory. These include; 'controller,' 'model,' 'view,' and 'resources'
 
 ## Link to repository
-https://gitlab.stud.idi.ntnu.no/kamyaas/idatt2003-grp1-chaosgame
-
+[https://gitlab.stud.idi.ntnu.no/kamyaas/idatt2003-grp1-chaosgame
+](https://github.com/kaamyashinde/ChaosGame)
 
 ## How to run the tests
 The tests are run by running the respective test packages for the model subpackages
