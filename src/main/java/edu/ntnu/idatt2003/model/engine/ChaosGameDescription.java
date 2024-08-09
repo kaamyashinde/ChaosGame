@@ -23,8 +23,8 @@ import java.util.List;
  * @see Vector2D
  * @since 0.2.0
  * @version 1.4.5
- * @author 10041
- * @author 10072
+ * @author Kaamya Shinde
+ * @author Kevin Dennis Mazali
  */
 public class ChaosGameDescription {
 

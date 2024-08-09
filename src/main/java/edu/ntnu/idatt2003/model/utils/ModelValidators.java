@@ -7,7 +7,7 @@ package edu.ntnu.idatt2003.model.utils;
  * @version 1.2.3
  * @see edu.ntnu.idatt2003.model.transformations.AffineTransform2D
  * @see edu.ntnu.idatt2003.model.transformations.JuliaTransform
- * @author 10041
+ * @author Kaamya Shinde
  */
 public class ModelValidators {
 

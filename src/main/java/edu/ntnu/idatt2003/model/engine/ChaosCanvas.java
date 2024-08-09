@@ -27,7 +27,7 @@ import java.util.List;
  * @see AffineTransform2D
  * @since 0.2.0
  * @version 1.2.5
- * @author 10041
+ * @author Kaamya Shinde
  */
 
 public class ChaosCanvas {

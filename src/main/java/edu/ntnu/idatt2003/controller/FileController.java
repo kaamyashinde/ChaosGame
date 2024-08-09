@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * This class is responsible for handling the file operations.
  * <p>
- * Author: 10041
+ * Author: Kaamya Shinde
  * Version: 0.3
  * Since: 0.3.3
  */

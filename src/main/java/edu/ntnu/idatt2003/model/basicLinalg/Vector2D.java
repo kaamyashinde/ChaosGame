@@ -9,7 +9,7 @@ import edu.ntnu.idatt2003.model.utils.ModelValidators;
  *
  * @since 0.1.0
  * @version 1.1.2
- * @author 10041
+ * @author Kaamya Shinde
  *
  */
 public class Vector2D {

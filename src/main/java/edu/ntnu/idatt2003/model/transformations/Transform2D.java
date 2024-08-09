@@ -8,7 +8,7 @@ import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
  * @version 1.0.0
  * @see AffineTransform2D
  * @see JuliaTransform
- * @author 10041
+ * @author Kaamya Shinde
  */
 
 public abstract class Transform2D {

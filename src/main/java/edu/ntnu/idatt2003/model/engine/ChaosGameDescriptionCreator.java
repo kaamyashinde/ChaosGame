@@ -19,8 +19,8 @@ import java.util.List;
  *
  * @since 1.0.0
  * @version 1.0.5
- * @author 10041
- * @author 10072
+ * @author Kaamya Shinde
+ * @author Kevin Dennis Mazali
  */
 public class ChaosGameDescriptionCreator {
 

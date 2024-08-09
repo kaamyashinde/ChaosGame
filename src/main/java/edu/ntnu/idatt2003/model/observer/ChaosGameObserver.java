@@ -5,7 +5,7 @@ package edu.ntnu.idatt2003.model.observer;
  *
  * @since 1.0.0
  * @version 1.0.0
- * @author 10041
+ * @author Kaamya Shinde
  */
 public interface ChaosGameObserver {
   void updateAddPixel(double x0, double x1);

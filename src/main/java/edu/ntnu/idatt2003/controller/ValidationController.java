@@ -3,7 +3,7 @@ package edu.ntnu.idatt2003.controller;
 /**
  * This class is responsible for validating input from the user.
  *
- * @author 10041
+ * @author Kaamya Shinde
  * @version 0.1
  * @since 0.3.6
  */

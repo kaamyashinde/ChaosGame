@@ -15,14 +15,14 @@ import java.util.Random;
  * choose a transformation, move there, and draw a point.
  * Implement the class ChaosGame according to figure 6.
  *
- * @author 10041
+ * @author Kaamya Shinde
  *
  * @see ChaosCanvas
  * @see ChaosGameDescription
  * @see Vector2D
  * @since 0.2.0
  * @version 1.2.3
- * @author 10041
+ * @author Kaamya Shinde
  */
 
 public class ChaosGame {

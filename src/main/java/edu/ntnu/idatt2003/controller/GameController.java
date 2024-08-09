@@ -25,7 +25,7 @@ import java.util.stream.IntStream;
  * This means that the model classes are used only in this controller to perform the game functions.
  * Thereafter, the methods are only called up on in the view package.
  *
- * @author 10041
+ * @author Kaamya Shinde
  * @version 0.8
  * @see edu.ntnu.idatt2003.view.DisplayScene
  * @since 0.3.5

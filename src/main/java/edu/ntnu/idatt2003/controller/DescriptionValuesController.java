@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
  * It is responsible for registering, displaying and clearing
  * the values of the chaos game description.
  *
- * @author 10041
+ * @author Kaamya Shinde
  * @version 0.4
  * @since 0.3.3
  */

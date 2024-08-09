@@ -10,7 +10,7 @@ import edu.ntnu.idatt2003.model.utils.ModelValidators;
  * @see Vector2D
  * @since 0.1.0
  * @version 1.3.2
- * @author 10072
+ * @author Kevin Dennis Mazali
  */
 public class Complex extends Vector2D {
 

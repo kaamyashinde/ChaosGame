@@ -9,7 +9,7 @@ import java.util.List;
  * This class is responsible for creating lists of various GUI elements to be displayed in the view.
  * It aids in the separation of concerns between the view and the model.
  *
- * @author 10041
+ * @author Kaamya Shinde
  * @version 0.1
  * @since 0.3.4
  */

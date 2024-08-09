@@ -17,7 +17,7 @@ import edu.ntnu.idatt2003.model.engine.ChaosGameDescriptionCreator;
  * @see ChaosGameDescriptionCreator
  * @since 0.3.7
  * @version 1.2.3
- * @author 10041
+ * @author Kaamya Shinde
  */
 public class ChaosGameDescriptionFactory {
   /**

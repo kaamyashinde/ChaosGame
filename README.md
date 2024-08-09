@@ -1,10 +1,7 @@
 # Portfolio project IDATT2003 - 2024
 
-### STUDENT NAME = "Kevin Dennis Mazali"  
-### STUDENT ID = "10072"
-
+### STUDENT NAME = "Kevin Dennis Mazali"
 ### STUDENT NAME = "Kaamya Shinde"
-### STUDENT ID = "10041"
 
 ## project description
 

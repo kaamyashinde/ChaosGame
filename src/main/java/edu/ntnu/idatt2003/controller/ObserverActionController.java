@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 /**
  * This class is responsible for controlling the actions to the application when the observer is notified in the model.
  *
- * @author 10041
+ * @author Kaamya Shinde
  * @version 0.2
  * @since 3.3.0
  */

@@ -9,7 +9,7 @@ package edu.ntnu.idatt2003.model.basicLinalg;
  *
  * @since 0.1.0
  * @version 1.2.0
- * @author 10072
+ * @author Kevin Dennis Mazali
  */
 public class Matrix2x2 {
   private double a00;

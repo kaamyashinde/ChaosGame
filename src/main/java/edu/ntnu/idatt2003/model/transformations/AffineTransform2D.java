@@ -14,7 +14,7 @@ import edu.ntnu.idatt2003.model.basicLinalg.Vector2D;
  * @see Vector2D
  * @since 0.1.0
  * @version 1.1.2
- * @author 10041
+ * @author Kaamya Shinde
  */
 
 public class AffineTransform2D extends Transform2D {
