@@ -6,7 +6,6 @@
 ## project description
 
 The project is a Chaos Game simulator App. 
-The intented target group for this project is ...
 
 ### Functionality of the program:
 - Create, visualize, and modify fractals through the GUI.
